@@ -1,28 +1,34 @@
+import Etag from "fastify-etag";
+import FastifyFavicon from "fastify-favicon";
+import Helmet from "fastify-helmet";
+import Sensible from "fastify-sensible";
+import UnderPressure from "under-pressure";
 import fastify, { FastifyServerOptions } from "fastify";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+
+import TelegramPlugin from "./plugins/telegram";
 
 import type { Config } from "./config";
 
-const __filename = fileURLToPath(import.meta.url); // eslint-disable-line
-const __dirname = dirname(__filename); // eslint-disable-line
-
 async function createServer(config: Config) {
   const opts: FastifyServerOptions = {
+    ...config,
     logger: {
       level: config.LOG_LEVEL,
       prettyPrint: config.PRETTY_PRINT,
     },
-    ...config,
   };
 
   const server = fastify(opts);
 
-  await server.register(import("fastify-favicon"));
+  await server.register(Etag);
 
-  await server.register(import("fastify-healthcheck"));
+  await server.register(Helmet);
 
-  await server.register(import("under-pressure"), {
+  await server.register(FastifyFavicon);
+
+  await server.register(Sensible);
+
+  await server.register(UnderPressure, {
     exposeStatusRoute: true,
     maxEventLoopDelay: 1000,
     maxHeapUsedBytes: 100000000,
@@ -30,9 +36,8 @@ async function createServer(config: Config) {
     maxEventLoopUtilization: 0.98,
   });
 
-  await server.register(import("fastify-autoload"), {
-    dir: join(__dirname, "routes"),
-    dirNameRoutePrefix: false,
+  await server.register(TelegramPlugin, {
+    ...opts,
   });
 
   return server;
