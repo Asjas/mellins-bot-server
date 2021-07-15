@@ -10,11 +10,14 @@ import * as keyboards from "../messages/botKeyboards";
 function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.use(async (ctx: any, next) => {
     const result = await telegramDb.telegramUser.findUnique({
-      where: { userTelegramId: ctx.message.from.id },
+      where: { userTelegramId: ctx.message?.from?.id ?? -1 },
       select: { rsaId: true },
     });
 
-    const text = ctx.message.text;
+    // if the message is sent from a private channel, ignore the message
+    if (ctx?.update?.channel_post?.sender_chat?.type === "channel") return;
+
+    const text = ctx.message?.text;
     const essentialCommands = ["/start", "Register"];
     const rsaIdLength = 13;
 
