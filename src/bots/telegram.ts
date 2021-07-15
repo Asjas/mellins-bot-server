@@ -1,6 +1,9 @@
 import TelegrafPKG from "telegraf";
-import registerBotCommands from "../commands";
+import registerBotCommands from "./registerBotCommands";
 import botMiddleware from "../middleware/botMiddleware";
+
+import type MyContext from "../types/telegram";
+import * as keyboards from "../messages/botKeyboards";
 
 const { Telegraf } = TelegrafPKG;
 

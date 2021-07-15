@@ -61,3 +61,21 @@ export type GetNearestBranch = {
     };
   };
 };
+
+export type GetBranchList = {
+  response: {
+    error: {
+      code: number;
+      description: string;
+    };
+    branches: {
+      [key: string]: {
+        code: string;
+        name: string;
+        latitude: string;
+        longitude: string;
+        province: string;
+      }[];
+    };
+  };
+};

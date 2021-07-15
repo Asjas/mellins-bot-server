@@ -1,4 +1,5 @@
 import { Markup } from "telegraf";
+import BranchRegisterCallback from "../commands/branchRegisterCallback";
 
 export function fullBotKeyboard() {
   return Markup.keyboard([
@@ -28,6 +29,35 @@ export function inlineCallbackKeyboard() {
 
 export function branchLocatorKeyboard() {
   return Markup.keyboard(["Find Closest Branch", "Provincial Branch List", "Back"]).resize().oneTime();
+}
+
+export function provincialBranchListKeyboard() {
+  return Markup.keyboard([
+    "Eastern Cape",
+    "Northern Cape",
+    "Western Cape",
+    "Free State",
+    "North West",
+    "Gauteng",
+    "KwaZulu-Natal",
+    "Limpopo",
+    "Mpumalanga",
+    "Back",
+  ])
+    .resize()
+    .oneTime();
+}
+
+export async function branchListKeyboard(bot, branches) {
+  await BranchRegisterCallback(bot, branches);
+
+  const branchButtons = branches.map((branch: any) => {
+    return Markup.button.callback(branch.name, branch);
+  });
+
+  return Markup.keyboard([...branchButtons, "Back to provincial branch list"])
+    .resize()
+    .oneTime();
 }
 
 export function shareLocationKeyboard() {

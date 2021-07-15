@@ -1,7 +1,7 @@
 import { Client } from "undici";
 import config from "../config";
 
-import type { GetBalance, GetNearestBranch, GetStatement } from "../types/qm";
+import type { GetBalance, GetNearestBranch, GetStatement, GetBranchList } from "../types/qm";
 
 const qmClient = new Client(config.ATLAS_HTTP_URL);
 
@@ -79,6 +79,34 @@ export async function getNearestBranch({ latitude, longitude }: { latitude: numb
   }
 
   const parsedData: GetNearestBranch = JSON.parse(data);
+
+  return parsedData.response;
+}
+
+export async function getBranchList(provincialCode: number) {
+  const { body } = await qmClient.request({
+    origin: "http://127.0.0.1:3000",
+    path: config.ATLAS_HTTP_ENDPOINT,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      Authorization: `Basic ${config.ATLAS_AUTH_TOKEN}`,
+    },
+    body: JSON.stringify({
+      request: {
+        function: "GetBranchList",
+        parameters: { account_prefix: "MELLIN", province: provincialCode },
+      },
+    }),
+  });
+
+  let data = "";
+
+  for await (const chunk of body) {
+    data += chunk;
+  }
+
+  const parsedData: GetBranchList = JSON.parse(data);
 
   return parsedData.response;
 }
