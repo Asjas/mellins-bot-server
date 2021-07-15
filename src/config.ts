@@ -12,8 +12,11 @@ const schema = S.object()
   .prop("MELLINS_DB", S.string().required())
   .prop("TELEGRAM_BOT_TOKEN", S.string().required())
   .prop("ATLAS_HTTP_URL", S.string().required())
-  .prop("ATLAS_HTTP_PATH", S.string().required())
-  .prop("ATLAS_AUTH_TOKEN", S.string().required());
+  .prop("ATLAS_HTTP_ENDPOINT", S.string().required())
+  .prop("ATLAS_AUTH_TOKEN", S.string().required())
+  .prop("FRESHDESK_HTTP_URL", S.string().required())
+  .prop("FRESHDESK_TICKET_ENDPOINT", S.string().required())
+  .prop("FRESHDESK_AUTH_TOKEN", S.string().required());
 
 export type Config = {
   logger: boolean;
@@ -27,8 +30,11 @@ export type Config = {
   MELLINS_DB: string;
   TELEGRAM_BOT_TOKEN: string;
   ATLAS_HTTP_URL: string;
-  ATLAS_HTTP_PATH: string;
+  ATLAS_HTTP_ENDPOINT: string;
   ATLAS_AUTH_TOKEN: string;
+  FRESHDESK_HTTP_URL: string;
+  FRESHDESK_TICKET_ENDPOINT: string;
+  FRESHDESK_AUTH_TOKEN: string;
 };
 
 export default envSchema({

@@ -3,7 +3,7 @@ import { performance } from "perf_hooks";
 import { telegramDb } from "../db/telegram";
 import config from "../config";
 
-function prismaMiddleware() {
+function prismaDevMiddleware() {
   // this is used to measure the performance of the database requests during development
   telegramDb.$use(async (params, next) => {
     const before = performance.now();
@@ -17,5 +17,5 @@ function prismaMiddleware() {
 }
 
 if (config.NODE_ENV !== "production") {
-  prismaMiddleware();
+  prismaDevMiddleware();
 }

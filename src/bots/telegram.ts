@@ -1,6 +1,6 @@
 import TelegrafPKG from "telegraf";
 import registerBotCommands from "../commands";
-import botMiddleware from "../middleware/botMiddleware.js";
+import botMiddleware from "../middleware/botMiddleware";
 
 const { Telegraf } = TelegrafPKG;
 
