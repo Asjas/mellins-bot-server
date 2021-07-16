@@ -4,15 +4,24 @@
 import type TelegrafPKG from "telegraf";
 import type { Update } from "typegram";
 
+import getUserFromTelegramChannel from "../services/getUserFromTelegramChannel";
 import { telegramDb } from "../db/telegram";
 import * as keyboards from "../messages/botKeyboards";
 
 function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.use(async (ctx: any, next) => {
+    const userId = ctx?.message?.from?.id;
+
+    // look for the user in the local database to see if they registered before
     const result = await telegramDb.telegramUser.findUnique({
       where: { userTelegramId: ctx.message?.from?.id ?? -1 },
       select: { rsaId: true },
     });
+
+    if (userId) {
+      const result: boolean = await getUserFromTelegramChannel(userId);
+      ctx.joinedPrivateChannel = result;
+    }
 
     // if the message is sent from a private channel, ignore the message
     if (ctx?.update?.channel_post?.sender_chat?.type === "channel") return;
@@ -34,7 +43,7 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
 
       await ctx.reply(
         `Hi ${ctx.message.from.first_name},\n\nThank you for using @Mellinsbot's\n\nPlease select an action to continue:`,
-        keyboards.fullBotKeyboard(),
+        keyboards.fullBotKeyboard(ctx),
       );
       return;
     }
