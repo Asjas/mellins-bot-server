@@ -2,8 +2,7 @@ export const RSA_ID_NOT_FOUND = `It appears that your ID number was not found in
 export const INVALID_RSA_ID = `It appears that your ID number is incorrect.\nPlease check your ID number and try again.`;
 export const NO_OUTSTANDING_STATEMENTS = `No outstanding statements found.`;
 
-export const CHANNEL_JOIN = `Thank you for registering with @Mellins i.Style Bot.\n\nWould you like to join our private channel?\n\nJoining the channel will make you eligible for exclusive discounts and would allow you to earn loyalty points.`;
-export const CHANNEL_REGISTRATION = `Thank you for deciding to join our channel.\n\nPlease click on the link below in order to join:\nhttps://t.me/joinchat/Tg0x8KBZk810fGlR`;
+export const JOIN_MELLINS_CHANNEL = `Thank you for deciding to join our channel.\n\nJoining the channel will make you eligible for exclusive discounts and would allow you to earn loyalty points.\n\nPlease click on the link below in order to join:\nhttps://t.me/joinchat/Tg0x8KBZk810fGlR`;
 
 export const STARTED_MESSAGE = `Thank you for using @Mellinsbot.\n\nPlease select Register to continue:`;
 export const ORDERS_MESSAGE = `Thank you for using @Mellinsbot's order portal.\nPlease select an option below:`;

@@ -15,7 +15,7 @@ export default function StatementsCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
     const customer = await getCustomerStatement(customerId);
 
     if (customer?.error === 2000) {
-      await ctx.reply(constants.NO_OUTSTANDING_STATEMENTS, keyboards.fullBotKeyboard());
+      await ctx.reply(constants.NO_OUTSTANDING_STATEMENTS, keyboards.fullBotKeyboard(ctx));
       return;
     }
 
@@ -23,7 +23,7 @@ export default function StatementsCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
       const pdfBuffer = Buffer.from(branch.statement, "base64");
 
       await ctx.reply(`Please see your current statements:`);
-      await ctx.replyWithDocument({ source: pdfBuffer, filename: "statement.pdf" }, keyboards.fullBotKeyboard());
+      await ctx.replyWithDocument({ source: pdfBuffer, filename: "statement.pdf" }, keyboards.fullBotKeyboard(ctx));
     });
   });
 }

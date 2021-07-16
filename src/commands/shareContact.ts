@@ -14,7 +14,7 @@ export default function ShareContactCommand(bot: TelegrafPKG.Telegraf<TelegrafPK
 
       await ctx.reply(
         `A support ticket has been logged and an agent will contact you shortly.\n\nPlease note your ticket number: ${ticket.id}`,
-        keyboards.fullBotKeyboard(),
+        keyboards.fullBotKeyboard(ctx),
       );
     }
 

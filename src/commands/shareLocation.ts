@@ -23,7 +23,7 @@ export default function ShareLocationCommand(bot: TelegrafPKG.Telegraf<TelegrafP
       await ctx.reply(
         `The closest branch to you is:\n\nMellins ${branchName}\nDistance: ${Math.round(Number(distance))}km`,
       );
-      await ctx.replyWithLocation(Number(branchLatitude), Number(branchLongitude), keyboards.fullBotKeyboard());
+      await ctx.replyWithLocation(Number(branchLatitude), Number(branchLongitude), keyboards.fullBotKeyboard(ctx));
     }
 
     await next();

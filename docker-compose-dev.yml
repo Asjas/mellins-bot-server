@@ -6,12 +6,21 @@ services:
       build:
         context: .
       depends_on:
-        - mellins-db
+        - mellins-bot-redis
+        - mellins-bot-db
+  redis:
+    container_name: mellins-bot-redis
+    image: redis:6.2.4-alpine
+    restart: always
   db:
-    container_name: mellins-db
+    container_name: mellins-bot-db
     image: postgres:13.3-alpine
     restart: always
     environment:
       POSTGRES_USER: fastify
       POSTGRES_PASSWORD: fastify
       POSTGRES_DB: fastify
+
+volumes:
+  redis_data:
+  db_data:

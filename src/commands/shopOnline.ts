@@ -7,6 +7,6 @@ import * as keyboards from "../messages/botKeyboards";
 
 export default function ShopOnlineCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Shop Online", async (ctx: MyContext) => {
-    await ctx.reply(constants.SHOP_ONLINE_MESSAGE, keyboards.fullBotKeyboard());
+    await ctx.reply(constants.SHOP_ONLINE_MESSAGE, keyboards.fullBotKeyboard(ctx));
   });
 }

@@ -10,7 +10,7 @@ export default function BackCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Contex
 
     await ctx.reply(
       `Hi ${firstName},\n\nThank you for using @Mellinsbot's\n\nPlease select an action to continue:`,
-      keyboards.fullBotKeyboard(),
+      keyboards.fullBotKeyboard(ctx),
     );
   });
 }

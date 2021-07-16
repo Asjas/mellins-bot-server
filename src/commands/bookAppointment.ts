@@ -7,6 +7,6 @@ import * as keyboards from "../messages/botKeyboards";
 
 export default function BookAppointmentCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Book Appointment", async (ctx: MyContext) => {
-    await ctx.reply(constants.BOOK_APPOINTMENT_MESSAGE, keyboards.fullBotKeyboard());
+    await ctx.reply(constants.BOOK_APPOINTMENT_MESSAGE, keyboards.fullBotKeyboard(ctx));
   });
 }

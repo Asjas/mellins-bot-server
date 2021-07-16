@@ -30,7 +30,6 @@ import SocialMediaCommand from "../commands/socialMedia";
 import FacebookCommand from "../commands/facebook";
 import InstagramCommand from "../commands/instagram";
 import JoinMellinsChannelCommand from "../commands/joinMellinsChannel";
-import YesJoinChannelCommand from "../commands/yesJoinChannel";
 import ShareContactCommand from "../commands/shareContact";
 
 function registerBotCommands(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
@@ -61,7 +60,6 @@ function registerBotCommands(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Updat
   FindClosestBranchCommand(bot);
   ShareLocationCommand(bot);
   JoinMellinsChannelCommand(bot);
-  YesJoinChannelCommand(bot);
   SocialMediaCommand(bot);
   FacebookCommand(bot);
   InstagramCommand(bot);

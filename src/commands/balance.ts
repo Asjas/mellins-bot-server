@@ -16,7 +16,7 @@ export default function BalanceCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Con
     Object.values(customer.branches).forEach(async (branch) => {
       const response = `Branch Name: ${branch.branch_name}\nCustomer Number: ${branch.customer_number}\nPatient Name: ${branch.patient_name}\nCustomer Balance: R ${branch.customer_balance}`;
 
-      await ctx.reply(response, keyboards.fullBotKeyboard());
+      await ctx.reply(response, keyboards.fullBotKeyboard(ctx));
     });
   });
 }

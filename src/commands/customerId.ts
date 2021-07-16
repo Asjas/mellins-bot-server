@@ -29,14 +29,14 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
       } catch (err: any) {
         // if the user is already registered, send a message and exit
         if (err.code === "P2002") {
-          await ctx.reply(`The ID ${rsaId} is already registered.`, keyboards.fullBotKeyboard());
+          await ctx.reply(`The ID ${rsaId} is already registered.`, keyboards.fullBotKeyboard(ctx));
           return;
         }
       }
 
       await ctx.reply(
         `Hi, ${firstName}\n\nYou've been successfully registered.\n\nPlease select one of these buttons to continue:`,
-        keyboards.fullBotKeyboard(),
+        keyboards.fullBotKeyboard(ctx),
       );
     } else {
       await ctx.reply(constants.RSA_ID_NOT_FOUND, {
