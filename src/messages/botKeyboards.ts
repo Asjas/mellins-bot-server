@@ -1,18 +1,25 @@
 import { Markup } from "telegraf";
 import BranchRegisterCallback from "../commands/branchRegisterCallback";
+import MyContext from "../types/telegram";
 
-export function fullBotKeyboard() {
-  return Markup.keyboard([
-    "Balance",
-    "Statements",
-    "Appointments",
-    "Join Mellins Channel",
-    "Branch Locator",
-    "Shop Online",
-    "Social Media",
-  ])
-    .resize()
-    .oneTime();
+export function fullBotKeyboard(ctx: MyContext) {
+  let buttons: string[] = [];
+
+  if (ctx?.joinedPrivateChannel === true) {
+    buttons = ["Balance", "Statements", "Appointments", "Branch Locator", "Shop Online", "Social Media"];
+  } else {
+    buttons = [
+      "Balance",
+      "Statements",
+      "Appointments",
+      "Join Mellins Channel",
+      "Branch Locator",
+      "Shop Online",
+      "Social Media",
+    ];
+  }
+
+  return Markup.keyboard(buttons).resize().oneTime();
 }
 
 export function registerKeyboard() {
@@ -79,7 +86,7 @@ export function appointmentKeyboard() {
 }
 
 export function joinChannelKeyboard() {
-  return Markup.keyboard(["Yes, Join Channel", "Back"]).oneTime();
+  return Markup.keyboard(["Join Channel", "Back"]).oneTime();
 }
 
 export function removeKeyboard() {
