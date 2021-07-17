@@ -1,6 +1,7 @@
 // this service is used to query whether a Telegram user is in the Private Mellins Channel
 import dotenv from "dotenv";
 import { Api, TelegramClient } from "telegram";
+import { Logger } from "telegram/extensions/index.js";
 import { StoreSession } from "telegram/sessions/index.js";
 import Redis from "ioredis";
 import { telegramDb } from "../db/telegram";
@@ -46,6 +47,8 @@ async function getUserFromChannel(userId: number) {
   const client = new TelegramClient(storeSession, apiId, apiHash, {
     connectionRetries: 5,
   });
+
+  Logger.setLevel("error");
 
   try {
     await client.connect();
