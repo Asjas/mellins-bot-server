@@ -11,16 +11,28 @@ services:
   redis:
     container_name: redis
     image: redis:6.2.4-alpine
+     command:
+      redis-server --requirepass ${REDIS_AUTH}
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - redis-data:/data
     restart: always
   db:
     container_name: db
     image: postgres:13.3-alpine
+    ports:
+      - ${FASTIFY_PORT}:5432
+    volumes:
+      - db-data:/var/lib/postgresql
     restart: always
     environment:
-      POSTGRES_USER: fastify
-      POSTGRES_PASSWORD: fastify
-      POSTGRES_DB: fastify
+      POSTGRES_USER: ${FASTIFY_DB_USER}
+      POSTGRES_PASSWORD: ${FASTIFY_DB_PASS}
+      POSTGRES_DB: ${FASTIFY_DB}
 
 volumes:
-  redis_data:
-  db_data:
+  redis-data:
+    external: false
+  db-data:
+    external: false
