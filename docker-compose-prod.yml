@@ -2,21 +2,25 @@ version: "2.4"
 
 services:
   webapp:
-    container_name: mellins-bot-api
+    container_name: api
       build:
         context: .
       depends_on:
-        - mellins-bot-redis
-        - mellins-bot-db
+        - redis
+        - db
   redis:
-    container_name: mellins-bot-redis
-    image: redis
+    container_name: redis
+    image: redis:6.2.4-alpine
     restart: always
   db:
-    container_name: mellins-bot-db
+    container_name: db
     image: postgres:13.3-alpine
     restart: always
     environment:
       POSTGRES_USER: fastify
       POSTGRES_PASSWORD: fastify
       POSTGRES_DB: fastify
+
+volumes:
+  redis_data:
+  db_data:

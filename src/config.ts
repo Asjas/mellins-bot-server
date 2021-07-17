@@ -10,6 +10,9 @@ const schema = S.object()
   .prop("MELLINS_DB_USER", S.string().required())
   .prop("MELLINS_DB_PASS", S.string().required())
   .prop("MELLINS_DB", S.string().required())
+  .prop("REDIS_HOST", S.string().required())
+  .prop("REDIS_PORT", S.string().required())
+  .prop("REDIS_AUTH", S.string().required())
   .prop("TELEGRAM_BOT_TOKEN", S.string().required())
   .prop("ATLAS_HTTP_URL", S.string().required())
   .prop("ATLAS_HTTP_ENDPOINT", S.string().required())
@@ -28,6 +31,9 @@ export type Config = {
   MELLINS_DB_USER: string;
   MELLINS_DB_PASS: string;
   MELLINS_DB: string;
+  REDIS_HOST: string;
+  REDIS_PORT: string;
+  REDIS_AUTH: string;
   TELEGRAM_BOT_TOKEN: string;
   ATLAS_HTTP_URL: string;
   ATLAS_HTTP_ENDPOINT: string;

@@ -8,14 +8,15 @@ generator client {
 }
 
 model TelegramUser {
-  id               Int                @id @default(autoincrement())
-  firstName        String
-  lastName         String
-  rsaId            String             @unique
-  userTelegramId   Int                @unique
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now())
-  TelegramMessages TelegramMessages[]
+  id                Int                @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  rsaId             String             @unique
+  userTelegramId    Int                @unique
+  userJoinedChannel Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now())
+  TelegramMessages  TelegramMessages[]
 }
 
 model TelegramMessages {
