@@ -7,8 +7,10 @@ test/
 .gitignore
 .eslintrc
 .eslintignore
-.prettierrc.js
-.taprc
+.prettierrc.cjs
 .DS_Store
-.env
 .env.sample
+docker-compose*.yml
+jest.config.cjs
+nodemon.json
+renovate.json

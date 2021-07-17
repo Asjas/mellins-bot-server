@@ -1,7 +1,0 @@
-ts: true
-jsx: false
-flow: false
-coverage: true
-check-coverage: false
-node-arg:
-    --loader=ts-node/esm
