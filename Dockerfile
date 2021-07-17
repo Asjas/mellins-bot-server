@@ -3,7 +3,6 @@ FROM node:16.5.0-alpine
 EXPOSE 3000
 
 ENV NODE_ENV production
-ENV PORT 3000
 
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
