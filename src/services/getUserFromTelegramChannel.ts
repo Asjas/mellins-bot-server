@@ -1,7 +1,7 @@
 // this service is used to query whether a Telegram user is in the Private Mellins Channel
 import dotenv from "dotenv";
 import { Api, TelegramClient } from "telegram";
-import { StoreSession } from "telegram/sessions";
+import { StoreSession } from "telegram/sessions/index.js";
 import Redis from "ioredis";
 import { telegramDb } from "../db/telegram";
 
