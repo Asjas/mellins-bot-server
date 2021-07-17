@@ -2,30 +2,30 @@ version: "2.4"
 
 services:
   webapp:
-    container_name: api
+    container_name: mellins-bot-api
     build:
       context: .
     ports:
       - ${PORT}:3000
     depends_on:
-      - redis
-      - db
+      - mellins-bot-redis
+      - mellins-bot-db
   redis:
-    container_name: redis
+    container_name: mellins-bot-redis
     image: redis:6.2.4-alpine
     command: redis-server --requirepass ${REDIS_AUTH}
     ports:
       - ${REDIS_PORT}:6379
     volumes:
-      - redis-data:/data
+      - mellins-bot-redis-data:/data
     restart: always
   db:
-    container_name: db
+    container_name: mellins-bot-db
     image: postgres:13.3-alpine
     ports:
       - ${FASTIFY_PORT}:5432
     volumes:
-      - db-data:/var/lib/postgresql
+      - mellins-bot-db-data:/var/lib/postgresql
     restart: always
     environment:
       POSTGRES_USER: ${FASTIFY_DB_USER}
@@ -33,7 +33,7 @@ services:
       POSTGRES_DB: ${FASTIFY_DB}
 
 volumes:
-  redis-data:
+  mellins-bot-redis-data:
     external: false
-  db-data:
+  mellins-bot-db-data:
     external: false
