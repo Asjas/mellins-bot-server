@@ -1,17 +1,8 @@
 version: "2.4"
 
 services:
-  api:
-    container_name: mellins-bot-api
-    build:
-      context: .
-    ports:
-      - ${PORT}:3000
-    depends_on:
-      - redis
-      - db
   redis:
-    container_name: mellins-bot-redis
+    container_name: redis
     image: redis:6.2.4-alpine
     command: redis-server --requirepass ${REDIS_AUTH}
     ports:
@@ -20,7 +11,7 @@ services:
       - redis-data:/data
     restart: always
   db:
-    container_name: mellins-bot-db
+    container_name: db
     image: postgres:13.3-alpine
     ports:
       - ${FASTIFY_PORT}:5432
