@@ -1,4 +1,4 @@
-import { logUserActionsInDb } from "../db/telegram.js";
+import { logUserActionsInDb } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
