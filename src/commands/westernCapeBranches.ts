@@ -6,6 +6,7 @@ import getProvincialBranches from "../services/getProvincialBranches";
 
 import * as constants from "../messages/botMessages";
 import * as keyboards from "../messages/botKeyboards";
+import { botReply } from "./reply";
 
 export default function WesternCapeBranchesBotCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Western Cape", async (ctx: MyContext) => {
@@ -20,6 +21,6 @@ export default function WesternCapeBranchesBotCommand(bot: TelegrafPKG.Telegraf<
 
     const branches = Object.values(data.branches);
 
-    await ctx.reply(constants.BRANCH_SELECTION_MESSAGE, await keyboards.branchListKeyboard(bot, branches));
+    await botReply(ctx, constants.BRANCH_SELECTION_MESSAGE, await keyboards.branchListKeyboard(bot, branches));
   });
 }

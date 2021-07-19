@@ -6,6 +6,7 @@ import getProvincialBranches from "../services/getProvincialBranches";
 
 import * as constants from "../messages/botMessages";
 import * as keyboards from "../messages/botKeyboards";
+import { botReply } from "./reply";
 
 export default function GautengBranchesBotCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Gauteng", async (ctx: MyContext) => {
@@ -14,12 +15,12 @@ export default function GautengBranchesBotCommand(bot: TelegrafPKG.Telegraf<Tele
 
     // If there are no practices in the province, send a message and redirect the user back
     if (data?.error?.code === 10002) {
-      await ctx.reply(data.error.description, keyboards.provincialBranchListKeyboard());
+      await botReply(ctx, data.error.description, keyboards.provincialBranchListKeyboard());
       return;
     }
 
     const branches = Object.values(data.branches);
 
-    await ctx.reply(constants.BRANCH_SELECTION_MESSAGE, await keyboards.branchListKeyboard(bot, branches));
+    await botReply(ctx, constants.BRANCH_SELECTION_MESSAGE, await keyboards.branchListKeyboard(bot, branches));
   });
 }

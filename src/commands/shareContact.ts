@@ -3,6 +3,7 @@ import type { Update } from "typegram";
 
 import createFreshdeskTicket from "../services/createFreshdeskTicket";
 import * as keyboards from "../messages/botKeyboards";
+import { botReply } from "./reply";
 
 export default function ShareContactCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.use(async (ctx: any, next) => {
@@ -12,10 +13,12 @@ export default function ShareContactCommand(bot: TelegrafPKG.Telegraf<TelegrafPK
       const { first_name: firstName, last_name: lastName, phone_number: contactNo } = contact;
       const ticket = await createFreshdeskTicket({ firstName, lastName, contactNo });
 
-      await ctx.reply(
+      await botReply(
+        ctx,
         `A support ticket has been logged and an agent will contact you shortly.\n\nPlease note your ticket number: ${ticket.id}`,
         keyboards.fullBotKeyboard(ctx),
       );
+      return;
     }
 
     // the message didn't contain a Telegram Contact, forward request onwards

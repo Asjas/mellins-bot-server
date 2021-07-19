@@ -8,6 +8,7 @@ import LuhnAlgorithm from "../utils/LuhnAlgorithm";
 
 import * as constants from "../messages/botMessages";
 import * as keyboards from "../messages/botKeyboards";
+import { botReply, botReplyWithInlineKeyboard } from "./reply";
 
 export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   // check for 13 numbers in a single message (RSA ID)
@@ -25,24 +26,26 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
 
     if (customerFound) {
       try {
-        await telegramDb.telegramUser.create({ data: { firstName, lastName, rsaId, userTelegramId } });
+        await telegramDb.telegramUser.upsert({
+          where: { userTelegramId },
+          create: { firstName, lastName, rsaId, userTelegramId },
+          update: { firstName, lastName, rsaId, userTelegramId },
+        });
       } catch (err: any) {
         // if the user is already registered, send a message and exit
         if (err.code === "P2002") {
-          await ctx.reply(`The ID ${rsaId} is already registered.`, keyboards.fullBotKeyboard(ctx));
+          await botReply(ctx, `The ID ${rsaId} is already registered.`, keyboards.fullBotKeyboard(ctx));
           return;
         }
       }
 
-      await ctx.reply(
-        `Hi, ${firstName}\n\nYou've been successfully registered.\n\nPlease select one of these buttons to continue:`,
+      await botReply(
+        ctx,
+        `You've been successfully registered.\n\nPlease select one of these buttons to continue:`,
         keyboards.fullBotKeyboard(ctx),
       );
     } else {
-      await ctx.reply(constants.RSA_ID_NOT_FOUND, {
-        parse_mode: "HTML",
-        ...keyboards.inlineCallbackKeyboard(),
-      });
+      await botReplyWithInlineKeyboard(ctx, constants.RSA_ID_NOT_FOUND, keyboards.inlineCallbackKeyboard());
     }
   });
 }

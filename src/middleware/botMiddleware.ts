@@ -7,6 +7,7 @@ import type { Update } from "typegram";
 import getUserFromTelegramChannel from "../services/getUserFromTelegramChannel";
 import { telegramDb } from "../db/telegram";
 import * as keyboards from "../messages/botKeyboards";
+import { botReply } from "../commands/reply";
 
 function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.use(async (ctx: any, next) => {
@@ -18,13 +19,17 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
       select: { rsaId: true },
     });
 
+    if (ctx?.update?.channel_post) {
+      console.log("global message", ctx?.update?.channel_post?.sender_chat);
+    }
+
     if (userId) {
       const result: boolean = await getUserFromTelegramChannel(userId);
       ctx.joinedPrivateChannel = result;
     }
 
     // if the message is sent from a private channel, ignore the message
-    if (ctx?.update?.channel_post?.sender_chat?.type === "channel") return;
+    if (ctx?.update?.channel_post) return;
 
     const text = ctx.message?.text;
     const essentialCommands = ["/start", "Register"];
@@ -41,8 +46,9 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
       // if the user already registered an account, redirect them to the menu
       ctx.customerId = result.rsaId;
 
-      await ctx.reply(
-        `Hi ${ctx.message.from.first_name},\n\nThank you for using @Mellinsbot's\n\nPlease select an action to continue:`,
+      await botReply(
+        ctx,
+        "Thank you for using @Mellinsbot's\n\nPlease select an action to continue:",
         keyboards.fullBotKeyboard(ctx),
       );
       return;
@@ -60,7 +66,8 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
     // if we couldn't find a user in the telegram database then we exit the middleware
     // this will cause the bot to prompt the user to Register
     if (!essentialCommands.includes(text) && !result?.rsaId && text?.length !== rsaIdLength) {
-      await ctx.reply(
+      await botReply(
+        ctx,
         "You are not registered at the moment, please start the registration process",
         keyboards.registerKeyboard(),
       );

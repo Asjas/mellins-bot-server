@@ -4,14 +4,37 @@ import type MyContext from "../types/telegram";
 
 import getCustomerBalance from "../services/getCustomerBalance";
 import * as keyboards from "../messages/botKeyboards";
+import { botReply } from "./reply";
 
 export default function CheckUpcomingAppointmentCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Check Upcoming Appointments", async (ctx: MyContext) => {
     const customerId = ctx?.customerId;
+    let appointmentFound: boolean;
+    let noAppointmentsFound: boolean;
 
-    await ctx.reply("Getting Appointment Information...");
+    await botReply(ctx, "Getting Appointment Information...");
 
     const customer = await getCustomerBalance(customerId);
-    await ctx.reply(`Your next appointment is ${customer.exam_due_date}.`, keyboards.appointmentKeyboard());
+
+    Object.values(customer.branches).forEach(async (branch) => {
+      if (branch.appointment) {
+        appointmentFound = true;
+        await botReply(
+          ctx,
+          `Your next appointment is scheduled at ${branch.branch_name} for ${branch.appointment.date} at ${branch.appointment.time}.`,
+          keyboards.appointmentKeyboard(),
+        );
+      } else {
+        noAppointmentsFound = true;
+      }
+    });
+
+    if (!appointmentFound && noAppointmentsFound) {
+      await botReply(
+        ctx,
+        `There are no appointments currently scheduled.\n\nYour next due date is: ${customer.exam_due_date}`,
+        keyboards.appointmentKeyboard(),
+      );
+    }
   });
 }

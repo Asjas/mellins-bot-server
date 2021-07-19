@@ -6,3 +6,14 @@ interface MyContext extends Context {
 }
 
 export default MyContext;
+
+export type LogUserActionsInDb = {
+  firstName?: string;
+  lastName?: string;
+  rsaId?: string;
+  userTelegramId: number;
+  userJoinedChannel?: boolean;
+  messageId: number;
+  userCommand: string;
+  botAnswer: string;
+};

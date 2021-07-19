@@ -74,9 +74,10 @@ async function getUserFromChannel(userId: number) {
       isUserInChannel = false;
 
       // We also need to update the database
-      await telegramDb.telegramUser.update({
+      await telegramDb.telegramUser.upsert({
         where: { userTelegramId: userId },
-        data: { userJoinedChannel: isUserInChannel },
+        create: { userJoinedChannel: isUserInChannel, userTelegramId: userId },
+        update: { userJoinedChannel: isUserInChannel, userTelegramId: userId },
       });
 
       await client.disconnect();

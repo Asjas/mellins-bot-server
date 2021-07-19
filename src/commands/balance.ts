@@ -4,6 +4,7 @@ import type MyContext from "../types/telegram";
 
 import getCustomerBalance from "../services/getCustomerBalance";
 import * as keyboards from "../messages/botKeyboards";
+import { botReply } from "./reply";
 
 export default function BalanceCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Balance", async (ctx: MyContext) => {
@@ -11,12 +12,12 @@ export default function BalanceCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Con
 
     const customer = await getCustomerBalance(customerId);
 
-    await ctx.reply(`Please see your current outstanding balances at these branches:\n\n`);
+    await botReply(ctx, `Please see your current outstanding balances at these branches:\n\n`);
 
     Object.values(customer.branches).forEach(async (branch) => {
       const response = `Branch Name: ${branch.branch_name}\nCustomer Number: ${branch.customer_number}\nPatient Name: ${branch.patient_name}\nCustomer Balance: R ${branch.customer_balance}`;
 
-      await ctx.reply(response, keyboards.fullBotKeyboard(ctx));
+      await botReply(ctx, response, keyboards.fullBotKeyboard(ctx));
     });
   });
 }

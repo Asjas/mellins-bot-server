@@ -13,6 +13,10 @@ export type GetBalance = {
           customer_number: string;
           customer_balance: string;
           patient_name: string;
+          appointment?: {
+            date?: string;
+            time?: string;
+          };
         };
       };
       total_balance: string;
