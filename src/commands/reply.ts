@@ -1,15 +1,15 @@
 import { logUserActionsInDb } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
-  // Incoming message from a user that stopped and deleted the bot
+  // Incoming message from a user that just deleted the bot
   // We need to handle this as a special case or else the bot crashes
-  if (ctx?.update?.my_chat_member?.old_chat_member?.status === "kicked") {
+  if (ctx?.update?.my_chat_member?.new_chat_member?.status === "kicked") {
     return;
   }
 
-  // User stops and deletes the bot
+  // Incoming message from a user that restarted the bot they stopped
   // We need to handle this as a special case or else the bot crashes
-  if (ctx?.update?.my_chat_member?.new_chat_member?.status === "kicked") {
+  if (ctx?.update?.my_chat_member?.old_chat_member?.status === "kicked") {
     return;
   }
 
