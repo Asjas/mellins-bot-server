@@ -1,18 +1,22 @@
 import { logUserActionsInDb } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
-  if (ctx?.new_chat_member?.status === "kicked") {
+  // Incoming message from a user that stopped and deleted the bot
+  // We need to handle this as a special case or else the bot crashes
+  if (ctx?.update?.my_chat_member?.old_chat_member?.status === "kicked") {
     await ctx.reply(message, keyboard);
     return;
   }
 
+  // User stops and deletes the bot
+  // We need to handle this as a special case or else the bot crashes
+  if (ctx?.update?.my_chat_member?.new_chat_member?.status === "kicked") {
+    return;
+  }
+
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
-  const { message_id: messageId = "Default Message ID", text: userCommand = "Default Command" } = ctx.update?.message;
-  const {
-    firstName = "Default First Name",
-    lastName = "Default Last Name",
-    id: userTelegramId = "Default Telegram ID",
-  } = ctx.update?.message?.from;
+  const { message_id: messageId, text: userCommand } = ctx.update?.message;
+  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
   const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
 
   await logUserActionsInDb({
