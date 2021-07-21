@@ -1,6 +1,11 @@
 import { logUserActionsInDb } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
+  if (ctx?.new_chat_member?.status === "kicked") {
+    await ctx.reply(message, keyboard);
+    return;
+  }
+
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
   const { message_id: messageId = "Default Message ID", text: userCommand = "Default Command" } = ctx.update?.message;
   const {
