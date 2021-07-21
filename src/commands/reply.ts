@@ -2,8 +2,12 @@ import { logUserActionsInDb } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
-  const { message_id: messageId = "", text: userCommand = "" } = ctx.update?.message;
-  const { firstName = "", lastName = "", id: userTelegramId = "" } = ctx.update?.message?.from;
+  const { message_id: messageId = "Default Message ID", text: userCommand = "Default Command" } = ctx.update?.message;
+  const {
+    firstName = "Default First Name",
+    lastName = "Default Last Name",
+    id: userTelegramId = "Default Telegram ID",
+  } = ctx.update?.message?.from;
   const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
 
   await logUserActionsInDb({
