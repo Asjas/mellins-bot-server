@@ -14,9 +14,15 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
   }
 
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update?.message;
+  let { message_id: messageId, text: userCommand } = ctx.update?.message;
   const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
   const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
+
+  // If the user sent us their `Contact` when requesting a callback we
+  // need to manually set the user command value
+  if (ctx?.update?.message?.contact) {
+    userCommand = "User `Contact` Sent";
+  }
 
   await logUserActionsInDb({
     firstName,
