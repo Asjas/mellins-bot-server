@@ -2,8 +2,8 @@ import { logUserActionsInDb } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update.message.from;
+  const { message_id: messageId = "", text: userCommand = "" } = ctx.update?.message;
+  const { firstName = "", lastName = "", id: userTelegramId = "" } = ctx.update?.message?.from;
   const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
 
   await logUserActionsInDb({
@@ -22,8 +22,8 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
 
 export async function botReplyWithLocation(ctx: any, { latitude, longitude }: { latitude: number; longitude: number }) {
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update.message.from;
+  const { message_id: messageId, text: userCommand } = ctx.update?.message;
+  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
   const botAnswer = `${latitude}, ${longitude}`;
 
   await logUserActionsInDb({
@@ -46,9 +46,9 @@ export async function botReplyWithDocument(
   keyboard = {},
 ) {
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update.message.from;
-  const botAnswer = `${source}, ${filename}`;
+  const { message_id: messageId, text: userCommand } = ctx.update?.message;
+  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
+  const botAnswer = `"Encoded statement", ${filename}`;
 
   await logUserActionsInDb({
     firstName,
@@ -66,8 +66,8 @@ export async function botReplyWithDocument(
 
 export async function botReplyWithInlineKeyboard(ctx: any, message: string, keyboard = {}) {
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update.message.from;
+  const { message_id: messageId, text: userCommand } = ctx.update?.message;
+  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
   const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
 
   await logUserActionsInDb({

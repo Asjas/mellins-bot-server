@@ -13,7 +13,7 @@ async function createServer(config: Config) {
   const opts: FastifyServerOptions = {
     ...config,
     logger: {
-      level: config.LOG_LEVEL,
+      level: "debug",
       prettyPrint: config.PRETTY_PRINT,
     },
   };

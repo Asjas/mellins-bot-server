@@ -82,7 +82,11 @@ async function getUserFromChannel(userId: number) {
 
       await client.disconnect();
     } else {
-      await client.disconnect();
+      process.on("SIGINT", async function () {
+        await client.disconnect();
+
+        process.exit(err ? 1 : 0);
+      });
     }
   }
 

@@ -1,8 +1,15 @@
 import Prisma from "@prisma/client";
 
+import config from "../config";
+import { prismaDevMiddleware } from "../middleware/prismaMiddleware";
+
 import type { LogUserActionsInDb } from "../types/telegram";
 
 export const telegramDb = new Prisma.PrismaClient();
+
+if (config.NODE_ENV !== "production") {
+  prismaDevMiddleware();
+}
 
 export async function logUserActionsInDb({
   firstName,

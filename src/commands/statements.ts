@@ -23,7 +23,7 @@ export default function StatementsCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
     Object.values(customer).forEach(async (branch) => {
       const pdfBuffer = Buffer.from(branch.statement, "base64");
 
-      await botReply(ctx, "`Please see your current statements:`");
+      await botReply(ctx, "Please see your current statements:");
       await botReplyWithDocument(ctx, { source: pdfBuffer, filename: "statement.pdf" }, keyboards.fullBotKeyboard(ctx));
     });
   });

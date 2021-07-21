@@ -1,9 +1,10 @@
 import { performance } from "perf_hooks";
+import { createPrismaRedisCache } from "prisma-redis-middleware";
 
 import { telegramDb } from "../db/telegram";
 import config from "../config";
 
-function prismaDevMiddleware() {
+export function prismaDevMiddleware() {
   // this is used to measure the performance of the database requests during development
   telegramDb.$use(async (params, next) => {
     const before = performance.now();
@@ -14,8 +15,13 @@ function prismaDevMiddleware() {
 
     return result;
   });
-}
 
-if (config.NODE_ENV !== "production") {
-  prismaDevMiddleware();
+  // @ts-ignore
+  telegramDb.$use(
+    // @ts-ignore
+    createPrismaRedisCache(
+      { model: `TelegramUser`, cacheTime: 40 },
+      { REDIS_HOST: config.REDIS_HOST, REDIS_PORT: config.REDIS_PORT, REDIS_AUTH: config.REDIS_AUTH },
+    ),
+  );
 }
