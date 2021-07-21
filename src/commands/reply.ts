@@ -4,7 +4,6 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
   // Incoming message from a user that stopped and deleted the bot
   // We need to handle this as a special case or else the bot crashes
   if (ctx?.update?.my_chat_member?.old_chat_member?.status === "kicked") {
-    await ctx.reply(message, keyboard);
     return;
   }
 
