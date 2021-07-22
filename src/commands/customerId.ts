@@ -13,7 +13,7 @@ import { botReply, botReplyWithInlineKeyboard } from "./reply";
 export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   // check for 13 numbers in a single message (RSA ID)
   bot.hears(/^\d{13}$/, async (ctx: MyContext) => {
-    const { id: userTelegramId, first_name: firstName, last_name: lastName } = ctx.message.from;
+    const { id: userTelegramId, first_name: firstName = "", last_name: lastName = "" } = ctx.message.from;
     const { text: rsaId } = ctx.message as any;
 
     // RSA ID is invalid
@@ -41,7 +41,7 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
 
       await botReply(
         ctx,
-        `You've been successfully registered.\n\nPlease select one of these buttons to continue:`,
+        `Welcome ${firstName} ${lastName}. You've been successfully registered.\n\nPlease select one of these buttons to continue:`,
         keyboards.fullBotKeyboard(ctx),
       );
     } else {
