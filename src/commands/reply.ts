@@ -10,14 +10,14 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
   // Incoming message from a user that restarted the bot they stopped
   // We need to handle this as a special case or else the bot crashes
   if (ctx?.update?.my_chat_member?.old_chat_member?.status === "kicked") {
-    const { firstName, lastName } = ctx.update?.my_chat_member?.from;
+    const { first_name: firstName, last_name: lastName } = ctx.update?.my_chat_member?.from;
     await ctx.reply(`Welcome back ${firstName} ${lastName}. Your account is now active on Mellins i.Bot`);
     return;
   }
 
   const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
   let { message_id: messageId = "", text: userCommand = "" } = ctx.update?.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
+  const { first_name: firstName, last_name: lastName, id: userTelegramId } = ctx.update?.message?.from;
   const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
 
   // If the user sent us their `Contact` when requesting a callback we
