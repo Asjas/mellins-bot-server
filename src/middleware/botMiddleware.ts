@@ -15,7 +15,7 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
 
     // look for the user in the local database to see if they registered before
     const result = await telegramDb.telegramUser.findUnique({
-      where: { userTelegramId: ctx.message?.from?.id ?? -1 },
+      where: { telegramId: ctx.message?.from?.id ?? -1 },
       select: { rsaId: true },
     });
 

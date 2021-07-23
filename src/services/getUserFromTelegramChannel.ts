@@ -64,8 +64,8 @@ async function getUserFromChannel(userId: number) {
 
     // We also need to update the database
     await telegramDb.telegramUser.update({
-      where: { userTelegramId: userId },
-      data: { userJoinedChannel: isUserInChannel },
+      where: { telegramId: userId },
+      data: { joinedMellinsChannel: isUserInChannel },
     });
 
     await client.disconnect();
@@ -75,9 +75,9 @@ async function getUserFromChannel(userId: number) {
 
       // We also need to update the database
       await telegramDb.telegramUser.upsert({
-        where: { userTelegramId: userId },
-        create: { userJoinedChannel: isUserInChannel, userTelegramId: userId },
-        update: { userJoinedChannel: isUserInChannel, userTelegramId: userId },
+        where: { telegramId: userId },
+        create: { joinedMellinsChannel: isUserInChannel, telegramId: userId },
+        update: { joinedMellinsChannel: isUserInChannel, telegramId: userId },
       });
 
       await client.disconnect();

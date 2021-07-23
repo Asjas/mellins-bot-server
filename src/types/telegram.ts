@@ -11,8 +11,8 @@ export type LogUserActionsInDb = {
   firstName?: string;
   lastName?: string;
   rsaId?: string;
-  userTelegramId: number;
-  userJoinedChannel?: boolean;
+  telegramId: number;
+  joinedMellinsChannel?: boolean;
   messageId: number;
   userCommand: string;
   botAnswer: string;
