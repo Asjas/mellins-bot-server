@@ -1,24 +1,33 @@
-import { logUserActionsInDb } from "../db/telegram";
+import { isUserInDb, userStoppedBot, userRestartedBot, logUserActionsInDb } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
   // Incoming message from a user that just deleted the bot
   // We need to handle this as a special case or else the bot crashes
   if (ctx?.update?.my_chat_member?.new_chat_member?.status === "kicked") {
+    const { id: telegramId } = ctx.update?.my_chat_member?.from;
+    await userStoppedBot(telegramId);
     return;
   }
 
   // Incoming message from a user that restarted the bot they stopped
   // We need to handle this as a special case or else the bot crashes
   if (ctx?.update?.my_chat_member?.old_chat_member?.status === "kicked") {
-    const { first_name: firstName, last_name: lastName } = ctx.update?.my_chat_member?.from;
-    await ctx.reply(`Welcome back ${firstName} ${lastName}. Your account is now active on Mellins i.Bot`);
+    const { first_name: firstName, last_name: lastName, id: telegramId } = ctx.update?.my_chat_member?.from;
+    const isUserFound = await isUserInDb(telegramId);
+
+    if (isUserFound) {
+      await ctx.reply(`Welcome back ${firstName} ${lastName}. Your account is now active on Mellins i.Bot`);
+    }
+
+    await userRestartedBot(telegramId);
+
     return;
   }
 
-  const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
+  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
   let { message_id: messageId = "", text: userCommand = "" } = ctx.update?.message;
-  const { first_name: firstName, last_name: lastName, id: userTelegramId } = ctx.update?.message?.from;
-  const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
+  const { first_name: firstName, last_name: lastName, id: telegramId } = ctx.update?.message?.from;
+  const botAnswer = firstName ? `Hi, ${firstName}.\n\n${message}` : message;
 
   // If the user sent us their `Contact` when requesting a callback we
   // need to manually set the user command value
@@ -30,8 +39,8 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
     firstName,
     lastName,
     rsaId,
-    userTelegramId,
-    userJoinedChannel,
+    telegramId,
+    joinedMellinsChannel,
     messageId,
     userCommand,
     botAnswer,
@@ -41,17 +50,17 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
 }
 
 export async function botReplyWithLocation(ctx: any, { latitude, longitude }: { latitude: number; longitude: number }) {
-  const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
+  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
   const { message_id: messageId, text: userCommand } = ctx.update?.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
+  const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
   const botAnswer = `${latitude}, ${longitude}`;
 
   await logUserActionsInDb({
     firstName,
     lastName,
     rsaId,
-    userTelegramId,
-    userJoinedChannel,
+    telegramId,
+    joinedMellinsChannel,
     messageId,
     userCommand,
     botAnswer,
@@ -65,17 +74,17 @@ export async function botReplyWithDocument(
   { source, filename }: { source: Buffer; filename: string },
   keyboard = {},
 ) {
-  const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
+  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
   const { message_id: messageId, text: userCommand } = ctx.update?.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
+  const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
   const botAnswer = `"Encoded statement", ${filename}`;
 
   await logUserActionsInDb({
     firstName,
     lastName,
     rsaId,
-    userTelegramId,
-    userJoinedChannel,
+    telegramId,
+    joinedMellinsChannel,
     messageId,
     userCommand,
     botAnswer,
@@ -85,17 +94,17 @@ export async function botReplyWithDocument(
 }
 
 export async function botReplyWithInlineKeyboard(ctx: any, message: string, keyboard = {}) {
-  const { customerId: rsaId, joinedPrivateChannel: userJoinedChannel } = ctx;
+  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
   const { message_id: messageId, text: userCommand } = ctx.update?.message;
-  const { firstName, lastName, id: userTelegramId } = ctx.update?.message?.from;
-  const botAnswer = firstName ? `Hi, ${firstName},\n\n${message}` : message;
+  const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
+  const botAnswer = firstName ? `Hi, ${firstName}.\n\n${message}` : message;
 
   await logUserActionsInDb({
     firstName,
     lastName,
     rsaId,
-    userTelegramId,
-    userJoinedChannel,
+    telegramId,
+    joinedMellinsChannel,
     messageId,
     userCommand,
     botAnswer,
