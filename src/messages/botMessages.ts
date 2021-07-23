@@ -17,8 +17,8 @@ export const SHOP_ONLINE_MESSAGE = `To enjoy our easy to use hassle free online 
 export const INSTAGRAM_MESSGAGE = `Follow us on Instagram:\n\nhttps://www.instagram.com/mellinsistyle/`;
 export const FACEBOOK_MESSAGE = `Follow us on Facebook:\n\nhttps://www.facebook.com/mellinsistyle/`;
 export const FRESHDESK_CALLBACK_MESSAGE = `A ticket has been logged with our call center and an agent will be in touch shortly.\nNote your ticket number:`;
-export const BRANCH_LOCATOR_MESSAGE = `Thank you for using @Mellinsbot's branch locator portal.\nIn order to use my services ensure your Location Services is switched on`;
+export const BRANCH_LOCATOR_MESSAGE = `Thank you for using @Mellinsbot's branch locator portal.\nIn order to use my services ensure your location services is switched on.`;
 export const BRANCH_SELECTION_MESSAGE = `Please select one of these practices:`;
-export const LOCATION_REQUEST_MESSAGE = `In order to find the closest Mellins Branch please send me your current location:`;
+export const LOCATION_REQUEST_MESSAGE = `In order to find the closest Mellins Branch please send me your current location:\n\nIf you experience any errors, please ensure that your location services are enabled and allowed for Telegram.`;
 
 export const MENU_MESSAGE = `I did not understand your request, in order to bring up the main menu:\nPlease select the Menu button at the bottom left corner and select "Start a conversation".`;
