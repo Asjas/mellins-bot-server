@@ -4,8 +4,9 @@ CREATE TABLE "TelegramUser" (
     "firstName" TEXT,
     "lastName" TEXT,
     "rsaId" TEXT,
-    "userTelegramId" INTEGER NOT NULL,
-    "userJoinedChannel" BOOLEAN NOT NULL DEFAULT false,
+    "telegramId" INTEGER,
+    "joinedMellinsChannel" BOOLEAN DEFAULT false,
+    "kickedBot" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -26,7 +27,10 @@ CREATE TABLE "TelegramMessages" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TelegramUser.userTelegramId_unique" ON "TelegramUser"("userTelegramId");
+CREATE UNIQUE INDEX "TelegramUser.rsaId_unique" ON "TelegramUser"("rsaId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TelegramUser.telegramId_unique" ON "TelegramUser"("telegramId");
 
 -- AddForeignKey
 ALTER TABLE "TelegramMessages" ADD FOREIGN KEY ("telegramUserId") REFERENCES "TelegramUser"("id") ON DELETE CASCADE ON UPDATE CASCADE;
