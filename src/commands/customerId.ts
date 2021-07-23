@@ -13,12 +13,12 @@ import { botReply, botReplyWithInlineKeyboard } from "./reply";
 export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   // check for 13 numbers in a single message (RSA ID)
   bot.hears(/^\d{13}$/, async (ctx: MyContext) => {
-    const { id: userTelegramId, first_name: firstName = "", last_name: lastName = "" } = ctx.message.from;
+    const { id: telegramId, first_name: firstName = "", last_name: lastName = "" } = ctx.message.from;
     const { text: rsaId } = ctx.message as any;
 
     // RSA ID is invalid
     if (LuhnAlgorithm(rsaId) === false) {
-      await ctx.reply(constants.INVALID_RSA_ID);
+      await ctx.reply(constants.INVALID_RSA_ID, keyboards.callbackKeyboard());
       return;
     }
 
@@ -26,10 +26,18 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
 
     if (customerFound) {
       try {
+        const updatedAtDate = new Date();
+
         await telegramDb.telegramUser.upsert({
-          where: { userTelegramId },
-          create: { firstName, lastName, rsaId, userTelegramId },
-          update: { firstName, lastName, rsaId, userTelegramId },
+          where: { telegramId },
+          create: {
+            firstName,
+            lastName,
+            rsaId,
+            telegramId,
+            updatedAt: updatedAtDate.toISOString(),
+          },
+          update: { firstName, lastName, rsaId, telegramId, updatedAt: updatedAtDate.toISOString() },
         });
       } catch (err: any) {
         // if the user is already registered, send a message and exit
@@ -39,11 +47,9 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
         }
       }
 
-      await botReply(
-        ctx,
-        `Welcome ${firstName} ${lastName}. You've been successfully registered.\n\nPlease select one of these buttons to continue:`,
-        keyboards.fullBotKeyboard(ctx),
-      );
+      await ctx.reply(`Welcome ${firstName} ${lastName}. You've been successfully registered.`);
+
+      await botReply(ctx, `Please select one of these buttons to continue:`, keyboards.fullBotKeyboard(ctx));
     } else {
       await botReplyWithInlineKeyboard(ctx, constants.RSA_ID_NOT_FOUND, keyboards.inlineCallbackKeyboard());
     }

@@ -74,7 +74,7 @@ export function shareLocationKeyboard() {
 }
 
 export function shareContactNumber() {
-  return Markup.keyboard([Markup.button.contactRequest("Share contact"), "Back"]);
+  return Markup.keyboard([Markup.button.contactRequest("Share contact"), "Back"], { columns: 2 });
 }
 
 export function socialMediaKeyboard() {
@@ -86,7 +86,11 @@ export function appointmentKeyboard() {
 }
 
 export function joinChannelKeyboard() {
-  return Markup.keyboard(["Join Channel", "Back"]).oneTime();
+  return Markup.keyboard(["Join Channel", "Back"], { columns: 2 }).oneTime();
+}
+
+export function callbackKeyboard() {
+  return Markup.keyboard(["Request a Callback", "Back"], { columns: 2 }).oneTime();
 }
 
 export function removeKeyboard() {
