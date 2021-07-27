@@ -31,6 +31,11 @@ services:
       POSTGRES_USER: ${FASTIFY_DB_USER}
       POSTGRES_PASSWORD: ${FASTIFY_DB_PASS}
       POSTGRES_DB: ${FASTIFY_DB}
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
 volumes:
   redis-data:
