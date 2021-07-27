@@ -16,7 +16,6 @@ const schema = {
             .prop("firstName", S.string().required())
             .prop("lastName", S.string().required())
             .prop("rsaId", S.number().required())
-            .prop("telegramId", S.number().required())
             .prop("joinedMellinsChannel", S.boolean().required())
             .prop("kickedBot", S.boolean().required())
             .prop("createdAt", S.string().required())
