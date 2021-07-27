@@ -1,13 +1,12 @@
 {
-  "include": ["src/**/*"],
+  "include": ["server/**/*", "ui"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "incremental": true,
     "target": "ES2021",
     "module": "ESNext",
-    "lib": ["DOM","ESNEXT"],
+    "lib": ["ESNEXT"],
     "noEmit": true,
-    "jsx": "react-jsx",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "skipLibCheck": true,

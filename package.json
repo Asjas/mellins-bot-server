@@ -11,7 +11,7 @@
     "postinstall": "npm run prisma:generate",
     "start": "node dist/index.mjs",
     "build": "npm-run-all clean build:docker",
-    "build:docker": "babel --extensions '.ts' src/ --out-dir dist/ --out-file-extension .mjs",
+    "build:docker": "babel --extensions '.ts' server/ --out-dir dist/ --out-file-extension .mjs",
     "dev": "nodemon",
     "debug:dev": "DEBUG=prisma-redis-middleware nodemon",
     "clean": "rimraf dist",
