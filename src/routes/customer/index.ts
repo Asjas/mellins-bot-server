@@ -9,25 +9,26 @@ const schema = {
     200: S.object().prop(
       "response",
       S.object()
-        .prop("error", S.object().prop("code", S.null()).prop("description", S.null()))
+        .prop("error", S.object().prop("code", S.null()).prop("description", S.null()).required())
         .prop(
           "customer",
           S.object()
-            .prop("firstName", S.string())
-            .prop("lastName", S.string())
-            .prop("rsaId", S.number())
-            .prop("telegramId", S.number())
-            .prop("joinedMellinsChannel", S.boolean())
-            .prop("kickedBot", S.boolean())
-            .prop("createdAt", S.string())
-            .prop("updatedAt", S.string()),
+            .prop("firstName", S.string().required())
+            .prop("lastName", S.string().required())
+            .prop("rsaId", S.number().required())
+            .prop("telegramId", S.number().required())
+            .prop("joinedMellinsChannel", S.boolean().required())
+            .prop("kickedBot", S.boolean().required())
+            .prop("createdAt", S.string().required())
+            .prop("updatedAt", S.string().required()),
         ),
     ),
     404: S.object().prop(
       "response",
       S.object()
-        .prop("error", S.object().prop("code", S.number()).prop("description", S.string()))
-        .prop("customer", S.null()),
+        .prop("error", S.object().prop("code", S.number().required()).prop("description", S.string().required()))
+        .prop("customer", S.null())
+        .required(),
     ),
   },
 };

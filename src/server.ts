@@ -8,6 +8,7 @@ import fastify, { FastifyServerOptions } from "fastify";
 import TelegramPlugin from "./plugins/telegram";
 
 import CustomerRoutes from "./routes/customer";
+import MessagesRoutes from "./routes/messages";
 
 import type { Config } from "./config";
 
@@ -43,6 +44,10 @@ async function createServer(config: Config) {
   });
 
   await server.register(CustomerRoutes, {
+    ...opts,
+  });
+
+  await server.register(MessagesRoutes, {
     ...opts,
   });
 
