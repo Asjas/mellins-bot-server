@@ -7,6 +7,8 @@ import fastify, { FastifyServerOptions } from "fastify";
 
 import TelegramPlugin from "./plugins/telegram";
 
+import CustomerRoutes from "./routes/customer";
+
 import type { Config } from "./config";
 
 async function createServer(config: Config) {
@@ -28,15 +30,19 @@ async function createServer(config: Config) {
 
   await server.register(Sensible);
 
-  await server.register(UnderPressure, {
-    exposeStatusRoute: true,
-    maxEventLoopDelay: 1000,
-    maxHeapUsedBytes: 100000000,
-    maxRssBytes: 100000000,
-    maxEventLoopUtilization: 0.98,
-  });
+  // await server.register(UnderPressure, {
+  //   exposeStatusRoute: true,
+  //   maxEventLoopDelay: 1000,
+  //   maxHeapUsedBytes: 100000000,
+  //   maxRssBytes: 100000000,
+  //   maxEventLoopUtilization: 0.98,
+  // });
 
   await server.register(TelegramPlugin, {
+    ...opts,
+  });
+
+  await server.register(CustomerRoutes, {
     ...opts,
   });
 
