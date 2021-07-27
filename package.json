@@ -70,7 +70,7 @@
     "jest": "27.0.6",
     "nodemon": "2.0.12",
     "npm-run-all": "4.1.5",
-    "prisma": "2.28.0",
+    "prisma": "2.28.0-integration-enabling-node-api.3",
     "rimraf": "3.0.2",
     "ts-jest": "27.0.4",
     "ts-node": "10.1.0",
