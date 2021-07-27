@@ -11,7 +11,7 @@ import input from "input";
 
 dotenv.config();
 
-const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH } = process.env;
+const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH, TELEGRAM_BOT_TOKEN } = process.env;
 
 const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
@@ -23,10 +23,7 @@ const client = new TelegramClient(storeSession, apiId, apiHash, {
 
 (async function run() {
   await client.start({
-    phoneNumber: async () => await input.text("phone number ?"),
-    password: async () => await input.text("password ?"),
-    phoneCode: async () => await input.text("code ?"),
-    onError: (err) => console.log(err),
+    botAuthToken: TELEGRAM_BOT_TOKEN,
   });
 
   await client.connect();
