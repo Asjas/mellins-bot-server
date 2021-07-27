@@ -8,6 +8,7 @@
     "npm": ">=7"
   },
   "scripts": {
+    "postinstall": "npm run prisma:generate",
     "start": "node dist/index.mjs",
     "build": "npm-run-all clean build:docker",
     "build:docker": "babel --extensions '.ts' src/ --out-dir dist/ --out-file-extension .mjs",
