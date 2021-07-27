@@ -1,15 +1,6 @@
 version: "2.4"
 
 services:
-  api:
-    container_name: mellins-bot-api
-    build:
-      context: .
-    ports:
-      - ${PORT}:3000
-    depends_on:
-      - redis
-      - db
   redis:
     container_name: mellins-bot-redis
     image: redis:6.2.5-alpine
