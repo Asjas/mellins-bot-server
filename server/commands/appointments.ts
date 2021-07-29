@@ -9,6 +9,10 @@ import { botReply } from "./reply";
 
 export default function AppointmentsCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Appointments", async (ctx: MyContext) => {
-    await botReply(ctx, constants.APPOINTMENT_MESSAGE, keyboards.appointmentKeyboard());
+    try {
+      await botReply(ctx, constants.APPOINTMENT_MESSAGE, keyboards.appointmentKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

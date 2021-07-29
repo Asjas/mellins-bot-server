@@ -22,14 +22,18 @@ const client = new TelegramClient(storeSession, apiId, apiHash, {
 });
 
 (async function run() {
-  await client.start({
-    botAuthToken: TELEGRAM_BOT_TOKEN,
-  });
+  try {
+    await client.start({
+      botAuthToken: TELEGRAM_BOT_TOKEN,
+    });
 
-  await client.connect();
+    await client.connect();
 
-  // save current session so that I don't get prompted for my phoneNumber every time I launch this
-  client.session.save();
+    // save current session so that I don't get prompted for my phoneNumber every time I launch this
+    client.session.save();
+  } catch (err) {
+    console.error(err);
+  }
 
   await client.disconnect();
   process.exit(0);

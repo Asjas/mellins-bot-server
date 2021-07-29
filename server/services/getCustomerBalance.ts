@@ -1,9 +1,13 @@
 import { getBalance } from "../api/qm";
 
 async function getCustomerBalance(customerId: string) {
-  const data = await getBalance(customerId);
+  try {
+    const data = await getBalance(customerId);
 
-  return data.customer;
+    return data.customer;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export default getCustomerBalance;

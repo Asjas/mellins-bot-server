@@ -8,6 +8,10 @@ import { botReply } from "./reply";
 
 export default function ShopOnlineCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Shop Online", async (ctx: MyContext) => {
-    await botReply(ctx, constants.SHOP_ONLINE_MESSAGE, keyboards.fullBotKeyboard(ctx));
+    try {
+      await botReply(ctx, constants.SHOP_ONLINE_MESSAGE, keyboards.fullBotKeyboard(ctx));
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

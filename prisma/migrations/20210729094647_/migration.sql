@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "TimeOnBot" ALTER COLUMN "sessionId" SET DATA TYPE TEXT;

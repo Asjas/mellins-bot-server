@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE "TimeOnBot" (
+    "id" SERIAL NOT NULL,
+    "telegramUserId" INTEGER NOT NULL,
+    "sessionId" INTEGER NOT NULL,
+    "startedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "stoppedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "TimeOnBot" ADD FOREIGN KEY ("telegramUserId") REFERENCES "TelegramUser"("id") ON DELETE CASCADE ON UPDATE CASCADE;

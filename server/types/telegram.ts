@@ -3,6 +3,7 @@ import { Context } from "telegraf";
 interface MyContext extends Context {
   customerId?: string;
   joinedPrivateChannel?: boolean;
+  sessionId?: string;
 }
 
 export default MyContext;

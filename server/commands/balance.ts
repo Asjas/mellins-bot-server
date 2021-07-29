@@ -8,16 +8,20 @@ import { botReply } from "./reply";
 
 export default function BalanceCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Balance", async (ctx: MyContext) => {
-    const customerId = ctx?.customerId;
+    try {
+      const customerId = ctx?.customerId;
 
-    const customer = await getCustomerBalance(customerId);
+      const customer = await getCustomerBalance(customerId);
 
-    await botReply(ctx, `Please see your current outstanding balances at these branches:\n\n`);
+      await botReply(ctx, `Please see your current outstanding balances at these branches:\n\n`);
 
-    Object.values(customer.branches).forEach(async (branch) => {
-      const response = `Branch Name: ${branch.branch_name}\nCustomer Number: ${branch.customer_number}\nPatient Name: ${branch.patient_name}\nCustomer Balance: R ${branch.customer_balance}`;
+      Object.values(customer.branches).forEach(async (branch) => {
+        const response = `Branch Name: ${branch.branch_name}\nCustomer Number: ${branch.customer_number}\nPatient Name: ${branch.patient_name}\nCustomer Balance: R ${branch.customer_balance}`;
 
-      await botReply(ctx, response, keyboards.fullBotKeyboard(ctx));
-    });
+        await botReply(ctx, response, keyboards.fullBotKeyboard(ctx));
+      });
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

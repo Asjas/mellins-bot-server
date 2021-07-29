@@ -15,9 +15,10 @@ model TelegramUser {
   telegramId           Int?               @unique
   joinedMellinsChannel Boolean?           @default(false)
   kickedBot            Boolean?           @default(false)
-  TelegramMessages     TelegramMessages[]
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @default(now())
+  TelegramMessages     TelegramMessages[]
+  TimeOnBot            TimeOnBot[]
 }
 
 model TelegramMessages {
@@ -29,4 +30,13 @@ model TelegramMessages {
   telegramUserId Int
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now())
+}
+
+model TimeOnBot {
+  id             Int          @id @default(autoincrement())
+  user           TelegramUser @relation(fields: [telegramUserId], references: [id])
+  telegramUserId Int
+  sessionId      String       @unique
+  startedAt      DateTime     @default(now())
+  stoppedAt      DateTime?
 }

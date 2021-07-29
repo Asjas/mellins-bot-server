@@ -8,6 +8,10 @@ import { botReply } from "./reply";
 
 export default function BranchLocatorCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Branch Locator", async (ctx: MyContext) => {
-    await botReply(ctx, constants.BRANCH_LOCATOR_MESSAGE, keyboards.branchLocatorKeyboard());
+    try {
+      await botReply(ctx, constants.BRANCH_LOCATOR_MESSAGE, keyboards.branchLocatorKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

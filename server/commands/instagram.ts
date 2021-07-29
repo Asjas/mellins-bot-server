@@ -8,6 +8,10 @@ import { botReply } from "./reply";
 
 export default function InstagramCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Instagram", async (ctx: MyContext) => {
-    await botReply(ctx, constants.INSTAGRAM_MESSGAGE, keyboards.socialMediaKeyboard());
+    try {
+      await botReply(ctx, constants.INSTAGRAM_MESSGAGE, keyboards.socialMediaKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

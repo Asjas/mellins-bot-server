@@ -8,6 +8,10 @@ import { botReply } from "./reply";
 
 export default function SocialMediaCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Social Media", async (ctx: MyContext) => {
-    await botReply(ctx, constants.SOCIAL_MEDIA_MESSAGE, keyboards.socialMediaKeyboard());
+    try {
+      await botReply(ctx, constants.SOCIAL_MEDIA_MESSAGE, keyboards.socialMediaKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

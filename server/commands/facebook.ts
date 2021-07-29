@@ -8,6 +8,10 @@ import { botReply } from "./reply";
 
 export default function FacebookCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Facebook", async (ctx: MyContext) => {
-    await botReply(ctx, constants.FACEBOOK_MESSAGE, keyboards.socialMediaKeyboard());
+    try {
+      await botReply(ctx, constants.FACEBOOK_MESSAGE, keyboards.socialMediaKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

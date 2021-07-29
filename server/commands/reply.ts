@@ -5,7 +5,13 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
   // We need to handle this as a special case or else the bot crashes
   if (ctx?.update?.my_chat_member?.new_chat_member?.status === "kicked") {
     const { id: telegramId } = ctx.update?.my_chat_member?.from;
-    await userStoppedBot(telegramId);
+
+    try {
+      await userStoppedBot(telegramId);
+    } catch (err) {
+      console.error(err);
+    }
+
     return;
   }
 
@@ -19,54 +25,66 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
       await ctx.reply(`Welcome back ${firstName} ${lastName}. Your account is now active on Mellins i.Bot`);
     }
 
-    await userRestartedBot(telegramId);
+    try {
+      await userRestartedBot(telegramId);
+    } catch (err) {
+      console.error(err);
+    }
 
     return;
   }
 
-  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
-  let { message_id: messageId = "", text: userCommand = "" } = ctx.update?.message;
-  const { first_name: firstName, last_name: lastName, id: telegramId } = ctx.update?.message?.from;
-  const botAnswer = firstName ? `Hi, ${firstName}.\n\n${message}` : message;
+  try {
+    const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
+    let { message_id: messageId = "", text: userCommand = "" } = ctx.update?.message;
+    const { first_name: firstName, last_name: lastName, id: telegramId } = ctx.update?.message?.from;
+    const botAnswer = firstName ? `Hi, ${firstName}.\n\n${message}` : message;
 
-  // If the user sent us their `Contact` when requesting a callback we
-  // need to manually set the user command value
-  if (ctx?.update?.message?.contact) {
-    userCommand = "User `Contact` Sent";
+    // If the user sent us their `Contact` when requesting a callback we
+    // need to manually set the user command value
+    if (ctx?.update?.message?.contact) {
+      userCommand = "User `Contact` Sent";
+    }
+
+    await logUserActionsInDb(ctx, {
+      firstName,
+      lastName,
+      rsaId,
+      telegramId,
+      joinedMellinsChannel,
+      messageId,
+      userCommand,
+      botAnswer,
+    });
+
+    await ctx.reply(botAnswer, keyboard);
+  } catch (err) {
+    console.error(err);
   }
-
-  await logUserActionsInDb({
-    firstName,
-    lastName,
-    rsaId,
-    telegramId,
-    joinedMellinsChannel,
-    messageId,
-    userCommand,
-    botAnswer,
-  });
-
-  await ctx.reply(botAnswer, keyboard);
 }
 
 export async function botReplyWithLocation(ctx: any, { latitude, longitude }: { latitude: number; longitude: number }) {
-  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update?.message;
-  const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
-  const botAnswer = `${latitude}, ${longitude}`;
+  try {
+    const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
+    const { message_id: messageId, text: userCommand } = ctx.update?.message;
+    const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
+    const botAnswer = `${latitude}, ${longitude}`;
 
-  await logUserActionsInDb({
-    firstName,
-    lastName,
-    rsaId,
-    telegramId,
-    joinedMellinsChannel,
-    messageId,
-    userCommand,
-    botAnswer,
-  });
+    await logUserActionsInDb(ctx, {
+      firstName,
+      lastName,
+      rsaId,
+      telegramId,
+      joinedMellinsChannel,
+      messageId,
+      userCommand,
+      botAnswer,
+    });
 
-  await ctx.replyWithLocation(latitude, longitude);
+    await ctx.replyWithLocation(latitude, longitude);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export async function botReplyWithDocument(
@@ -74,44 +92,52 @@ export async function botReplyWithDocument(
   { source, filename }: { source: Buffer; filename: string },
   keyboard = {},
 ) {
-  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update?.message;
-  const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
-  const botAnswer = `"Encoded statement", ${filename}`;
+  try {
+    const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
+    const { message_id: messageId, text: userCommand } = ctx.update?.message;
+    const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
+    const botAnswer = `"Encoded statement", ${filename}`;
 
-  await logUserActionsInDb({
-    firstName,
-    lastName,
-    rsaId,
-    telegramId,
-    joinedMellinsChannel,
-    messageId,
-    userCommand,
-    botAnswer,
-  });
+    await logUserActionsInDb(ctx, {
+      firstName,
+      lastName,
+      rsaId,
+      telegramId,
+      joinedMellinsChannel,
+      messageId,
+      userCommand,
+      botAnswer,
+    });
 
-  await ctx.replyWithDocument({ source, filename }, keyboard);
+    await ctx.replyWithDocument({ source, filename }, keyboard);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export async function botReplyWithInlineKeyboard(ctx: any, message: string, keyboard = {}) {
-  const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
-  const { message_id: messageId, text: userCommand } = ctx.update?.message;
-  const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
-  const botAnswer = firstName ? `Hi, ${firstName}.\n\n${message}` : message;
+  try {
+    const { customerId: rsaId, joinedPrivateChannel: joinedMellinsChannel } = ctx;
+    const { message_id: messageId, text: userCommand } = ctx.update?.message;
+    const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
+    const botAnswer = firstName ? `Hi, ${firstName}.\n\n${message}` : message;
 
-  await logUserActionsInDb({
-    firstName,
-    lastName,
-    rsaId,
-    telegramId,
-    joinedMellinsChannel,
-    messageId,
-    userCommand,
-    botAnswer,
-  });
+    await logUserActionsInDb(ctx, {
+      firstName,
+      lastName,
+      rsaId,
+      telegramId,
+      joinedMellinsChannel,
+      messageId,
+      userCommand,
+      botAnswer,
+    });
 
-  await ctx.reply(botAnswer, {
-    parse_mode: "HTML",
-    ...keyboard,
-  });
+    await ctx.reply(botAnswer, {
+      parse_mode: "HTML",
+      ...keyboard,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }

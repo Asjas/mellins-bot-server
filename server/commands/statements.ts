@@ -9,22 +9,30 @@ import { botReply, botReplyWithDocument } from "./reply";
 
 export default function StatementsCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Statements", async (ctx: MyContext) => {
-    const customerId = ctx?.customerId;
+    try {
+      const customerId = ctx?.customerId;
 
-    await botReply(ctx, `Fetching your statements...`);
+      await botReply(ctx, `Fetching your statements...`);
 
-    const customer = await getCustomerStatement(customerId);
+      const customer = await getCustomerStatement(customerId);
 
-    if (customer?.error === 2000) {
-      await botReply(ctx, constants.NO_OUTSTANDING_STATEMENTS, keyboards.fullBotKeyboard(ctx));
-      return;
+      if (customer?.error === 2000) {
+        await botReply(ctx, constants.NO_OUTSTANDING_STATEMENTS, keyboards.fullBotKeyboard(ctx));
+        return;
+      }
+
+      Object.values(customer).forEach(async (branch) => {
+        const pdfBuffer = Buffer.from(branch.statement, "base64");
+
+        await botReply(ctx, "Please see your current statements:");
+        await botReplyWithDocument(
+          ctx,
+          { source: pdfBuffer, filename: "statement.pdf" },
+          keyboards.fullBotKeyboard(ctx),
+        );
+      });
+    } catch (err) {
+      console.error(err);
     }
-
-    Object.values(customer).forEach(async (branch) => {
-      const pdfBuffer = Buffer.from(branch.statement, "base64");
-
-      await botReply(ctx, "Please see your current statements:");
-      await botReplyWithDocument(ctx, { source: pdfBuffer, filename: "statement.pdf" }, keyboards.fullBotKeyboard(ctx));
-    });
   });
 }

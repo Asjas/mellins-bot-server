@@ -7,10 +7,14 @@ import { botReply } from "./reply";
 
 export default function BackToProvincialBranchListCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Back to provincial branch list", async (ctx: MyContext) => {
-    await botReply(
-      ctx,
-      "Thank you for using @Mellinsbot's\n\nPlease select an action to continue:",
-      keyboards.provincialBranchListKeyboard(),
-    );
+    try {
+      await botReply(
+        ctx,
+        "Thank you for using @Mellinsbot's\n\nPlease select an action to continue:",
+        keyboards.provincialBranchListKeyboard(),
+      );
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

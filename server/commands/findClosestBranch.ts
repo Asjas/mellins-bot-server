@@ -8,6 +8,10 @@ import { botReply } from "./reply";
 
 export default function FindClosestBranchCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Find Closest Branch", async (ctx: MyContext) => {
-    await botReply(ctx, constants.LOCATION_REQUEST_MESSAGE, keyboards.shareLocationKeyboard());
+    try {
+      await botReply(ctx, constants.LOCATION_REQUEST_MESSAGE, keyboards.shareLocationKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

@@ -8,6 +8,10 @@ import { botReply } from "./reply";
 
 export default function RegisterCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Provincial Branch List", async (ctx: MyContext) => {
-    await botReply(ctx, constants.PROVINCIAL_BRANCHES_MESSAGE, keyboards.provincialBranchListKeyboard());
+    try {
+      await botReply(ctx, constants.PROVINCIAL_BRANCHES_MESSAGE, keyboards.provincialBranchListKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
   });
 }

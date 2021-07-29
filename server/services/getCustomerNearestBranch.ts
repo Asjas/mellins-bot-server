@@ -1,9 +1,13 @@
 import { getNearestBranch } from "../api/qm";
 
 async function getCustomerNearestBranch({ latitude, longitude }: { latitude: number; longitude: number }) {
-  const data = await getNearestBranch({ latitude, longitude });
+  try {
+    const data = await getNearestBranch({ latitude, longitude });
 
-  return data.branch;
+    return data.branch;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export default getCustomerNearestBranch;

@@ -20,7 +20,7 @@ export function prismaDevMiddleware() {
   telegramDb.$use(
     // @ts-ignore
     createPrismaRedisCache(
-      { model: `TelegramUser`, cacheTime: 60 },
+      { model: `TelegramUser`, cacheTime: 1 },
       { REDIS_HOST: config.REDIS_HOST, REDIS_PORT: config.REDIS_PORT, REDIS_AUTH: config.REDIS_AUTH },
     ),
   );

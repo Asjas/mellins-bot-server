@@ -1,9 +1,13 @@
 import { getBranchList } from "../api/qm";
 
 async function getProvincialBranches(provincialCode: number) {
-  const data = await getBranchList(provincialCode);
+  try {
+    const data = await getBranchList(provincialCode);
 
-  return data;
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export default getProvincialBranches;

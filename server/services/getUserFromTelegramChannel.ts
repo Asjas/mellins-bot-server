@@ -22,22 +22,26 @@ const redis = new Redis({
 });
 
 async function getUserFromTelegramChannel(userId: number) {
-  // Get user from local cache first
-  const user = await redis.get(`telegram:user:${userId}`);
+  try {
+    // Get user from local cache first
+    const user = await redis.get(`telegram:user:${userId}`);
 
-  // If the user is in the cache we return it
-  // It will be a boolean string value that we return
-  if (user !== null) {
-    return Boolean(user);
+    // If the user is in the cache we return it
+    // It will be a boolean string value that we return
+    if (user !== null) {
+      return Boolean(user);
+    }
+
+    // If the user isn't in the cache then we need to query Telegram's API
+    const isUserInChannel = await getUserFromChannel(userId);
+
+    // We need to update the local cache
+    await redis.setex(`telegram:user:${userId}`, THIRTY_MINUTES, String(isUserInChannel));
+
+    return isUserInChannel;
+  } catch (err) {
+    console.error(err);
   }
-
-  // If the user isn't in the cache then we need to query Telegram's API
-  const isUserInChannel = await getUserFromChannel(userId);
-
-  // We need to update the local cache
-  await redis.setex(`telegram:user:${userId}`, THIRTY_MINUTES, String(isUserInChannel));
-
-  return isUserInChannel;
 }
 
 async function getUserFromChannel(userId: number) {
@@ -69,6 +73,8 @@ async function getUserFromChannel(userId: number) {
     });
 
     await client.disconnect();
+
+    return isUserInChannel;
   } catch (err) {
     if (err.message === "USER_NOT_PARTICIPANT") {
       isUserInChannel = false;
@@ -88,9 +94,9 @@ async function getUserFromChannel(userId: number) {
         process.exit(err ? 1 : 0);
       });
     }
-  }
 
-  return isUserInChannel;
+    console.error(err);
+  }
 }
 
 export default getUserFromTelegramChannel;

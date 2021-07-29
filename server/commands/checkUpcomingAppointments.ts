@@ -8,33 +8,37 @@ import { botReply } from "./reply";
 
 export default function CheckUpcomingAppointmentCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.hears("Check Upcoming Appointments", async (ctx: MyContext) => {
-    const customerId = ctx?.customerId;
-    let appointmentFound: boolean;
-    let noAppointmentsFound: boolean;
+    try {
+      const customerId = ctx?.customerId;
+      let appointmentFound: boolean;
+      let noAppointmentsFound: boolean;
 
-    await botReply(ctx, "Getting Appointment Information...");
+      await botReply(ctx, "Getting Appointment Information...");
 
-    const customer = await getCustomerBalance(customerId);
+      const customer = await getCustomerBalance(customerId);
 
-    Object.values(customer.branches).forEach(async (branch) => {
-      if (branch.appointment) {
-        appointmentFound = true;
+      Object.values(customer.branches).forEach(async (branch) => {
+        if (branch.appointment) {
+          appointmentFound = true;
+          await botReply(
+            ctx,
+            `Your next appointment is scheduled at ${branch.branch_name} for ${branch.appointment.date} at ${branch.appointment.time}.`,
+            keyboards.appointmentKeyboard(),
+          );
+        } else {
+          noAppointmentsFound = true;
+        }
+      });
+
+      if (!appointmentFound && noAppointmentsFound) {
         await botReply(
           ctx,
-          `Your next appointment is scheduled at ${branch.branch_name} for ${branch.appointment.date} at ${branch.appointment.time}.`,
+          `There are no appointments currently scheduled.\n\nYour next due date is: ${customer.exam_due_date}`,
           keyboards.appointmentKeyboard(),
         );
-      } else {
-        noAppointmentsFound = true;
       }
-    });
-
-    if (!appointmentFound && noAppointmentsFound) {
-      await botReply(
-        ctx,
-        `There are no appointments currently scheduled.\n\nYour next due date is: ${customer.exam_due_date}`,
-        keyboards.appointmentKeyboard(),
-      );
+    } catch (err) {
+      console.error(err);
     }
   });
 }

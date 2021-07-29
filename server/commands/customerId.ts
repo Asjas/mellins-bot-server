@@ -3,7 +3,7 @@ import type { Update } from "typegram";
 import type MyContext from "../types/telegram";
 
 import getCustomerFromDb from "../services/getCustomerFromDb";
-import { telegramDb } from "../db/telegram";
+import { customerRSAID } from "../db/telegram";
 import LuhnAlgorithm from "../utils/LuhnAlgorithm";
 
 import * as constants from "../messages/botMessages";
@@ -13,45 +13,37 @@ import { botReply, botReplyWithInlineKeyboard } from "./reply";
 export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   // check for 13 numbers in a single message (RSA ID)
   bot.hears(/^\d{13}$/, async (ctx: MyContext) => {
-    const { id: telegramId, first_name: firstName = "", last_name: lastName = "" } = ctx.message.from;
-    const { text: rsaId } = ctx.message as any;
+    try {
+      const { id: telegramId, first_name: firstName = "", last_name: lastName = "" } = ctx.message.from;
+      const { text: rsaId } = ctx.message as any;
 
-    // RSA ID is invalid
-    if (LuhnAlgorithm(rsaId) === false) {
-      await ctx.reply(constants.INVALID_RSA_ID, keyboards.callbackKeyboard());
-      return;
-    }
-
-    const customerFound = await getCustomerFromDb(rsaId);
-
-    if (customerFound) {
-      try {
-        const updatedAtDate = new Date();
-
-        await telegramDb.telegramUser.upsert({
-          where: { telegramId },
-          create: {
-            firstName,
-            lastName,
-            rsaId,
-            telegramId,
-            updatedAt: updatedAtDate.toISOString(),
-          },
-          update: { firstName, lastName, rsaId, telegramId, updatedAt: updatedAtDate.toISOString() },
-        });
-      } catch (err: any) {
-        // if the user is already registered, send a message and exit
-        if (err.code === "P2002") {
-          await botReply(ctx, `The ID ${rsaId} is already registered.`, keyboards.fullBotKeyboard(ctx));
-          return;
-        }
+      // RSA ID is invalid
+      if (LuhnAlgorithm(rsaId) === false) {
+        await ctx.reply(constants.INVALID_RSA_ID, keyboards.callbackKeyboard());
+        return;
       }
 
-      await ctx.reply(`Welcome ${firstName} ${lastName}. You've been successfully registered.`);
+      const customerFound = await getCustomerFromDb(rsaId);
 
-      await botReply(ctx, `Please select one of these buttons to continue:`, keyboards.fullBotKeyboard(ctx));
-    } else {
-      await botReplyWithInlineKeyboard(ctx, constants.RSA_ID_NOT_FOUND, keyboards.inlineCallbackKeyboard());
+      if (customerFound) {
+        try {
+          await customerRSAID(ctx, { telegramId, firstName, lastName, rsaId });
+        } catch (err: any) {
+          // if the user is already registered, send a message and exit
+          if (err.code === "P2002") {
+            await botReply(ctx, `The ID ${rsaId} is already registered.`, keyboards.fullBotKeyboard(ctx));
+            return;
+          }
+        }
+
+        await ctx.reply(`Welcome ${firstName} ${lastName}. You've been successfully registered.`);
+
+        await botReply(ctx, `Please select one of these buttons to continue:`, keyboards.fullBotKeyboard(ctx));
+      } else {
+        await botReplyWithInlineKeyboard(ctx, constants.RSA_ID_NOT_FOUND, keyboards.inlineCallbackKeyboard());
+      }
+    } catch (err) {
+      console.error(err);
     }
   });
 }
