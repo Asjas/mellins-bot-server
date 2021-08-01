@@ -6,7 +6,7 @@ type Customer = {
 };
 
 // Get the customer from atlas to see if they are a Mellins Patient or not
-async function getCustomerFromDb(customerId: string) {
+async function fetchCustomerFromAtlasDb(customerId: string) {
   try {
     const db = atlasDb();
     const [customerFound]: [Customer] = await db("SELECT cmf_id, cmf_pat_id FROM cmf WHERE cmf_id = ?", [customerId]);
@@ -21,4 +21,4 @@ async function getCustomerFromDb(customerId: string) {
   }
 }
 
-export default getCustomerFromDb;
+export default fetchCustomerFromAtlasDb;

@@ -5,7 +5,7 @@ import Sensible from "fastify-sensible";
 import UnderPressure from "under-pressure";
 import fastify, { FastifyServerOptions } from "fastify";
 
-import TelegramPlugin from "./plugins/telegram";
+import PrismaPlugin from "./plugins/prisma";
 
 import CustomerRoutes from "./routes/customer";
 import MessagesRoutes from "./routes/messages";
@@ -39,7 +39,7 @@ async function createServer(config: Config) {
   //   maxEventLoopUtilization: 0.98,
   // });
 
-  await server.register(TelegramPlugin, {
+  await server.register(PrismaPlugin, {
     ...opts,
   });
 

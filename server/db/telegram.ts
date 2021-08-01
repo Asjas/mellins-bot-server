@@ -21,11 +21,6 @@ export async function isUserInDb(telegramId: number) {
     select: {
       firstName: true,
       rsaId: true,
-      TimeOnBot: {
-        select: {
-          sessionId: true,
-        },
-      },
     },
   });
 }
@@ -135,37 +130,4 @@ export async function logUserActionsInDb(
   }
 
   console.log({ id });
-
-  await telegramDb.telegramUser.upsert({
-    where: { telegramId },
-    create: {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      updatedAt: updatedAtDate.toISOString(),
-      TelegramMessages: {
-        create: {
-          messageId,
-          userCommand,
-          botAnswer,
-        },
-      },
-    },
-    update: {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      joinedMellinsChannel,
-      updatedAt: updatedAtDate.toISOString(),
-      TelegramMessages: {
-        create: {
-          messageId,
-          userCommand,
-          botAnswer,
-        },
-      },
-    },
-  });
 }

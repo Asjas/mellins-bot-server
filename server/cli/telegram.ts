@@ -7,7 +7,6 @@
 import { TelegramClient } from "telegram";
 import { StoreSession } from "telegram/sessions/index.js";
 import dotenv from "dotenv";
-import input from "input";
 
 dotenv.config();
 

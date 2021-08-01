@@ -8,35 +8,13 @@ generator client {
 }
 
 model TelegramUser {
-  id                   Int                @id @default(autoincrement())
+  telegramId           Int      @id
   firstName            String?
   lastName             String?
-  rsaId                String?            @unique
-  telegramId           Int?               @unique
-  joinedMellinsChannel Boolean?           @default(false)
-  kickedBot            Boolean?           @default(false)
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @default(now())
-  TelegramMessages     TelegramMessages[]
-  TimeOnBot            TimeOnBot[]
-}
-
-model TelegramMessages {
-  id             Int          @id @default(autoincrement())
-  user           TelegramUser @relation(fields: [telegramUserId], references: [id])
-  messageId      Int
-  userCommand    String
-  botAnswer      String
-  telegramUserId Int
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now())
-}
-
-model TimeOnBot {
-  id             Int          @id @default(autoincrement())
-  user           TelegramUser @relation(fields: [telegramUserId], references: [id])
-  telegramUserId Int
-  sessionId      String       @unique
-  startedAt      DateTime     @default(now())
-  stoppedAt      DateTime?
+  rsaId                String?  @unique
+  username             String   @unique
+  joinedMellinsChannel Boolean? @default(false)
+  kickedBot            Boolean? @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now())
 }

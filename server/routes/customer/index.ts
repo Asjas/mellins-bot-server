@@ -2,6 +2,7 @@ import S from "fluent-json-schema";
 import { FastifyInstance } from "fastify";
 
 import { getUserFromDb } from "../../db/telegram";
+import fetchCustomerFromAtlasDb from "../../services/fetchCustomerFromAtlasDb";
 
 const schema = {
   params: S.object().prop("rsaId", S.string().required()),
@@ -32,6 +33,18 @@ const schema = {
   },
 };
 
+interface IBodyCreate {
+  telegramId: number;
+  firstName: string;
+  lastName: string;
+  username: string;
+}
+
+interface IBodyValidate {
+  telegramId: number;
+  rsaId: string;
+}
+
 interface IParams {
   rsaId: string;
 }
@@ -49,6 +62,64 @@ export default function CustomerRoutes(fastify: FastifyInstance, _opts, done) {
     }
 
     reply.status(200).send({ response: { error: { code: null, description: null }, customer } });
+  });
+
+  fastify.post<{ Body: IBodyCreate }>("/customer", async (request, reply) => {
+    const { telegramId, firstName, lastName, username } = request.body;
+
+    try {
+      const result = await fastify.db.telegramUser.create({
+        data: {
+          firstName,
+          lastName,
+          username,
+          telegramId,
+        },
+      });
+
+      reply.send({ response: { error: { code: null, description: null }, customer: result } });
+    } catch (error) {
+      if (error.code === "P2002") {
+        const result = await fastify.db.telegramUser.findUnique({
+          where: { telegramId },
+          select: {
+            rsaId: true,
+          },
+        });
+
+        if (!result.rsaId) {
+          reply.send({
+            response: { error: { code: 400, description: `User not registered yet.` }, customer: null },
+          });
+        } else {
+          reply.send({
+            response: { error: { code: "P2002", description: `Customer already created.` }, customer: null },
+          });
+        }
+      }
+    }
+  });
+
+  fastify.post<{ Body: IBodyValidate }>("/customer/validate", async (request, reply) => {
+    const { rsaId, telegramId } = request.body;
+    const customerFound: boolean = await fetchCustomerFromAtlasDb(rsaId);
+
+    if (customerFound) {
+      await fastify.db.telegramUser.update({
+        where: { telegramId },
+        data: {
+          rsaId,
+        },
+      });
+
+      reply.send({ response: { error: { code: null, description: null }, validatedStatus: customerFound } });
+    } else {
+      fastify.log.error(`Customer ${telegramId} with RSA ID ${rsaId} not found in Atlas.`);
+
+      reply.send({
+        response: { error: { code: 400, description: `Customer not found in Atlas.` }, validatedStatus: null },
+      });
+    }
   });
 
   done();

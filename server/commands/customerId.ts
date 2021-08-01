@@ -2,7 +2,7 @@ import type TelegrafPKG from "telegraf";
 import type { Update } from "typegram";
 import type MyContext from "../types/telegram";
 
-import getCustomerFromDb from "../services/getCustomerFromDb";
+import fetchCustomerFromAtlasDb from "../services/fetchCustomerFromAtlasDb";
 import { customerRSAID } from "../db/telegram";
 import LuhnAlgorithm from "../utils/LuhnAlgorithm";
 
@@ -23,7 +23,7 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
         return;
       }
 
-      const customerFound = await getCustomerFromDb(rsaId);
+      const customerFound = await fetchCustomerFromAtlasDb(rsaId);
 
       if (customerFound) {
         try {
