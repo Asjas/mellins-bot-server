@@ -1,0 +1,18 @@
+{
+  "name": "mellins-telegram-bot",
+  "description": "A Node-RED Project",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "node-red flow.json -p 4200"
+  },
+  "dependencies": {
+    "node-red": "^2.0.5",
+    "node-red-contrib-telegrambot": "10.0.2"
+  },
+  "node-red": {
+    "settings": {
+      "flowFile": "flow.json",
+      "credentialsFile": "flow_cred.json"
+    }
+  }
+}

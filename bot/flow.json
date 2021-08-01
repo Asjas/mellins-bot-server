@@ -1,0 +1,484 @@
+[
+    {
+        "id": "0c9c9cce29369a92",
+        "type": "tab",
+        "label": "Start Command",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "32fe86d32abb90cc",
+        "type": "tab",
+        "label": "ID Registration",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4f84cee753acadd1",
+        "type": "telegram bot",
+        "botname": " Pienaar Consulting - Mellins (Test bot)",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "200",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "9a0ed1d1514233b9",
+        "type": "debug",
+        "z": "0c9c9cce29369a92",
+        "name": "/start (DEBUG)",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "17b70253d47346c9",
+        "type": "telegram sender",
+        "z": "0c9c9cce29369a92",
+        "name": "Send Response",
+        "bot": "4f84cee753acadd1",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1720,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a3bc40c47a0c68fb",
+        "type": "telegram command",
+        "z": "0c9c9cce29369a92",
+        "name": "/start",
+        "command": "/start",
+        "description": "Start the bot",
+        "registercommand": true,
+        "language": "",
+        "bot": "4f84cee753acadd1",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 150,
+        "y": 260,
+        "wires": [
+            [
+                "9a0ed1d1514233b9",
+                "355a6fbb047aeb57",
+                "efd572f4226a1fdc"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "355a6fbb047aeb57",
+        "type": "function",
+        "z": "0c9c9cce29369a92",
+        "name": "Set POST Parameters",
+        "func": "msg.headers = {\n    'Content-Type': 'application/json; charset=UTF-8'\n};\n\nmsg.payload = {\n    'telegramId': msg.originalMessage.from.id,\n    'firstName': msg.originalMessage.from.first_name,\n    'lastName': msg.originalMessage.from.last_name,\n    'username': msg.originalMessage.from.username,\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 120,
+        "wires": [
+            [
+                "7e4899b9d6e3f383"
+            ]
+        ]
+    },
+    {
+        "id": "7e4899b9d6e3f383",
+        "type": "http request",
+        "z": "0c9c9cce29369a92",
+        "name": "Create Customer Account",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://localhost:4000/customer",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 650,
+        "y": 120,
+        "wires": [
+            [
+                "7be908cb6b734297"
+            ]
+        ]
+    },
+    {
+        "id": "efd572f4226a1fdc",
+        "type": "join",
+        "z": "0c9c9cce29369a92",
+        "name": "Join Telegram and POST Payloads",
+        "mode": "custom",
+        "build": "merged",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 960,
+        "y": 260,
+        "wires": [
+            [
+                "da9d52422969319f",
+                "569ed2b5ac312fb0",
+                "97d1266292a17c80"
+            ]
+        ]
+    },
+    {
+        "id": "7be908cb6b734297",
+        "type": "function",
+        "z": "0c9c9cce29369a92",
+        "name": "Completed",
+        "func": "msg.complete = true;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 120,
+        "wires": [
+            [
+                "efd572f4226a1fdc"
+            ]
+        ]
+    },
+    {
+        "id": "da9d52422969319f",
+        "type": "debug",
+        "z": "0c9c9cce29369a92",
+        "name": "Combined Payload (DEBUG)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1400,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "569ed2b5ac312fb0",
+        "type": "function",
+        "z": "0c9c9cce29369a92",
+        "name": "Account Already Registered",
+        "func": "// if the user hasn't registered with their \n// RSA ID then we should prompt them again\n\nif (msg.payload.response.error.code === 400) {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Register'],\n                ['Request a Callback']],\n            'columns': 2,\n            'one_time_keyboard': true\n        })\n    };\n\n    msg.payload.content = `Hi ${msg.originalMessage.from.first_name}.\\n\\nThank you for using @Mellinsbot.\\n\\nPlease select Register to continue or Request a Callback if you need assistance:`;\n    msg.payload.options = opts;\n\n    return [msg];\n}\n\n// if the user runs the `/start` command when\n// they have an account we should direct them\n// to the main keyboard\n\nif (msg.payload.response.error.code === \"P2002\") {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Balance'],\n                ['Statements'],\n                ['Appointments'],\n                ['Join Mellins Channel'],\n                ['Branch Locator'],\n                ['Shop Online'],\n                ['Social Media']],\n            'resize': true,\n            'one_time_keyboard': true\n        })\n    };\n\n    const first_name = msg.originalMessage.from.first_name;\n    const last_name = msg.originalMessage.from.last_name ?? '';\n\n    msg.payload.content = `Welcome back ${first_name} ${last_name}.\\n\\nPlease select any button to continue:`;\n    msg.payload.options = opts;\n\n    return [msg];\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1400,
+        "y": 260,
+        "wires": [
+            [
+                "17b70253d47346c9"
+            ]
+        ]
+    },
+    {
+        "id": "97d1266292a17c80",
+        "type": "function",
+        "z": "0c9c9cce29369a92",
+        "name": "Register Account",
+        "func": "if (msg.payload.response.customer) {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Register'],\n                ['Request a Callback']],\n            'columns': 2,\n            'one_time_keyboard': true\n        })\n    };\n\n    msg.payload.content = `Hi ${msg.originalMessage.from.first_name}.\\n\\nThank you for using @Mellinsbot.\\n\\nPlease select Register to continue or Request a Callback if you need assistance:`;\n    msg.payload.options = opts;\n\n    return [msg];\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 180,
+        "wires": [
+            [
+                "17b70253d47346c9"
+            ]
+        ]
+    },
+    {
+        "id": "96d21e13f44fe159",
+        "type": "telegram receiver",
+        "z": "32fe86d32abb90cc",
+        "name": "Incoming Message",
+        "bot": "4f84cee753acadd1",
+        "saveDataDir": "",
+        "filterCommands": true,
+        "x": 250,
+        "y": 480,
+        "wires": [
+            [
+                "31ad0ed7e6f7d11d",
+                "a9fd714be1caf9ec"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "31ad0ed7e6f7d11d",
+        "type": "debug",
+        "z": "32fe86d32abb90cc",
+        "name": "Incoming Message (debug)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "f79bf5badd980677",
+        "type": "function",
+        "z": "32fe86d32abb90cc",
+        "name": "Provide RSA ID Message",
+        "func": "msg.payload.content = `Please send me your South-African Identity number.`;\n\nreturn [msg];\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 180,
+        "wires": [
+            [
+                "5bf3d80f96f6bb93"
+            ]
+        ]
+    },
+    {
+        "id": "a9fd714be1caf9ec",
+        "type": "switch",
+        "z": "32fe86d32abb90cc",
+        "name": "Filter Message",
+        "property": "payload.content",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "Register",
+                "vt": "str"
+            },
+            {
+                "t": "regex",
+                "v": "\\d{13}",
+                "vt": "str",
+                "case": true
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 520,
+        "y": 440,
+        "wires": [
+            [
+                "f79bf5badd980677"
+            ],
+            [
+                "260ae58199ecf38c",
+                "5ccaab5b298b0e7e"
+            ]
+        ]
+    },
+    {
+        "id": "d1bef80fdf385529",
+        "type": "function",
+        "z": "32fe86d32abb90cc",
+        "name": "RSA ID Validation Failure",
+        "func": "const firstName = msg.originalMessage.from.first_name;\nconst lastName = msg.originalMessage.from.last_name ?? \"\";\n\nif (msg.payload.response.error.code === 400) {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Request a Callback']],\n            'resize': true,\n        })\n    };\n\n    msg.payload.options = opts;\n    msg.payload.content = `It appears that your ID number was not found in our main system.\\n\\nPlease try again or click on the Request a Callback button for further assistance.`;\n  \n    return [msg];\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1850,
+        "y": 520,
+        "wires": [
+            [
+                "798fcc6db00aef7b"
+            ]
+        ]
+    },
+    {
+        "id": "5bf3d80f96f6bb93",
+        "type": "telegram sender",
+        "z": "32fe86d32abb90cc",
+        "name": "Send Response",
+        "bot": "4f84cee753acadd1",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1060,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "798fcc6db00aef7b",
+        "type": "telegram sender",
+        "z": "32fe86d32abb90cc",
+        "name": "Send Response",
+        "bot": "4f84cee753acadd1",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 2180,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "91caf69740698451",
+        "type": "http request",
+        "z": "32fe86d32abb90cc",
+        "name": "Check RSA ID Validity",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://localhost:4000/customer/validate",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 1080,
+        "y": 300,
+        "wires": [
+            [
+                "e36a1bd7394c4af1"
+            ]
+        ]
+    },
+    {
+        "id": "260ae58199ecf38c",
+        "type": "function",
+        "z": "32fe86d32abb90cc",
+        "name": "Set POST Parameters",
+        "func": "msg.headers = {\n    'Content-Type': 'application/json; charset=UTF-8'\n};\n\nmsg.payload = {\n    'telegramId': msg.originalMessage.from.id,\n    'rsaId': msg.payload.content,\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 300,
+        "wires": [
+            [
+                "91caf69740698451"
+            ]
+        ]
+    },
+    {
+        "id": "5ccaab5b298b0e7e",
+        "type": "join",
+        "z": "32fe86d32abb90cc",
+        "name": "Join Telegram and POST Payloads",
+        "mode": "custom",
+        "build": "merged",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1400,
+        "y": 440,
+        "wires": [
+            [
+                "d1bef80fdf385529",
+                "aab14838c166d693"
+            ]
+        ]
+    },
+    {
+        "id": "e36a1bd7394c4af1",
+        "type": "function",
+        "z": "32fe86d32abb90cc",
+        "name": "Completed",
+        "func": "msg.complete = true;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 300,
+        "wires": [
+            [
+                "5ccaab5b298b0e7e"
+            ]
+        ]
+    },
+    {
+        "id": "aab14838c166d693",
+        "type": "function",
+        "z": "32fe86d32abb90cc",
+        "name": "RSA ID Validation Success",
+        "func": "const firstName = msg.originalMessage.from.first_name;\nconst lastName = msg.originalMessage.from.last_name ?? \"\";\n\nif (msg.payload.response.validatedStatus) {\n    msg.payload.content = `Welcome ${firstName} ${lastName}. You've been successfully registered.`\n\n    return [msg];\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1860,
+        "y": 380,
+        "wires": [
+            [
+                "798fcc6db00aef7b"
+            ]
+        ]
+    }
+]
