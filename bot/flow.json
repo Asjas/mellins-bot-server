@@ -14,6 +14,168 @@
         "info": ""
     },
     {
+        "id": "d2304e9dfa3f119a",
+        "type": "tab",
+        "label": "Branch Locator",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "0958689d6dd7dc35",
+        "type": "tab",
+        "label": "User Joined Channel",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6750df66b8ae5eb5",
+        "type": "subflow",
+        "name": "Register Keyboard",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 40,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "2a3a2754a10e9e0e"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 440,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "2a3a2754a10e9e0e",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "48ac4e6418c2b802",
+        "type": "subflow",
+        "name": "HTTP POST Request",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 240,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "f2ed2cf1ae8bd37d"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 240,
+                "y": 540,
+                "wires": [
+                    {
+                        "id": "e36a1bd7394c4af1",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "HTTP_ENDPOINT",
+                "type": "str",
+                "value": "http://localhost:4000"
+            }
+        ],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "2d1fbc36ea7594a0",
+        "type": "subflow",
+        "name": "Full Bot Keyboard",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 40,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "acb7ddb0d552537f"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 360,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "acb7ddb0d552537f",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "9489f01d7d98c42e",
+        "type": "subflow",
+        "name": "Incoming Message",
+        "info": "",
+        "category": "",
+        "in": [],
+        "out": [
+            {
+                "x": 400,
+                "y": 100,
+                "wires": [
+                    {
+                        "id": "b6e11ebb1dfaf661",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 400,
+                "y": 140,
+                "wires": []
+            },
+            {
+                "x": 400,
+                "y": 180,
+                "wires": []
+            },
+            {
+                "x": 400,
+                "y": 220,
+                "wires": []
+            },
+            {
+                "x": 400,
+                "y": 260,
+                "wires": []
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
         "id": "4f84cee753acadd1",
         "type": "telegram bot",
         "botname": " Pienaar Consulting - Mellins (Test bot)",
@@ -62,8 +224,8 @@
         "bot": "4f84cee753acadd1",
         "haserroroutput": false,
         "outputs": 1,
-        "x": 1720,
-        "y": 220,
+        "x": 2040,
+        "y": 240,
         "wires": [
             []
         ]
@@ -99,7 +261,7 @@
         "type": "function",
         "z": "0c9c9cce29369a92",
         "name": "Set POST Parameters",
-        "func": "msg.headers = {\n    'Content-Type': 'application/json; charset=UTF-8'\n};\n\nmsg.payload = {\n    'telegramId': msg.originalMessage.from.id,\n    'firstName': msg.originalMessage.from.first_name,\n    'lastName': msg.originalMessage.from.last_name,\n    'username': msg.originalMessage.from.username,\n};\n\nreturn msg;",
+        "func": "msg.data = {\n    'telegramId': msg.originalMessage.from.id,\n    'firstName': msg.originalMessage.from.first_name,\n    'lastName': msg.originalMessage.from.last_name,\n    'username': msg.originalMessage.from.username,\n};\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -109,28 +271,7 @@
         "y": 120,
         "wires": [
             [
-                "7e4899b9d6e3f383"
-            ]
-        ]
-    },
-    {
-        "id": "7e4899b9d6e3f383",
-        "type": "http request",
-        "z": "0c9c9cce29369a92",
-        "name": "Create Customer Account",
-        "method": "POST",
-        "ret": "obj",
-        "paytoqs": "body",
-        "url": "http://localhost:4000/customer",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "authType": "",
-        "x": 650,
-        "y": 120,
-        "wires": [
-            [
-                "7be908cb6b734297"
+                "c8c46e235a40c5c8"
             ]
         ]
     },
@@ -154,32 +295,14 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 960,
-        "y": 260,
+        "x": 900,
+        "y": 240,
         "wires": [
             [
                 "da9d52422969319f",
-                "569ed2b5ac312fb0",
-                "97d1266292a17c80"
-            ]
-        ]
-    },
-    {
-        "id": "7be908cb6b734297",
-        "type": "function",
-        "z": "0c9c9cce29369a92",
-        "name": "Completed",
-        "func": "msg.complete = true;\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 870,
-        "y": 120,
-        "wires": [
-            [
-                "efd572f4226a1fdc"
+                "79caa6624d6b05ae",
+                "ab1293cf7cfdf2c1",
+                "da1ddb392f40ba92"
             ]
         ]
     },
@@ -196,8 +319,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1400,
-        "y": 340,
+        "x": 1100,
+        "y": 380,
         "wires": []
     },
     {
@@ -205,73 +328,19 @@
         "type": "function",
         "z": "0c9c9cce29369a92",
         "name": "Account Already Registered",
-        "func": "// if the user hasn't registered with their \n// RSA ID then we should prompt them again\n\nif (msg.payload.response.error.code === 400) {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Register'],\n                ['Request a Callback']],\n            'columns': 2,\n            'one_time_keyboard': true\n        })\n    };\n\n    msg.payload.content = `Hi ${msg.originalMessage.from.first_name}.\\n\\nThank you for using @Mellinsbot.\\n\\nPlease select Register to continue or Request a Callback if you need assistance:`;\n    msg.payload.options = opts;\n\n    return [msg];\n}\n\n// if the user runs the `/start` command when\n// they have an account we should direct them\n// to the main keyboard\n\nif (msg.payload.response.error.code === \"P2002\") {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Balance'],\n                ['Statements'],\n                ['Appointments'],\n                ['Join Mellins Channel'],\n                ['Branch Locator'],\n                ['Shop Online'],\n                ['Social Media']],\n            'resize': true,\n            'one_time_keyboard': true\n        })\n    };\n\n    const first_name = msg.originalMessage.from.first_name;\n    const last_name = msg.originalMessage.from.last_name ?? '';\n\n    msg.payload.content = `Welcome back ${first_name} ${last_name}.\\n\\nPlease select any button to continue:`;\n    msg.payload.options = opts;\n\n    return [msg];\n}\n\n",
+        "func": "// if the user runs the `/start` command when\n// they have an account we should direct them\n// to the main keyboard\n\nconst first_name = msg.originalMessage.from.first_name;\nconst last_name = msg.originalMessage.from.last_name ?? '';\n\nmsg.payload.content = `Welcome back ${first_name} ${last_name}.\\n\\nPlease select any button to continue:`;\n\nreturn [msg];\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1400,
-        "y": 260,
+        "x": 1740,
+        "y": 300,
         "wires": [
             [
                 "17b70253d47346c9"
             ]
         ]
-    },
-    {
-        "id": "97d1266292a17c80",
-        "type": "function",
-        "z": "0c9c9cce29369a92",
-        "name": "Register Account",
-        "func": "if (msg.payload.response.customer) {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Register'],\n                ['Request a Callback']],\n            'columns': 2,\n            'one_time_keyboard': true\n        })\n    };\n\n    msg.payload.content = `Hi ${msg.originalMessage.from.first_name}.\\n\\nThank you for using @Mellinsbot.\\n\\nPlease select Register to continue or Request a Callback if you need assistance:`;\n    msg.payload.options = opts;\n\n    return [msg];\n}",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1370,
-        "y": 180,
-        "wires": [
-            [
-                "17b70253d47346c9"
-            ]
-        ]
-    },
-    {
-        "id": "96d21e13f44fe159",
-        "type": "telegram receiver",
-        "z": "32fe86d32abb90cc",
-        "name": "Incoming Message",
-        "bot": "4f84cee753acadd1",
-        "saveDataDir": "",
-        "filterCommands": true,
-        "x": 250,
-        "y": 480,
-        "wires": [
-            [
-                "31ad0ed7e6f7d11d",
-                "a9fd714be1caf9ec"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "31ad0ed7e6f7d11d",
-        "type": "debug",
-        "z": "32fe86d32abb90cc",
-        "name": "Incoming Message (debug)",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 580,
-        "y": 560,
-        "wires": []
     },
     {
         "id": "f79bf5badd980677",
@@ -316,14 +385,14 @@
         "repair": false,
         "outputs": 2,
         "x": 520,
-        "y": 440,
+        "y": 420,
         "wires": [
             [
                 "f79bf5badd980677"
             ],
             [
-                "260ae58199ecf38c",
-                "5ccaab5b298b0e7e"
+                "5ccaab5b298b0e7e",
+                "2b5380f6bca438f5"
             ]
         ]
     },
@@ -332,7 +401,7 @@
         "type": "function",
         "z": "32fe86d32abb90cc",
         "name": "RSA ID Validation Failure",
-        "func": "const firstName = msg.originalMessage.from.first_name;\nconst lastName = msg.originalMessage.from.last_name ?? \"\";\n\nif (msg.payload.response.error.code === 400) {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Request a Callback']],\n            'resize': true,\n        })\n    };\n\n    msg.payload.options = opts;\n    msg.payload.content = `It appears that your ID number was not found in our main system.\\n\\nPlease try again or click on the Request a Callback button for further assistance.`;\n  \n    return [msg];\n}",
+        "func": "const firstName = msg.originalMessage.from.first_name;\n\nif (msg.payload.response.error.code === 400) {\n    const opts = {\n        reply_markup: JSON.stringify({\n            keyboard: [\n                ['Request a Callback']],\n            'resize': true,\n        })\n    };\n\n    msg.payload.options = opts;\n    msg.payload.content = `Hi ${firstName}.\\n\\nIt appears that your ID number was not found in our main system.\\n\\nPlease try again or click on the Request a Callback button for further assistance.`;\n  \n    return [msg];\n}",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -377,18 +446,18 @@
     {
         "id": "91caf69740698451",
         "type": "http request",
-        "z": "32fe86d32abb90cc",
-        "name": "Check RSA ID Validity",
+        "z": "48ac4e6418c2b802",
+        "name": "HTTP Request",
         "method": "POST",
         "ret": "obj",
         "paytoqs": "body",
-        "url": "http://localhost:4000/customer/validate",
+        "url": "${HTTP_ENDPOINT}",
         "tls": "",
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 1080,
-        "y": 300,
+        "x": 240,
+        "y": 320,
         "wires": [
             [
                 "e36a1bd7394c4af1"
@@ -398,16 +467,16 @@
     {
         "id": "260ae58199ecf38c",
         "type": "function",
-        "z": "32fe86d32abb90cc",
-        "name": "Set POST Parameters",
-        "func": "msg.headers = {\n    'Content-Type': 'application/json; charset=UTF-8'\n};\n\nmsg.payload = {\n    'telegramId': msg.originalMessage.from.id,\n    'rsaId': msg.payload.content,\n};\n\nreturn msg;",
+        "z": "48ac4e6418c2b802",
+        "name": "Set POST Data",
+        "func": "msg.payload = msg.data;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 820,
-        "y": 300,
+        "x": 240,
+        "y": 220,
         "wires": [
             [
                 "91caf69740698451"
@@ -434,19 +503,19 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 1400,
+        "x": 1300,
         "y": 440,
         "wires": [
             [
                 "d1bef80fdf385529",
-                "aab14838c166d693"
+                "2e03e44ffbf1d8f0"
             ]
         ]
     },
     {
         "id": "e36a1bd7394c4af1",
         "type": "function",
-        "z": "32fe86d32abb90cc",
+        "z": "48ac4e6418c2b802",
         "name": "Completed",
         "func": "msg.complete = true;\n\nreturn msg;",
         "outputs": 1,
@@ -454,12 +523,10 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1310,
-        "y": 300,
+        "x": 230,
+        "y": 420,
         "wires": [
-            [
-                "5ccaab5b298b0e7e"
-            ]
+            []
         ]
     },
     {
@@ -467,7 +534,7 @@
         "type": "function",
         "z": "32fe86d32abb90cc",
         "name": "RSA ID Validation Success",
-        "func": "const firstName = msg.originalMessage.from.first_name;\nconst lastName = msg.originalMessage.from.last_name ?? \"\";\n\nif (msg.payload.response.validatedStatus) {\n    msg.payload.content = `Welcome ${firstName} ${lastName}. You've been successfully registered.`\n\n    return [msg];\n}\n",
+        "func": "const firstName = msg.originalMessage.from.first_name;\nconst lastName = msg.originalMessage.from.last_name ?? \"\";\n\nif (msg.payload.response.validatedStatus) {\n    msg.payload.content = `Welcome ${firstName} ${lastName}. You've been successfully registered.`\n\n    return [msg];\n}\n\nglobal.set('registered', true)",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -479,6 +546,451 @@
             [
                 "798fcc6db00aef7b"
             ]
+        ]
+    },
+    {
+        "id": "03ea52b29fdb292d",
+        "type": "telegram sender",
+        "z": "d2304e9dfa3f119a",
+        "name": "Send Response",
+        "bot": "4f84cee753acadd1",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 720,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6f533d02610b489d",
+        "type": "telegram receiver",
+        "z": "0958689d6dd7dc35",
+        "name": "Incoming Message",
+        "bot": "4f84cee753acadd1",
+        "saveDataDir": "",
+        "filterCommands": true,
+        "x": 100,
+        "y": 440,
+        "wires": [
+            [
+                "aa196e294892b268",
+                "7231958a3991f4a5"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "aa196e294892b268",
+        "type": "debug",
+        "z": "0958689d6dd7dc35",
+        "name": "User Joined Channel (DEBUG)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 290,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "7231958a3991f4a5",
+        "type": "switch",
+        "z": "0958689d6dd7dc35",
+        "name": "Left Chat Event",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "left_chat_member",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 360,
+        "y": 420,
+        "wires": [
+            [
+                "96a2c012590e5ada"
+            ]
+        ]
+    },
+    {
+        "id": "96a2c012590e5ada",
+        "type": "function",
+        "z": "0958689d6dd7dc35",
+        "name": "Set POST Parameters",
+        "func": "msg.headers = {\n    'Content-Type': 'application/json; charset=UTF-8'\n};\n\nmsg.payload = {\n    'user': msg.payload.content,\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d6c50957a9e3fbc",
+        "type": "subflow:48ac4e6418c2b802",
+        "z": "32fe86d32abb90cc",
+        "name": "HTTP Request",
+        "env": [
+            {
+                "name": "JSON_PAYLOAD",
+                "value": "JSON_DATA",
+                "type": "env"
+            },
+            {
+                "name": "HTTP_ENDPOINT",
+                "value": "http://localhost:4000/customer/validate",
+                "type": "str"
+            },
+            {
+                "name": "HTTP_PATH",
+                "value": "/customer/validate",
+                "type": "str"
+            },
+            {
+                "name": "JSON_DATA",
+                "value": "DATA",
+                "type": "env"
+            }
+        ],
+        "x": 1020,
+        "y": 340,
+        "wires": [
+            [
+                "5ccaab5b298b0e7e"
+            ]
+        ]
+    },
+    {
+        "id": "f2ed2cf1ae8bd37d",
+        "type": "change",
+        "z": "48ac4e6418c2b802",
+        "name": "Set Content-Type Headers",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers[\"Content-Type\"]",
+                "pt": "msg",
+                "to": "\"application/json; charset=UTF-8\"",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 240,
+        "y": 140,
+        "wires": [
+            [
+                "260ae58199ecf38c"
+            ]
+        ]
+    },
+    {
+        "id": "efdeaa9640287631",
+        "type": "debug",
+        "z": "d2304e9dfa3f119a",
+        "name": "TESTSETSETSETSET",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "2b5380f6bca438f5",
+        "type": "function",
+        "z": "32fe86d32abb90cc",
+        "name": "Set POST Data",
+        "func": "msg.data = {\n    telegramId: msg.originalMessage.from.id,\n    rsaId: msg.payload.content,\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 340,
+        "wires": [
+            [
+                "7d6c50957a9e3fbc"
+            ]
+        ]
+    },
+    {
+        "id": "acb7ddb0d552537f",
+        "type": "function",
+        "z": "2d1fbc36ea7594a0",
+        "name": "Build Keyboard",
+        "func": "const joinedPrivateChannel = global.get('joinedPrivateChannel') ?? false;\n\nconst opts = {\n    reply_markup: JSON.stringify({\n        keyboard: [\n            ['Balance'],\n            ['Statements'],\n            ['Appointments'],\n            joinedPrivateChannel ? [''] : ['Join Mellins Channel'],\n            ['Branch Locator'],\n            ['Shop Online'],\n            ['Social Media'],\n           ],\n        'resize': true,\n        'one_time_keyboard': true\n    })\n};\n\nmsg.payload.options = opts;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2e03e44ffbf1d8f0",
+        "type": "subflow:2d1fbc36ea7594a0",
+        "z": "32fe86d32abb90cc",
+        "name": "Full Bot Keyboard",
+        "env": [],
+        "x": 1610,
+        "y": 380,
+        "wires": [
+            [
+                "aab14838c166d693"
+            ]
+        ]
+    },
+    {
+        "id": "2a3a2754a10e9e0e",
+        "type": "function",
+        "z": "6750df66b8ae5eb5",
+        "name": "Build Keyboard",
+        "func": "const opts = {\n    reply_markup: JSON.stringify({\n        keyboard: [\n            ['Register'],\n            ['Request a Callback']],\n        'columns': 2,\n        'one_time_keyboard': true\n    })\n};\n\nmsg.payload.options = opts;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c8c46e235a40c5c8",
+        "type": "subflow:48ac4e6418c2b802",
+        "z": "0c9c9cce29369a92",
+        "name": "",
+        "env": [
+            {
+                "name": "HTTP_ENDPOINT",
+                "value": "http://localhost:4000/customer",
+                "type": "str"
+            }
+        ],
+        "x": 660,
+        "y": 120,
+        "wires": [
+            [
+                "efd572f4226a1fdc"
+            ]
+        ]
+    },
+    {
+        "id": "79caa6624d6b05ae",
+        "type": "switch",
+        "z": "0c9c9cce29369a92",
+        "name": "Customer Not Registered",
+        "property": "payload.response.error.code",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "401",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": true,
+        "outputs": 1,
+        "x": 1270,
+        "y": 240,
+        "wires": [
+            [
+                "755a0d401c1e3e2c"
+            ]
+        ]
+    },
+    {
+        "id": "5a8c887f7d926aa5",
+        "type": "function",
+        "z": "0c9c9cce29369a92",
+        "name": "Register Account",
+        "func": "// if the user hasn't registered with their \n// RSA ID then we should prompt them\n\nmsg.payload.content = `Hi ${msg.originalMessage.from.first_name}.\\n\\nThank you for using @Mellinsbot.\\n\\nPlease select Register to continue or Request a Callback if you need assistance:`;\n\nreturn [msg];\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1730,
+        "y": 200,
+        "wires": [
+            [
+                "17b70253d47346c9"
+            ]
+        ]
+    },
+    {
+        "id": "755a0d401c1e3e2c",
+        "type": "subflow:6750df66b8ae5eb5",
+        "z": "0c9c9cce29369a92",
+        "name": "",
+        "env": [],
+        "x": 1510,
+        "y": 200,
+        "wires": [
+            [
+                "5a8c887f7d926aa5"
+            ]
+        ]
+    },
+    {
+        "id": "05aaa409c325dd8e",
+        "type": "subflow:2d1fbc36ea7594a0",
+        "z": "0c9c9cce29369a92",
+        "name": "",
+        "x": 1510,
+        "y": 300,
+        "wires": [
+            [
+                "569ed2b5ac312fb0"
+            ]
+        ]
+    },
+    {
+        "id": "ab1293cf7cfdf2c1",
+        "type": "switch",
+        "z": "0c9c9cce29369a92",
+        "name": "Customer Already Registered",
+        "property": "payload.response.error.code",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "2002",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1280,
+        "y": 300,
+        "wires": [
+            [
+                "05aaa409c325dd8e"
+            ]
+        ]
+    },
+    {
+        "id": "da1ddb392f40ba92",
+        "type": "switch",
+        "z": "0c9c9cce29369a92",
+        "name": "Customer Created",
+        "property": "payload.response.customer",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1250,
+        "y": 180,
+        "wires": [
+            [
+                "755a0d401c1e3e2c"
+            ]
+        ]
+    },
+    {
+        "id": "b6e11ebb1dfaf661",
+        "type": "telegram receiver",
+        "z": "9489f01d7d98c42e",
+        "name": "Incoming Message",
+        "bot": "4f84cee753acadd1",
+        "saveDataDir": "",
+        "filterCommands": true,
+        "x": 150,
+        "y": 200,
+        "wires": [
+            [],
+            [
+                "f6fddd4a230f73b5"
+            ]
+        ]
+    },
+    {
+        "id": "f6fddd4a230f73b5",
+        "type": "debug",
+        "z": "9489f01d7d98c42e",
+        "name": "Incoming Message (DEBUG)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f496bea2c3073a57",
+        "type": "subflow:9489f01d7d98c42e",
+        "z": "32fe86d32abb90cc",
+        "name": "Register",
+        "env": [],
+        "x": 240,
+        "y": 440,
+        "wires": [
+            [
+                "a9fd714be1caf9ec"
+            ],
+            [],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d73d35923a86e593",
+        "type": "subflow:9489f01d7d98c42e",
+        "z": "d2304e9dfa3f119a",
+        "name": "",
+        "x": 160,
+        "y": 340,
+        "wires": [
+            [
+                "efdeaa9640287631"
+            ],
+            [],
+            [],
+            [],
+            []
         ]
     }
 ]

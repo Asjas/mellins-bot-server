@@ -41,6 +41,21 @@ export async function getUserFromDb(rsaId: string) {
   });
 }
 
+export async function getUsersFromDb() {
+  return await telegramDb.telegramUser.findMany({
+    select: {
+      firstName: true,
+      lastName: true,
+      rsaId: true,
+      telegramId: true,
+      joinedMellinsChannel: true,
+      kickedBot: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+}
+
 export async function userStoppedBot(telegramId: number) {
   const updatedAtDate = new Date();
 

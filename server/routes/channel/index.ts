@@ -1,7 +1,7 @@
 import S from "fluent-json-schema";
 import { FastifyInstance } from "fastify";
 
-import { getUserFromDb, getUsersFromDb } from "../../db/telegram";
+import { getUserFromDb } from "../../db/telegram";
 import fetchCustomerFromAtlasDb from "../../services/fetchCustomerFromAtlasDb";
 
 const schema = {
@@ -64,12 +64,6 @@ export default function CustomerRoutes(fastify: FastifyInstance, _opts, done) {
     reply.status(200).send({ response: { error: { code: null, description: null }, customer } });
   });
 
-  fastify.get<{ Params: IParams }>("/userlist", async (request, reply) => {
-    const customers = await getUsersFromDb();
-
-    reply.status(200).send({ response: { error: { code: null, description: null }, userlist: customers } });
-  });
-
   fastify.post<{ Body: IBodyCreate }>("/customer", async (request, reply) => {
     const { telegramId, firstName, lastName, username } = request.body;
 
@@ -83,8 +77,6 @@ export default function CustomerRoutes(fastify: FastifyInstance, _opts, done) {
         },
       });
 
-      console.log(result);
-
       reply.send({ response: { error: { code: null, description: null }, customer: result } });
     } catch (error) {
       if (error.code === "P2002") {
@@ -97,11 +89,11 @@ export default function CustomerRoutes(fastify: FastifyInstance, _opts, done) {
 
         if (!result.rsaId) {
           reply.send({
-            response: { error: { code: 401, description: `User not registered yet.` }, customer: null },
+            response: { error: { code: 400, description: `User not registered yet.` }, customer: null },
           });
         } else {
           reply.send({
-            response: { error: { code: 2002, description: `Customer already created.` }, customer: null },
+            response: { error: { code: "P2002", description: `Customer already created.` }, customer: null },
           });
         }
       }
