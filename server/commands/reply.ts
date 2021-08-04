@@ -1,4 +1,4 @@
-import { isUserInDb, userStoppedBot, userRestartedBot, logUserActionsInDb } from "../db/telegram";
+import { isUserInDb, userStoppedBot, userRestartedBot } from "../db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
   // Incoming message from a user that just deleted the bot
@@ -46,17 +46,6 @@ export async function botReply(ctx: any, message: string, keyboard = {}) {
       userCommand = "User `Contact` Sent";
     }
 
-    await logUserActionsInDb(ctx, {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      joinedMellinsChannel,
-      messageId,
-      userCommand,
-      botAnswer,
-    });
-
     await ctx.reply(botAnswer, keyboard);
   } catch (err) {
     console.error(err);
@@ -69,17 +58,6 @@ export async function botReplyWithLocation(ctx: any, { latitude, longitude }: { 
     const { message_id: messageId, text: userCommand } = ctx.update?.message;
     const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
     const botAnswer = `${latitude}, ${longitude}`;
-
-    await logUserActionsInDb(ctx, {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      joinedMellinsChannel,
-      messageId,
-      userCommand,
-      botAnswer,
-    });
 
     await ctx.replyWithLocation(latitude, longitude);
   } catch (err) {
@@ -98,17 +76,6 @@ export async function botReplyWithDocument(
     const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
     const botAnswer = `"Encoded statement", ${filename}`;
 
-    await logUserActionsInDb(ctx, {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      joinedMellinsChannel,
-      messageId,
-      userCommand,
-      botAnswer,
-    });
-
     await ctx.replyWithDocument({ source, filename }, keyboard);
   } catch (err) {
     console.error(err);
@@ -121,17 +88,6 @@ export async function botReplyWithInlineKeyboard(ctx: any, message: string, keyb
     const { message_id: messageId, text: userCommand } = ctx.update?.message;
     const { firstName, lastName, id: telegramId } = ctx.update?.message?.from;
     const botAnswer = firstName ? `Hi, ${firstName}.\n\n${message}` : message;
-
-    await logUserActionsInDb(ctx, {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      joinedMellinsChannel,
-      messageId,
-      userCommand,
-      botAnswer,
-    });
 
     await ctx.reply(botAnswer, {
       parse_mode: "HTML",

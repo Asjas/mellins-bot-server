@@ -1,17 +1,12 @@
 import Etag from "fastify-etag";
 import FastifyFavicon from "fastify-favicon";
-import Helmet, { fastifyHelmet } from "fastify-helmet";
+import Helmet from "fastify-helmet";
 import Sensible from "fastify-sensible";
 import UnderPressure from "under-pressure";
 import fastify, { FastifyServerOptions } from "fastify";
 import AutoLoad from "fastify-autoload";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-
-import TelegramPlugin from "./plugins/telegram";
-
-import CustomerRoutes from "./routes/customer";
-import MessagesRoutes from "./routes/messages";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

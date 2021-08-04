@@ -46,6 +46,8 @@ export default function CustomerRoutes(fastify: FastifyInstance, _opts, done) {
       reply.status(404).send({
         response: { error: { code: 404, description: `Customer not found with ID: ${rsaId}` }, customer: null },
       });
+
+      return;
     }
 
     reply.status(200).send({ response: { error: { code: null, description: null }, customer } });

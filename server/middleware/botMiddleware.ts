@@ -21,14 +21,16 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
 
       // look for the user in the local database to see if they registered before
       const result = await isUserInDb(userTelegramId);
-      ctx.sessionId = result?.TimeOnBot[0]?.sessionId ?? "0";
-      console.log(ctx.sessionId);
 
+      console.log({ result });
+
+      // TODO: Refactor to use event system
       if (userTelegramId) {
         const result: boolean = await getUserFromTelegramChannel(userTelegramId);
         ctx.joinedPrivateChannel = result;
       }
 
+      // TODO: Refactor to use event system
       // if the message is sent from a private channel, ignore the message
       if (ctx?.update?.channel_post) return;
 
