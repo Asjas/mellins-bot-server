@@ -1,5 +1,16 @@
 {
-  "include": ["server/**/*", "ui"],
+  "include": [
+    "server/**/*",
+    "ui",
+    "bot/src/utils",
+    "bot/src/types/telegram.ts",
+    "bot/src/plugins/telegram.ts",
+    "bot/src/bots",
+    "bot/src/cli",
+    "bot/src/messages",
+    "bot/src/middleware/botMiddleware.ts",
+    "bot/src/commands"
+  ],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "incremental": true,

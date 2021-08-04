@@ -8,11 +8,6 @@ import AutoLoad from "fastify-autoload";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
-import TelegramPlugin from "./plugins/telegram";
-
-import CustomerRoutes from "./routes/customer";
-import MessagesRoutes from "./routes/messages";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 

@@ -4,8 +4,8 @@ import hyperid from "hyperid";
 import config from "../config";
 import { prismaDevMiddleware } from "../middleware/prismaMiddleware";
 
-import type MyContext from "../types/telegram";
-import type { LogUserActionsInDb } from "../types/telegram";
+import type MyContext from "../../bot/src/types/telegram";
+import type { LogUserActionsInDb } from "../../bot/src/types/telegram";
 
 export const telegramDb = new Prisma.PrismaClient();
 

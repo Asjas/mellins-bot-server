@@ -7,6 +7,9 @@ import { botReply } from "./reply";
 
 export default function StartCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.command("start", async (ctx: MyContext) => {
+    const { first_name: firstName = "", last_name: lastName = "", username } = ctx.message.from;
+    console.log("ctx", ctx.message.from);
+
     try {
       await botReply(
         ctx,

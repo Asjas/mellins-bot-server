@@ -1,8 +1,5 @@
-import Etag from "fastify-etag";
 import FastifyFavicon from "fastify-favicon";
 import Helmet from "fastify-helmet";
-import Sensible from "fastify-sensible";
-import UnderPressure from "under-pressure";
 import fastify, { FastifyServerOptions } from "fastify";
 import AutoLoad from "fastify-autoload";
 import { fileURLToPath } from "url";
@@ -24,13 +21,9 @@ async function createServer(config: Config) {
 
   const server = fastify(opts);
 
-  await server.register(Etag);
-
   await server.register(Helmet);
 
   await server.register(FastifyFavicon);
-
-  await server.register(Sensible);
 
   // await server.register(UnderPressure, {
   //   exposeStatusRoute: true,
@@ -46,12 +39,6 @@ async function createServer(config: Config) {
     options: {
       ...opts,
     },
-  });
-
-  await server.register(AutoLoad, {
-    dir: join(__dirname, "routes"),
-    dirNameRoutePrefix: false,
-    forceESM: true,
   });
 
   return server;

@@ -4,8 +4,8 @@
 import type TelegrafPKG from "telegraf";
 import type { Update } from "typegram";
 
-import getUserFromTelegramChannel from "../services/getUserFromTelegramChannel";
-import { isUserInDb } from "../db/telegram";
+import getUserFromTelegramChannel from "../../../server/services/getUserFromTelegramChannel";
+import { isUserInDb } from "../../../server/db/telegram";
 import * as keyboards from "../messages/botKeyboards";
 import { botReply } from "../commands/reply";
 

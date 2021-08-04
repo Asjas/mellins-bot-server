@@ -1,4 +1,4 @@
-import { isUserInDb, userStoppedBot, userRestartedBot } from "../db/telegram";
+import { isUserInDb, userStoppedBot, userRestartedBot } from "../../../server/db/telegram";
 
 export async function botReply(ctx: any, message: string, keyboard = {}) {
   // Incoming message from a user that just deleted the bot
