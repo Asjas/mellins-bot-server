@@ -13,15 +13,14 @@ export default function CheckUpcomingAppointmentCommand(bot: TelegrafPKG.Telegra
       let appointmentFound: boolean;
       let noAppointmentsFound: boolean;
 
-      await botReply(ctx, "Getting Appointment Information...");
+      await botReply(ctx, "Getting your appointment information...");
 
       const customer = await getCustomerBalance(customerId);
 
       Object.values(customer.branches).forEach(async (branch) => {
         if (branch.appointment) {
           appointmentFound = true;
-          await botReply(
-            ctx,
+          await ctx.reply(
             `Your next appointment is scheduled at ${branch.branch_name} for ${branch.appointment.date} at ${branch.appointment.time}.`,
             keyboards.appointmentKeyboard(),
           );
@@ -31,9 +30,8 @@ export default function CheckUpcomingAppointmentCommand(bot: TelegrafPKG.Telegra
       });
 
       if (!appointmentFound && noAppointmentsFound) {
-        await botReply(
-          ctx,
-          `There are no appointments currently scheduled.\n\nYour next due date is: ${customer.exam_due_date}`,
+        await ctx.reply(
+          `You have no appointments currently scheduled.\n\nYour next due date is: ${customer.exam_due_date}`,
           keyboards.appointmentKeyboard(),
         );
       }

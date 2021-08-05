@@ -1,10 +1,22 @@
-import { FastifyInstance } from "fastify";
-import FastifyTelegraf from "fastify-telegraf";
-import telegramBot from "../bots/telegram";
+import fp from "fastify-plugin";
+import type { FastifyInstance } from "fastify";
 
-export default async function Telegram(fastify: FastifyInstance, opts) {
+import telegramBot from "../bot/telegram";
+
+function telegram(fastify: FastifyInstance, options, next) {
+  const bot = options.bot;
+  fastify.post(options.path, (request, reply) => {
+    bot.handleUpdate(request.body, reply.raw);
+  });
+
+  next();
+}
+
+async function TelegramPlugin(fastify: FastifyInstance, opts) {
   const bot = await telegramBot(opts.TELEGRAM_BOT_TOKEN);
   const SECRET_PATH = `/telegraf/${bot.secretPathComponent()}`;
 
-  await fastify.register(FastifyTelegraf, { bot, path: SECRET_PATH });
+  await fastify.register(telegram, { bot, path: SECRET_PATH });
 }
+
+export default fp(TelegramPlugin);

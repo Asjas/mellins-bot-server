@@ -1,5 +1,5 @@
-export const RSA_ID_NOT_FOUND = `It appears that your ID number was not found in our main system.\nPlease try again or click on the Request a Callback button for further assistance.`;
-export const INVALID_RSA_ID = `It appears that your ID number is incorrect.\nPlease check your ID number and try again.`;
+export const RSA_ID_NOT_FOUND = `It appears that your ID number was not found in our main system.\n\nPlease try again or click on the Request a Callback button for further assistance.`;
+export const INVALID_RSA_ID = `It appears that your ID number is incorrect.\n\nlease check your ID number and try again.`;
 export const NO_OUTSTANDING_STATEMENTS = `No outstanding statements found.`;
 
 export const MELLINS_CHANNEL_LINK = `Please click on the link below in order to join:\nhttps://t.me/joinchat/Tg0x8KBZk810fGlR`;
@@ -10,7 +10,7 @@ export const ORDERS_MESSAGE = `Thank you for using @Mellinsbot's order portal.\n
 export const PAYMENT_MESSAGE = `Thank you for using @MellinsBot's payment portal.\nPlease select an option below:`;
 export const APPOINTMENT_MESSAGE = `Thank you for using @MellinsBot's appointment portal.\n\nPlease select an option below:`;
 export const PROVINCIAL_BRANCHES_MESSAGE = `Thank you for using @MellinsBot's provincial branch list portal.\n\nPlease select an option below:`;
-export const FRESHDESK_REQUEST_NUMBER = `Thank you for using @MellinsBot's Helpdesk portal.\n\nPlease share your phone number below by pressing SEND below:`;
+export const FRESHDESK_REQUEST_NUMBER = `Thank you for using @MellinsBot's Helpdesk portal.\n\nPlease share your phone number by choosing the Share contact option below:`;
 
 export const BOOK_APPOINTMENT_MESSAGE = `Click on the link below:\nhttp://mellinqm.mellins.co.za/\n\nSelect your Province & Practice, pick a Date & click Book Appointment.`;
 export const SOCIAL_MEDIA_MESSAGE = `Thank you for using @MellinsBot's Social Media portal.\n\nPlease LIKE & FOLLOW us on the following platforms:`;

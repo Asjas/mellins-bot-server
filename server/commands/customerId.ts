@@ -37,7 +37,7 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
 
         await botReply(ctx, `Please select one of these buttons to continue:`, keyboards.fullBotKeyboard(ctx));
       } else {
-        await botReplyWithInlineKeyboard(ctx, constants.RSA_ID_NOT_FOUND, keyboards.inlineCallbackKeyboard());
+        await botReply(ctx, constants.RSA_ID_NOT_FOUND, keyboards.registerAndCallbackKeyboard());
       }
     } catch (err) {
       console.error(err);

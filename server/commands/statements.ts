@@ -17,7 +17,7 @@ export default function StatementsCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
       const customer = await getCustomerStatement(customerId);
 
       if (customer?.error === 2000) {
-        await botReply(ctx, constants.NO_OUTSTANDING_STATEMENTS, keyboards.fullBotKeyboard(ctx));
+        await ctx.reply(constants.NO_OUTSTANDING_STATEMENTS, keyboards.fullBotKeyboard(ctx));
         return;
       }
 

@@ -59,6 +59,7 @@
     "pino-pretty": "5.1.2",
     "prisma-redis-middleware": "0.4.0",
     "telegraf": "4.4.1",
+    "telegram": "^1.8.0",
     "under-pressure": "5.7.0",
     "undici": "4.3.1"
   },

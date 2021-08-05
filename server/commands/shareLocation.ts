@@ -18,12 +18,6 @@ export default function ShareLocationCommand(bot: TelegrafPKG.Telegraf<TelegrafP
         return;
       }
 
-      // Because sharing your location isn't an actual bot command we
-      // need to manually pass it as a bot command to `ctx`
-      const userCommand = Object.assign(ctx, {
-        update: { ...ctx.update, message: { ...ctx.message, text: "Share location" } },
-      });
-
       if (location?.latitude && location?.longitude) {
         // the user just sent us their location
         const {
@@ -34,12 +28,12 @@ export default function ShareLocationCommand(bot: TelegrafPKG.Telegraf<TelegrafP
         } = await getCustomerNearestBranch(location);
 
         await botReply(
-          userCommand,
+          ctx,
           `The closest branch to you is:\n\nMellins ${branchName}\nDistance: ${Math.round(Number(distance))}km`,
           keyboards.fullBotKeyboard(ctx),
         );
 
-        await botReplyWithLocation(userCommand, {
+        await botReplyWithLocation(ctx, {
           latitude: Number(branchLatitude),
           longitude: Number(branchLongitude),
         });

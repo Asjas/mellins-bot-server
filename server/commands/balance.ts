@@ -13,12 +13,16 @@ export default function BalanceCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Con
 
       const customer = await getCustomerBalance(customerId);
 
-      await botReply(ctx, `Please see your current outstanding balances at these branches:\n\n`);
+      await botReply(
+        ctx,
+        `Please see your current outstanding balances at these branches:\n\n`,
+        keyboards.fullBotKeyboard(ctx),
+      );
 
       Object.values(customer.branches).forEach(async (branch) => {
         const response = `Branch Name: ${branch.branch_name}\nCustomer Number: ${branch.customer_number}\nPatient Name: ${branch.patient_name}\nCustomer Balance: R ${branch.customer_balance}`;
 
-        await botReply(ctx, response, keyboards.fullBotKeyboard(ctx));
+        await ctx.reply(response);
       });
     } catch (err) {
       console.error(err);

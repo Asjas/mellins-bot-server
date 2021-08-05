@@ -46,7 +46,6 @@ function registerBotCommands(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Updat
   BookAppointmentCommand(bot);
   ShopOnlineCommand(bot);
   RequestACallbackCommand(bot);
-  ShareContactCommand(bot);
   BranchLocatorCommand(bot);
   ProvincialBranchListCommand(bot);
   EasternCapeBranchesBotCommand(bot);
@@ -65,6 +64,7 @@ function registerBotCommands(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Updat
   SocialMediaCommand(bot);
   FacebookCommand(bot);
   InstagramCommand(bot);
+  ShareContactCommand(bot);
 }
 
 export default registerBotCommands;

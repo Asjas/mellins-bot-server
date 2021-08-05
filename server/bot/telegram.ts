@@ -21,7 +21,7 @@ async function mellinsBot(TELEGRAM_BOT_TOKEN: string) {
   bot.use(async (ctx: any, next) => {
     try {
       // since the individual branch commands are registered dynamically, the route isn't
-      // immediately accessible. So we loop the user back into the back so that the request
+      // immediately accessible. So we loop the user back into the bot so that the request
       // can be handled when the route is accessible.
       if (ctx.message?.text?.includes("Mellins i-Style")) {
         await next();
