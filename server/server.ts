@@ -1,14 +1,14 @@
+import AutoLoad from "fastify-autoload";
 import Etag from "fastify-etag";
 import FastifyFavicon from "fastify-favicon";
 import Helmet from "fastify-helmet";
 import Sensible from "fastify-sensible";
-import UnderPressure from "under-pressure";
 import fastify, { FastifyServerOptions } from "fastify";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
-import TelegramPlugin from "./plugins/telegram";
-
-import CustomerRoutes from "./routes/customer";
-import MessagesRoutes from "./routes/messages";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 import type { Config } from "./config";
 
@@ -31,24 +31,18 @@ async function createServer(config: Config) {
 
   await server.register(Sensible);
 
-  // await server.register(UnderPressure, {
-  //   exposeStatusRoute: true,
-  //   maxEventLoopDelay: 1000,
-  //   maxHeapUsedBytes: 100000000,
-  //   maxRssBytes: 100000000,
-  //   maxEventLoopUtilization: 0.98,
-  // });
-
-  await server.register(TelegramPlugin, {
-    ...opts,
+  await server.register(AutoLoad, {
+    dir: join(__dirname, "plugins"),
+    forceESM: true,
+    options: {
+      ...opts,
+    },
   });
 
-  await server.register(CustomerRoutes, {
-    ...opts,
-  });
-
-  await server.register(MessagesRoutes, {
-    ...opts,
+  await server.register(AutoLoad, {
+    dir: join(__dirname, "routes"),
+    dirNameRoutePrefix: false,
+    forceESM: true,
   });
 
   return server;

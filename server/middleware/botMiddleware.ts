@@ -1,13 +1,17 @@
 // We need middleware for the Telegram bot that queries the database to see if a user has been registered.
 // This is so that we don't have to prompt the user to register for every interaction with the bot.
 
+import dotenv from "dotenv";
 import type TelegrafPKG from "telegraf";
 import type { Update } from "typegram";
 
-import getUserFromTelegramChannel from "../services/getUserFromTelegramChannel";
-import { isUserInDb } from "../db/telegram";
+import { createUser, isUserInDb } from "../db/telegram";
 import * as keyboards from "../messages/botKeyboards";
 import { botReply } from "../commands/reply";
+
+dotenv.config();
+
+const { TELEGRAM_PRIVATE_CHANNEL_ID } = process.env;
 
 function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.use(async (ctx: any, next) => {
@@ -15,18 +19,22 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
     try {
       if (ctx?.update?.channel_post) {
         console.log("global message", ctx?.update?.channel_post?.sender_chat);
+
+        // Do nothing when a message is posted in a Channel or a Group
+        return;
       }
 
       const userTelegramId = ctx?.message?.from?.id ?? -1;
 
       // look for the user in the local database to see if they registered before
       const result = await isUserInDb(userTelegramId);
-      ctx.sessionId = result?.TimeOnBot[0]?.sessionId ?? "0";
+      ctx.sessionId = result?.sessionId ?? "0";
       console.log(ctx.sessionId);
 
-      if (userTelegramId) {
-        const result: boolean = await getUserFromTelegramChannel(userTelegramId);
-        ctx.joinedPrivateChannel = result;
+      // check if the user has joined the Private Mellins Channel
+      if (userTelegramId !== -1) {
+        const chatMember = await bot.telegram.getChatMember(TELEGRAM_PRIVATE_CHANNEL_ID, userTelegramId);
+        ctx.joinedPrivateChannel = chatMember.status;
       }
 
       // if the message is sent from a private channel, ignore the message
@@ -36,6 +44,17 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
       const essentialCommands = ["/start", "Register"];
       const rsaIdLength = 13;
 
+      if (text === "/start" && !result?.rsaId) {
+        try {
+          await createUser(ctx);
+        } catch (err) {
+          if (err.code === "P2002") {
+            await next();
+            return;
+          }
+        }
+      }
+
       // allows users to request a callback if they haven't registered before
       // requesting a callback will work for registered users automatically
       if (!Boolean(result?.rsaId) && text === "Request a Callback") {
@@ -43,8 +62,8 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
         return;
       }
 
+      // if the user already registered an account, redirect them to the menu
       if (Boolean(result?.rsaId) && essentialCommands.includes(text)) {
-        // if the user already registered an account, redirect them to the menu
         ctx.customerId = result.rsaId;
 
         await botReply(

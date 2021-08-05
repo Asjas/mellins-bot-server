@@ -29,6 +29,7 @@ import ShareLocationCommand from "../commands/shareLocation";
 import SocialMediaCommand from "../commands/socialMedia";
 import FacebookCommand from "../commands/facebook";
 import InstagramCommand from "../commands/instagram";
+import MellinsChannelLinkCommand from "../commands/mellinsChannelLink";
 import JoinMellinsChannelCommand from "../commands/joinMellinsChannel";
 import ShareContactCommand from "../commands/shareContact";
 
@@ -59,6 +60,7 @@ function registerBotCommands(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Updat
   WesternCapeBranchesBotCommand(bot);
   FindClosestBranchCommand(bot);
   ShareLocationCommand(bot);
+  MellinsChannelLinkCommand(bot);
   JoinMellinsChannelCommand(bot);
   SocialMediaCommand(bot);
   FacebookCommand(bot);

@@ -27,13 +27,10 @@ export default function CustomerIdCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
 
       if (customerFound) {
         try {
-          await customerRSAID(ctx, { telegramId, firstName, lastName, rsaId });
+          await customerRSAID(ctx, rsaId);
         } catch (err: any) {
-          // if the user is already registered, send a message and exit
-          if (err.code === "P2002") {
-            await botReply(ctx, `The ID ${rsaId} is already registered.`, keyboards.fullBotKeyboard(ctx));
-            return;
-          }
+          // if the user is already registered, exit
+          console.log(err);
         }
 
         await ctx.reply(`Welcome ${firstName} ${lastName}. You've been successfully registered.`);

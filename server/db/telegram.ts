@@ -5,7 +5,6 @@ import config from "../config";
 import { prismaDevMiddleware } from "../middleware/prismaMiddleware";
 
 import type MyContext from "../types/telegram";
-import type { LogUserActionsInDb } from "../types/telegram";
 
 export const telegramDb = new Prisma.PrismaClient();
 
@@ -16,156 +15,175 @@ if (config.NODE_ENV !== "production") {
 const hyperInstance = hyperid();
 
 export async function isUserInDb(telegramId: number) {
-  return await telegramDb.telegramUser.findUnique({
-    where: { telegramId },
-    select: {
-      firstName: true,
-      rsaId: true,
-      TimeOnBot: {
-        select: {
-          sessionId: true,
-        },
+  try {
+    return await telegramDb.telegramUser.findUnique({
+      where: { telegramId },
+      select: {
+        firstName: true,
+        rsaId: true,
+        sessionId: true,
       },
-    },
-  });
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export async function getUserFromDb(rsaId: string) {
-  return await telegramDb.telegramUser.findUnique({
-    where: { rsaId },
-    select: {
-      firstName: true,
-      lastName: true,
-      rsaId: true,
-      telegramId: true,
-      joinedMellinsChannel: true,
-      kickedBot: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
-}
-
-export async function userStoppedBot(telegramId: number) {
-  const updatedAtDate = new Date();
-
-  await telegramDb.telegramUser.update({
-    where: { telegramId },
-    data: {
-      kickedBot: true,
-      updatedAt: updatedAtDate.toISOString(),
-      // UserStatus: {
-      //   update: {
-      //     where: { id: }
-      //   }
-      // }
-    },
-  });
-}
-
-export async function userRestartedBot(telegramId: number) {
-  const updatedAtDate = new Date();
-
-  await telegramDb.telegramUser.update({
-    where: { telegramId },
-    data: {
-      kickedBot: false,
-      updatedAt: updatedAtDate.toISOString(),
-    },
-  });
-}
-
-export async function customerRSAID(
-  ctx: MyContext,
-  {
-    telegramId,
-    firstName,
-    lastName,
-    rsaId,
-  }: {
-    telegramId: number;
-    firstName: string;
-    lastName: string;
-    rsaId: string;
-  },
-) {
-  const updatedAtDate = new Date();
-  let id: string;
-
-  if (ctx.sessionId === "0") {
-    id = hyperInstance();
-  } else {
-    id = ctx.sessionId;
-  }
-
-  console.log({ id });
-
-  await telegramDb.telegramUser.update({
-    where: { telegramId },
-    data: {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      updatedAt: updatedAtDate.toISOString(),
-    },
-  });
-}
-
-export async function logUserActionsInDb(
-  ctx: MyContext,
-  {
-    firstName,
-    lastName,
-    rsaId,
-    telegramId,
-    joinedMellinsChannel,
-    messageId,
-    userCommand,
-    botAnswer,
-  }: LogUserActionsInDb,
-) {
-  const updatedAtDate = new Date();
-  let id: string;
-
-  if (ctx.sessionId === "0") {
-    id = hyperInstance();
-  } else {
-    id = ctx.sessionId;
-  }
-
-  console.log({ id });
-
-  await telegramDb.telegramUser.upsert({
-    where: { telegramId },
-    create: {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      updatedAt: updatedAtDate.toISOString(),
-      TelegramMessages: {
-        create: {
-          messageId,
-          userCommand,
-          botAnswer,
-        },
+  try {
+    return await telegramDb.telegramUser.findUnique({
+      where: { rsaId },
+      select: {
+        firstName: true,
+        lastName: true,
+        rsaId: true,
+        telegramId: true,
+        joinedMellinsChannel: true,
+        kickedBot: true,
+        createdAt: true,
+        updatedAt: true,
       },
-    },
-    update: {
-      firstName,
-      lastName,
-      rsaId,
-      telegramId,
-      joinedMellinsChannel,
-      updatedAt: updatedAtDate.toISOString(),
-      TelegramMessages: {
-        create: {
-          messageId,
-          userCommand,
-          botAnswer,
-        },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function getUsers() {
+  try {
+    return await telegramDb.telegramUser.findMany();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function createUser(ctx: MyContext) {
+  try {
+    const { first_name: firstName = "", last_name: lastName = "", id: telegramId, username } = ctx.message.from;
+    let sessionId: string;
+
+    if (ctx.sessionId === "0") {
+      sessionId = hyperInstance();
+    } else {
+      sessionId = ctx.sessionId;
+    }
+
+    await telegramDb.telegramUser.upsert({
+      where: { telegramId },
+      create: {
+        firstName,
+        lastName,
+        username,
+        telegramId,
+        sessionId,
       },
-    },
-  });
+      update: {
+        firstName,
+        lastName,
+        username,
+        telegramId,
+        sessionId,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function userStoppedBot(ctx) {
+  try {
+    const { id: telegramId, username } = ctx.update.my_chat_member.from;
+    const updatedAtDate = new Date();
+    let sessionId: string;
+
+    if (ctx.sessionId === "0") {
+      sessionId = hyperInstance();
+    } else {
+      sessionId = ctx.sessionId;
+    }
+
+    await telegramDb.telegramUser.upsert({
+      where: { telegramId },
+      create: {
+        username,
+        telegramId,
+        sessionId,
+        kickedBot: true,
+        updatedAt: updatedAtDate.toISOString(),
+      },
+      update: {
+        kickedBot: true,
+        updatedAt: updatedAtDate.toISOString(),
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function userRestartedBot(ctx) {
+  try {
+    const { id: telegramId, username } = ctx.update.my_chat_member.from;
+    const updatedAtDate = new Date();
+    let sessionId: string;
+
+    if (ctx.sessionId === "0") {
+      sessionId = hyperInstance();
+    } else {
+      sessionId = ctx.sessionId;
+    }
+
+    await telegramDb.telegramUser.upsert({
+      where: { telegramId },
+      create: {
+        username,
+        telegramId,
+        sessionId,
+        kickedBot: false,
+        updatedAt: updatedAtDate.toISOString(),
+      },
+      update: {
+        kickedBot: false,
+        updatedAt: updatedAtDate.toISOString(),
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function customerRSAID(ctx: MyContext, rsaId: string) {
+  try {
+    const { first_name: firstName = "", last_name: lastName = "", id: telegramId, username } = ctx.message.from;
+    const updatedAtDate = new Date();
+    let sessionId: string;
+
+    if (ctx.sessionId === "0") {
+      sessionId = hyperInstance();
+    } else {
+      sessionId = ctx.sessionId;
+    }
+
+    await telegramDb.telegramUser.upsert({
+      where: { telegramId },
+      create: {
+        firstName,
+        lastName,
+        rsaId,
+        sessionId,
+        username,
+        telegramId,
+        updatedAt: updatedAtDate.toISOString(),
+      },
+      update: {
+        firstName,
+        lastName,
+        rsaId,
+        telegramId,
+        updatedAt: updatedAtDate.toISOString(),
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }

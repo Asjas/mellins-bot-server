@@ -40,6 +40,10 @@ async function mellinsBot(TELEGRAM_BOT_TOKEN: string) {
     await next();
   });
 
+  // Gracefully shutdown the bot when neccessary.
+  process.once("SIGINT", () => bot.stop("SIGINT"));
+  process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
   return bot;
 }
 

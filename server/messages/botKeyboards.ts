@@ -5,8 +5,16 @@ import MyContext from "../types/telegram";
 export function fullBotKeyboard(ctx: MyContext) {
   let buttons: string[] = [];
 
-  if (ctx?.joinedPrivateChannel === true) {
-    buttons = ["Balance", "Statements", "Appointments", "Branch Locator", "Shop Online", "Social Media"];
+  if (ctx?.joinedPrivateChannel === "member") {
+    buttons = [
+      "Balance",
+      "Statements",
+      "Appointments",
+      "Mellins Channel Link",
+      "Branch Locator",
+      "Shop Online",
+      "Social Media",
+    ];
   } else {
     buttons = [
       "Balance",
@@ -56,7 +64,11 @@ export function provincialBranchListKeyboard() {
 }
 
 export async function branchListKeyboard(bot, branches) {
-  await BranchRegisterCallback(bot, branches);
+  try {
+    await BranchRegisterCallback(bot, branches);
+  } catch (err) {
+    console.error(err);
+  }
 
   const branchButtons = branches.map((branch: any) => {
     return Markup.button.callback(branch.name, branch);
