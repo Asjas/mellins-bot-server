@@ -3,7 +3,7 @@ export const INVALID_RSA_ID = `It appears that your ID number is incorrect.\n\nl
 export const NO_OUTSTANDING_STATEMENTS = `No outstanding statements found.`;
 
 export const MELLINS_CHANNEL_LINK = `Please click on the link below in order to join:\nhttps://t.me/joinchat/Tg0x8KBZk810fGlR`;
-export const JOIN_MELLINS_CHANNEL = `Thank you for deciding to join our channel.\n\nJoining the channel will make you eligible for exclusive discounts and would allow you to earn loyalty points.\n\nPlease click on the link below in order to join:\nhttps://t.me/joinchat/Tg0x8KBZk810fGlR`;
+export const JOIN_MELLINS_CHANNEL = `Thank you for deciding to join our Telegram channel.\n\nJoining the channel will make you eligible for exclusive discounts and would allow you to earn loyalty points.\n\nWould you like to join our Telegram channel?`;
 
 export const STARTED_MESSAGE = `Thank you for using @Mellinsbot.\n\nPlease select Register to continue:`;
 export const ORDERS_MESSAGE = `Thank you for using @Mellinsbot's order portal.\nPlease select an option below:`;
@@ -18,7 +18,7 @@ export const SHOP_ONLINE_MESSAGE = `To enjoy our easy to use hassle free online 
 export const INSTAGRAM_MESSGAGE = `Follow us on Instagram:\n\nhttps://www.instagram.com/mellinsistyle/`;
 export const FACEBOOK_MESSAGE = `Follow us on Facebook:\n\nhttps://www.facebook.com/mellinsistyle/`;
 export const FRESHDESK_CALLBACK_MESSAGE = `A ticket has been logged with our call center and an agent will be in touch shortly.\nNote your ticket number:`;
-export const BRANCH_LOCATOR_MESSAGE = `Thank you for using @Mellinsbot's branch locator portal.\nIn order to use my services ensure your location services is switched on.`;
+export const BRANCH_LOCATOR_MESSAGE = `Thank you for using @Mellinsbot's branch locator portal.\n\nIn order to use my services ensure your location services is switched on.`;
 export const BRANCH_SELECTION_MESSAGE = `Please select one of these practices:`;
 export const LOCATION_REQUEST_MESSAGE = `In order to find the closest Mellins Branch please send me your current location:\n\nIf you experience any errors, please ensure that your location services are enabled and allowed for Telegram.`;
 

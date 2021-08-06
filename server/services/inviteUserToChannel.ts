@@ -6,7 +6,7 @@ import { StoreSession } from "telegram/sessions/index.js";
 
 dotenv.config();
 
-const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH, TELEGRAM_PRIVATE_CHANNEL_ID } = process.env;
+const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH } = process.env;
 
 const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
@@ -25,8 +25,8 @@ async function inviteUserToChannel(telegramId: number) {
 
     await client.invoke(
       new Api.channels.InviteToChannel({
-        channel: TELEGRAM_PRIVATE_CHANNEL_ID,
-        users: [telegramId],
+        channel: -1001198053895,
+        users: [new Api.PeerUser({ userId: telegramId })],
       }),
     );
 

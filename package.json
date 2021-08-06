@@ -54,6 +54,7 @@
     "fastify-telegraf": "1.0.2",
     "fluent-json-schema": "^3.0.1",
     "hyperid": "^2.3.1",
+    "input": "^1.0.1",
     "ioredis": "4.27.7",
     "mysql": "2.18.1",
     "pino-pretty": "5.1.2",

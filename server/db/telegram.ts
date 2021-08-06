@@ -59,6 +59,7 @@ export async function getUsers() {
 
 export async function createUser(ctx: MyContext) {
   try {
+    const updatedAtDate = new Date();
     const { first_name: firstName = "", last_name: lastName = "", id: telegramId, username } = ctx.message.from;
     let sessionId: string;
 
@@ -76,13 +77,24 @@ export async function createUser(ctx: MyContext) {
         username,
         telegramId,
         sessionId,
+        UserBotTime: {
+          create: {
+            sessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
       },
       update: {
         firstName,
         lastName,
         username,
         telegramId,
-        sessionId,
+        UserBotTime: {
+          create: {
+            sessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
       },
     });
   } catch (err) {
@@ -107,13 +119,29 @@ export async function userStoppedBot(ctx) {
       create: {
         username,
         telegramId,
-        sessionId,
         kickedBot: true,
+        sessionId,
         updatedAt: updatedAtDate.toISOString(),
+        UserBotTime: {
+          create: {
+            sessionId,
+            joinedAt: updatedAtDate.toISOString(),
+            leftAt: updatedAtDate.toISOString(),
+          },
+        },
       },
       update: {
         kickedBot: true,
+        sessionId: "0",
         updatedAt: updatedAtDate.toISOString(),
+        UserBotTime: {
+          update: {
+            where: { sessionId },
+            data: {
+              leftAt: updatedAtDate.toISOString(),
+            },
+          },
+        },
       },
     });
   } catch (err) {
@@ -138,13 +166,26 @@ export async function userRestartedBot(ctx) {
       create: {
         username,
         telegramId,
-        sessionId,
         kickedBot: false,
+        sessionId,
         updatedAt: updatedAtDate.toISOString(),
+        UserBotTime: {
+          create: {
+            sessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
       },
       update: {
         kickedBot: false,
+        sessionId,
         updatedAt: updatedAtDate.toISOString(),
+        UserBotTime: {
+          create: {
+            sessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
       },
     });
   } catch (err) {
@@ -170,10 +211,16 @@ export async function customerRSAID(ctx: MyContext, rsaId: string) {
         firstName,
         lastName,
         rsaId,
-        sessionId,
         username,
         telegramId,
+        sessionId,
         updatedAt: updatedAtDate.toISOString(),
+        UserBotTime: {
+          create: {
+            sessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
       },
       update: {
         firstName,

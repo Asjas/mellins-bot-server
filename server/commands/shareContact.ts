@@ -8,15 +8,12 @@ import { botReply } from "./reply";
 export default function ShareContactCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   bot.use(async (ctx: any, next) => {
     try {
-      console.log("SHARE CONTACT", ctx);
       const contact = ctx.message?.contact;
 
       if (!contact) {
         await next();
         return;
       }
-
-      console.log(contact);
 
       if (contact) {
         const { first_name: firstName, last_name: lastName, phone_number: contactNo } = contact;
@@ -33,8 +30,6 @@ export default function ShareContactCommand(bot: TelegrafPKG.Telegraf<TelegrafPK
     } catch (err) {
       console.error(err);
     }
-
-    console.log("exiting share contact");
 
     // the message didn't contain a Telegram Contact, forward request onwards
     await next();

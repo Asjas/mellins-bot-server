@@ -7,10 +7,11 @@
 import { TelegramClient } from "telegram";
 import { StoreSession } from "telegram/sessions/index.js";
 import dotenv from "dotenv";
+import input from "input";
 
 dotenv.config();
 
-const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH, TELEGRAM_BOT_TOKEN } = process.env;
+const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH } = process.env;
 
 const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
@@ -23,7 +24,10 @@ const client = new TelegramClient(storeSession, apiId, apiHash, {
 (async function run() {
   try {
     await client.start({
-      botAuthToken: TELEGRAM_BOT_TOKEN,
+      phoneNumber: async () => await input.text("number ?"),
+      password: async () => await input.text("password ?"),
+      phoneCode: async () => await input.text("code ?"),
+      onError: (err) => console.log(err),
     });
 
     await client.connect();
