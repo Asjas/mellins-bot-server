@@ -130,7 +130,7 @@ export async function userStoppedBot(ctx) {
 
 export async function userRestartedBot(ctx) {
   try {
-    const { id: telegramId, username } = ctx.update.my_chat_member.from;
+    const { id: telegramId } = ctx.update.my_chat_member.from;
     const updatedAtDate = new Date();
     let sessionId: string;
 
