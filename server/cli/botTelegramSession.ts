@@ -1,22 +1,21 @@
 // This CLI is used to authenticate to the Telegram API and stores the session
-// in a folder named `.telegram_session` so that we only have to authenticate once.
+// in a folder named `.bot_telegram_session` so that we only have to authenticate once.
 
-// This Session and the Telegram API is used so that we can query whether
-// a user exists in a private telegram group channel
+// This Session and the Telegram API is used so that we can
+// send messages directly to the user as the bot
 
 import { TelegramClient } from "telegram";
 import { StoreSession } from "telegram/sessions/index.js";
 import dotenv from "dotenv";
-import input from "input";
 
 dotenv.config();
 
-const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH } = process.env;
+const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH, TELEGRAM_BOT_TOKEN } = process.env;
 
 const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
 
-const storeSession = new StoreSession(".telegram_session");
+const storeSession = new StoreSession(".bot_telegram_session");
 const client = new TelegramClient(storeSession, apiId, apiHash, {
   connectionRetries: 5,
 });
@@ -24,10 +23,7 @@ const client = new TelegramClient(storeSession, apiId, apiHash, {
 (async function run() {
   try {
     await client.start({
-      phoneNumber: async () => await input.text("number ?"),
-      password: async () => await input.text("password ?"),
-      phoneCode: async () => await input.text("code ?"),
-      onError: (err) => console.log(err),
+      botAuthToken: TELEGRAM_BOT_TOKEN,
     });
 
     await client.connect();
