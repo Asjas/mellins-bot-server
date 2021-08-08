@@ -6,15 +6,7 @@ export function fullBotKeyboard(ctx: MyContext) {
   let buttons: string[] = [];
 
   if (ctx?.joinedPrivateChannel === "member" || ctx?.joinedPrivateChannel === "creator") {
-    buttons = [
-      "Balance",
-      "Statements",
-      "Appointments",
-      "Mellins Channel Link",
-      "Branch Locator",
-      "Shop Online",
-      "Social Media",
-    ];
+    buttons = ["Balance", "Statements", "Appointments", "Branch Locator", "Shop Online", "Social Media"];
   } else {
     buttons = [
       "Balance",

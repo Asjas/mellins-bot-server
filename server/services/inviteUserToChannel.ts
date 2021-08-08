@@ -11,7 +11,7 @@ const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH } = process.env;
 const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
 
-async function inviteUserToChannel(telegramId: number) {
+async function inviteUserToChannel(telegramId: number, messageId: number) {
   const storeSession = new StoreSession(".user_telegram_session");
 
   const client = new TelegramClient(storeSession, apiId, apiHash, {
@@ -20,9 +20,20 @@ async function inviteUserToChannel(telegramId: number) {
 
   Logger.setLevel("error");
 
-  try {
-    await client.connect();
+  await client.connect();
 
+  // We need to resolve and store the user as a session so that we can invite them
+  try {
+    const result = await client.getMessages("ajroos2", { limit: 1, ids: messageId });
+    console.log({ result });
+
+    client.session.save();
+  } catch (err) {
+    console.log(err);
+  }
+
+  // Try to invite the user to the channel
+  try {
     await client.invoke(
       new Api.channels.InviteToChannel({
         channel: -1001198053895,
