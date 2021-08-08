@@ -25,12 +25,9 @@ async function inviteUserToChannel(telegramId: number, messageId: number) {
   // We need to resolve and store the user as a session so that we can invite them
   try {
     const result = await client.getMessages("ajroos2", { limit: 1, ids: messageId });
-    console.log({ result });
 
     client.session.save();
-  } catch (err) {
-    console.log(err);
-  }
+  } catch {}
 
   // Try to invite the user to the channel
   try {
