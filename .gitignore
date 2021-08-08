@@ -103,5 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-# Ignore telegram session folder
-.telegram_session
+# Ignore telegram session folders
+.bot_telegram_session
+.user_telegram_session

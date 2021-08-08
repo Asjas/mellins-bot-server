@@ -12,7 +12,7 @@ const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
 
 async function sendUserTelegramMessage({ telegramId, message }: { telegramId: number; message: string }) {
-  const storeSession = new StoreSession(".telegram_session");
+  const storeSession = new StoreSession(".bot_telegram_session");
 
   const client = new TelegramClient(storeSession, apiId, apiHash, {
     connectionRetries: 5,
