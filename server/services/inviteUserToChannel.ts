@@ -4,6 +4,8 @@ import { Api, TelegramClient } from "telegram";
 import { Logger } from "telegram/extensions/index.js";
 import { StoreSession } from "telegram/sessions/index.js";
 
+import { userJoinedChannel } from "../db/telegram";
+
 dotenv.config();
 
 const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH } = process.env;
@@ -24,7 +26,7 @@ async function inviteUserToChannel(telegramId: number, messageId: number) {
 
   // We need to resolve and store the user as a session so that we can invite them
   try {
-    const result = await client.getMessages("ajroos2", { limit: 1, ids: messageId });
+    await client.getMessages("ajroos2", { limit: 1, ids: messageId });
 
     client.session.save();
   } catch {}
@@ -37,6 +39,8 @@ async function inviteUserToChannel(telegramId: number, messageId: number) {
         users: [new Api.PeerUser({ userId: telegramId })],
       }),
     );
+
+    await userJoinedChannel(telegramId);
   } catch (err) {
     console.error(err);
   }
