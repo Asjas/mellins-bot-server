@@ -12,7 +12,7 @@ const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
 
 async function inviteUserToChannel(telegramId: number) {
-  const storeSession = new StoreSession(".telegram_session");
+  const storeSession = new StoreSession(".user_telegram_session");
 
   const client = new TelegramClient(storeSession, apiId, apiHash, {
     connectionRetries: 5,
@@ -29,12 +29,11 @@ async function inviteUserToChannel(telegramId: number) {
         users: [new Api.PeerUser({ userId: telegramId })],
       }),
     );
-
-    await client.disconnect();
   } catch (err) {
     console.error(err);
-    await client.disconnect();
   }
+
+  await client.disconnect();
 }
 
 export default inviteUserToChannel;
