@@ -104,39 +104,18 @@ export async function createUser(ctx: MyContext) {
 
 export async function userStoppedBot(ctx) {
   try {
-    const { id: telegramId, username } = ctx.update.my_chat_member.from;
+    const { id: telegramId } = ctx.update.my_chat_member.from;
     const updatedAtDate = new Date();
-    let sessionId: string;
 
-    if (ctx.sessionId === "0") {
-      sessionId = hyperInstance();
-    } else {
-      sessionId = ctx.sessionId;
-    }
-
-    await telegramDb.telegramUser.upsert({
+    await telegramDb.telegramUser.update({
       where: { telegramId },
-      create: {
-        username,
-        telegramId,
-        kickedBot: true,
-        sessionId,
-        updatedAt: updatedAtDate.toISOString(),
-        UserBotTime: {
-          create: {
-            sessionId,
-            joinedAt: updatedAtDate.toISOString(),
-            leftAt: updatedAtDate.toISOString(),
-          },
-        },
-      },
-      update: {
+      data: {
         kickedBot: true,
         sessionId: "0",
         updatedAt: updatedAtDate.toISOString(),
         UserBotTime: {
           update: {
-            where: { sessionId },
+            where: { sessionId: ctx.sessionId },
             data: {
               leftAt: updatedAtDate.toISOString(),
             },
@@ -161,22 +140,9 @@ export async function userRestartedBot(ctx) {
       sessionId = ctx.sessionId;
     }
 
-    await telegramDb.telegramUser.upsert({
+    await telegramDb.telegramUser.update({
       where: { telegramId },
-      create: {
-        username,
-        telegramId,
-        kickedBot: false,
-        sessionId,
-        updatedAt: updatedAtDate.toISOString(),
-        UserBotTime: {
-          create: {
-            sessionId,
-            joinedAt: updatedAtDate.toISOString(),
-          },
-        },
-      },
-      update: {
+      data: {
         kickedBot: false,
         sessionId,
         updatedAt: updatedAtDate.toISOString(),

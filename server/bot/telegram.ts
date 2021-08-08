@@ -4,6 +4,7 @@ import botMiddleware from "../middleware/botMiddleware";
 
 import * as keyboards from "../messages/botKeyboards";
 import { botReply } from "../commands/reply";
+import { isUserInDb, userStoppedBot, userRestartedBot } from "../db/telegram";
 
 const { Telegraf } = TelegrafPKG;
 

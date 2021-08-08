@@ -24,12 +24,20 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
         return;
       }
 
-      const userTelegramId = ctx?.message?.from?.id ?? -1;
+      // Set user telegram ID based on whether it's an update or a message coming from Telegram
+      let userTelegramId: number;
+
+      if (ctx?.update?.my_chat_member?.from?.id) {
+        userTelegramId = ctx?.update?.my_chat_member?.from?.id;
+      } else if (ctx?.message?.from?.id) {
+        userTelegramId = ctx?.message?.from?.id;
+      } else {
+        userTelegramId = -1;
+      }
 
       // look for the user in the local database to see if they registered before
       const result = await isUserInDb(userTelegramId);
       ctx.sessionId = result?.sessionId ?? "0";
-      console.log(ctx.sessionId);
 
       // check if the user has joined the Private Mellins Channel
       if (userTelegramId !== -1) {
@@ -57,7 +65,10 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
 
       // allows users to request a callback if they haven't registered before
       // requesting a callback will work for registered users automatically
-      if (!Boolean(result?.rsaId) && text === "Request a Callback") {
+      if (
+        (!Boolean(result?.rsaId) && text === "Request a Callback") ||
+        (!Boolean(result?.rsaId) && ctx.message?.contact)
+      ) {
         await next();
         return;
       }

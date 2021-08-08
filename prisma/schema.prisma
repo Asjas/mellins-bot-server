@@ -13,7 +13,7 @@ model TelegramUser {
   lastName             String?
   rsaId                String?       @unique
   username             String?       @unique
-  sessionId            String        @unique
+  sessionId            String
   joinedMellinsChannel Boolean?      @default(false)
   kickedBot            Boolean?      @default(false)
   createdAt            DateTime      @default(now())

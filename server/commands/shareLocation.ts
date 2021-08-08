@@ -9,9 +9,9 @@ import { botReply, botReplyWithLocation } from "./reply";
 export default function ShareLocationCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
   // When the user drops a `pin` to their location it comes in as a normal message, that is why
   // we have to register a middleware plugin to check if the `location` object exists in any message
-  bot.use(async (ctx: MyContext, next) => {
+  bot.use(async (ctx: any, next) => {
     try {
-      const { location } = ctx.message as any;
+      const location = ctx?.message?.location;
 
       if (!location) {
         await next();
