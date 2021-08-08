@@ -200,3 +200,29 @@ export async function customerRSAID(ctx: MyContext, rsaId: string) {
     console.error(err);
   }
 }
+
+export async function userJoinedChannel(telegramId: number) {
+  try {
+    await telegramDb.telegramUser.update({
+      where: { telegramId },
+      data: {
+        joinedMellinsChannel: true,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function userLeftChannel(telegramId: number) {
+  try {
+    await telegramDb.telegramUser.update({
+      where: { telegramId },
+      data: {
+        joinedMellinsChannel: false,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
