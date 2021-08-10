@@ -18,6 +18,9 @@ export default function JoinMellinsChannelCommand(bot: TelegrafPKG.Telegraf<Tele
 
       await inviteUserToChannel(telegramId, forwardedMessage.message_id);
 
+      // We need this to hide the `Join Mellins Channel` keyboard button before we send the keyboard
+      ctx.joinedMellinsChannel = "member";
+
       await userJoinedChannel(ctx);
 
       await botReply(ctx, "You've successfully joined the Mellins Telegram channel.", keyboards.fullBotKeyboard(ctx));
