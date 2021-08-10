@@ -17,6 +17,14 @@ async function mellinsBot(TELEGRAM_BOT_TOKEN: string) {
 
   await bot.launch();
 
+  bot.hears("Mellins Channel", async (ctx) => {
+    try {
+      await ctx.reply("Open Mellins Channel", keyboards.inlineChannelLinkKeyboard());
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
   // if the user provided text doesn't match any of our middleware or commands,
   // we then redirect them and display the full bot keyboard
   bot.use(async (ctx: any, next) => {

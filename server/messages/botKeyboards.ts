@@ -6,7 +6,15 @@ export function fullBotKeyboard(ctx: MyContext) {
   let buttons: string[] = [];
 
   if (["member", "creator", "admin"].includes(ctx.joinedMellinsChannel)) {
-    buttons = ["Balance", "Statements", "Appointments", "Branch Locator", "Shop Online", "Social Media"];
+    buttons = [
+      "Balance",
+      "Statements",
+      "Appointments",
+      "Mellins Channel",
+      "Branch Locator",
+      "Shop Online",
+      "Social Media",
+    ];
   } else {
     buttons = [
       "Balance",
@@ -19,7 +27,7 @@ export function fullBotKeyboard(ctx: MyContext) {
     ];
   }
 
-  return Markup.keyboard(buttons).resize().oneTime();
+  return Markup.keyboard(buttons).resize();
 }
 
 export function registerKeyboard() {
@@ -28,6 +36,10 @@ export function registerKeyboard() {
 
 export function registerAndCallbackKeyboard() {
   return Markup.keyboard(["Register", "Request a Callback"], { columns: 2 }).oneTime();
+}
+
+export function inlineChannelLinkKeyboard() {
+  return Markup.inlineKeyboard([Markup.button.url("Mellins Channel", "https://t.me/joinchat/38hEkc3DJkplMmU0")]);
 }
 
 export function inlineCallbackKeyboard() {
