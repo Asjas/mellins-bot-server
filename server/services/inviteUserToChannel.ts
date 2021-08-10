@@ -39,8 +39,6 @@ async function inviteUserToChannel(telegramId: number, messageId: number) {
         users: [new Api.PeerUser({ userId: telegramId })],
       }),
     );
-
-    await userJoinedChannel(telegramId);
   } catch (err) {
     console.error(err);
   }

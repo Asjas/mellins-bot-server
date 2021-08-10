@@ -145,7 +145,7 @@ export async function userStoppedBot(ctx) {
         updatedAt: updatedAtDate.toISOString(),
         UserBotTime: {
           update: {
-            where: { sessionId: ctx.sessionId },
+            where: { sessionId: ctx.botSessionId },
             data: {
               leftAt: updatedAtDate.toISOString(),
             },
