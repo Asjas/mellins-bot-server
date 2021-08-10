@@ -37,12 +37,16 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
 
       // look for the user in the local database to see if they registered before
       const result = await isUserInDb(userTelegramId);
-      ctx.sessionId = result?.sessionId ?? "0";
+      ctx.botSessionId = result?.botSessionId ?? "0";
+      ctx.channelSessionId = result?.channelSessionId ?? "0";
+
+      console.log("botSessionId", ctx.botSessionId);
+      console.log("channelSessionId", ctx.channelSessionId);
 
       // check if the user has joined the Private Mellins Channel
       if (userTelegramId !== -1) {
         const chatMember = await bot.telegram.getChatMember(TELEGRAM_PRIVATE_CHANNEL_ID, userTelegramId);
-        ctx.joinedPrivateChannel = chatMember.status;
+        ctx.joinedMellinsChannel = chatMember.status;
       }
 
       // if the message is sent from a private channel, ignore the message

@@ -2,8 +2,9 @@ import { Context } from "telegraf";
 
 interface MyContext extends Context {
   customerId?: string;
-  joinedPrivateChannel?: string;
-  sessionId?: string;
+  joinedMellinsChannel?: string;
+  botSessionId?: string;
+  channelSessionId?: string;
 }
 
 export default MyContext;

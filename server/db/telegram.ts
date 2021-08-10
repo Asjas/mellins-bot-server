@@ -21,7 +21,8 @@ export async function isUserInDb(telegramId: number) {
       select: {
         firstName: true,
         rsaId: true,
-        sessionId: true,
+        botSessionId: true,
+        channelSessionId: true,
       },
     });
   } catch (err) {
@@ -61,12 +62,26 @@ export async function createUser(ctx: MyContext) {
   try {
     const updatedAtDate = new Date();
     const { first_name: firstName = "", last_name: lastName = "", id: telegramId, username } = ctx.message.from;
-    let sessionId: string;
+    let botSessionId: string;
+    let channelSessionId: string;
+    let joinedMellinsChannel: boolean;
 
-    if (ctx.sessionId === "0") {
-      sessionId = hyperInstance();
+    if (["member", "creator", "admin"].includes(ctx.joinedMellinsChannel)) {
+      joinedMellinsChannel = true;
     } else {
-      sessionId = ctx.sessionId;
+      joinedMellinsChannel = false;
+    }
+
+    if (ctx.botSessionId === "0") {
+      botSessionId = hyperInstance();
+    } else {
+      botSessionId = ctx.botSessionId;
+    }
+
+    if (ctx.channelSessionId === "0") {
+      channelSessionId = hyperInstance();
+    } else {
+      channelSessionId = ctx.channelSessionId;
     }
 
     await telegramDb.telegramUser.upsert({
@@ -76,10 +91,18 @@ export async function createUser(ctx: MyContext) {
         lastName,
         username,
         telegramId,
-        sessionId,
+        botSessionId,
+        channelSessionId,
+        joinedMellinsChannel,
         UserBotTime: {
           create: {
-            sessionId,
+            sessionId: botSessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
+        UserChannelTime: {
+          create: {
+            sessionId: channelSessionId,
             joinedAt: updatedAtDate.toISOString(),
           },
         },
@@ -89,9 +112,16 @@ export async function createUser(ctx: MyContext) {
         lastName,
         username,
         telegramId,
+        joinedMellinsChannel,
         UserBotTime: {
           create: {
-            sessionId,
+            sessionId: botSessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
+        UserChannelTime: {
+          create: {
+            sessionId: channelSessionId,
             joinedAt: updatedAtDate.toISOString(),
           },
         },
@@ -111,7 +141,7 @@ export async function userStoppedBot(ctx) {
       where: { telegramId },
       data: {
         kickedBot: true,
-        sessionId: "0",
+        botSessionId: "0",
         updatedAt: updatedAtDate.toISOString(),
         UserBotTime: {
           update: {
@@ -132,23 +162,101 @@ export async function userRestartedBot(ctx) {
   try {
     const { id: telegramId } = ctx.update.my_chat_member.from;
     const updatedAtDate = new Date();
-    let sessionId: string;
+    let botSessionId: string;
 
-    if (ctx.sessionId === "0") {
-      sessionId = hyperInstance();
+    if (ctx.botSessionId === "0") {
+      botSessionId = hyperInstance();
     } else {
-      sessionId = ctx.sessionId;
+      botSessionId = ctx.botSessionId;
     }
 
     await telegramDb.telegramUser.update({
       where: { telegramId },
       data: {
         kickedBot: false,
-        sessionId,
+        botSessionId,
         updatedAt: updatedAtDate.toISOString(),
         UserBotTime: {
           create: {
-            sessionId,
+            sessionId: botSessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function userLeftChannel(ctx: MyContext) {
+  try {
+    const { id: telegramId } = ctx.message.from;
+    const updatedAtDate = new Date();
+    let channelSessionId: string;
+    let joinedMellinsChannel: boolean;
+
+    if (["member", "creator", "admin"].includes(ctx.joinedMellinsChannel)) {
+      joinedMellinsChannel = true;
+    } else {
+      joinedMellinsChannel = false;
+    }
+
+    if (ctx.channelSessionId === "0") {
+      channelSessionId = hyperInstance();
+    } else {
+      channelSessionId = ctx.channelSessionId;
+    }
+
+    await telegramDb.telegramUser.update({
+      where: { telegramId },
+      data: {
+        joinedMellinsChannel,
+        channelSessionId: "0",
+        updatedAt: updatedAtDate.toISOString(),
+        UserChannelTime: {
+          update: {
+            where: { sessionId: channelSessionId },
+            data: {
+              leftAt: updatedAtDate.toISOString(),
+            },
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function userJoinedChannel(ctx: MyContext) {
+  try {
+    const { id: telegramId } = ctx.message.from;
+    const updatedAtDate = new Date();
+    let channelSessionId: string;
+    let joinedMellinsChannel: boolean;
+
+    if (["member", "creator", "admin"].includes(ctx.joinedMellinsChannel)) {
+      joinedMellinsChannel = true;
+    } else {
+      joinedMellinsChannel = false;
+    }
+
+    if (ctx.channelSessionId === "0") {
+      channelSessionId = hyperInstance();
+    } else {
+      channelSessionId = ctx.channelSessionId;
+    }
+
+    await telegramDb.telegramUser.update({
+      where: { telegramId },
+      data: {
+        joinedMellinsChannel,
+        channelSessionId,
+        updatedAt: updatedAtDate.toISOString(),
+        UserChannelTime: {
+          create: {
+            sessionId: channelSessionId,
             joinedAt: updatedAtDate.toISOString(),
           },
         },
@@ -163,12 +271,19 @@ export async function customerRSAID(ctx: MyContext, rsaId: string) {
   try {
     const { first_name: firstName = "", last_name: lastName = "", id: telegramId, username } = ctx.message.from;
     const updatedAtDate = new Date();
-    let sessionId: string;
+    let botSessionId: string;
+    let channelSessionId: string;
 
-    if (ctx.sessionId === "0") {
-      sessionId = hyperInstance();
+    if (ctx.botSessionId === "0") {
+      botSessionId = hyperInstance();
     } else {
-      sessionId = ctx.sessionId;
+      botSessionId = ctx.botSessionId;
+    }
+
+    if (ctx.channelSessionId === "0") {
+      channelSessionId = hyperInstance();
+    } else {
+      channelSessionId = ctx.channelSessionId;
     }
 
     await telegramDb.telegramUser.upsert({
@@ -179,11 +294,18 @@ export async function customerRSAID(ctx: MyContext, rsaId: string) {
         rsaId,
         username,
         telegramId,
-        sessionId,
+        botSessionId,
+        channelSessionId,
         updatedAt: updatedAtDate.toISOString(),
         UserBotTime: {
           create: {
-            sessionId,
+            sessionId: botSessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
+        UserChannelTime: {
+          create: {
+            sessionId: channelSessionId,
             joinedAt: updatedAtDate.toISOString(),
           },
         },
@@ -194,32 +316,6 @@ export async function customerRSAID(ctx: MyContext, rsaId: string) {
         rsaId,
         telegramId,
         updatedAt: updatedAtDate.toISOString(),
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-export async function userJoinedChannel(telegramId: number) {
-  try {
-    await telegramDb.telegramUser.update({
-      where: { telegramId },
-      data: {
-        joinedMellinsChannel: true,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-export async function userLeftChannel(telegramId: number) {
-  try {
-    await telegramDb.telegramUser.update({
-      where: { telegramId },
-      data: {
-        joinedMellinsChannel: false,
       },
     });
   } catch (err) {
