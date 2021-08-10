@@ -236,7 +236,7 @@ export async function userJoinedChannel(ctx: MyContext) {
     let channelSessionId: string;
     let joinedMellinsChannel: boolean;
 
-    if (["member", "creator", "admin"].includes(ctx.joinedMellinsChannel)) {
+    if (["member", "creator", "administrator"].includes(ctx.joinedMellinsChannel)) {
       joinedMellinsChannel = true;
     } else {
       joinedMellinsChannel = false;

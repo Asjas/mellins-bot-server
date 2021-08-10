@@ -40,8 +40,8 @@ function botMiddleware(bot: TelegrafPKG.Telegraf<TelegrafPKG.Context<Update>>) {
       ctx.botSessionId = result?.botSessionId ?? "0";
       ctx.channelSessionId = result?.channelSessionId ?? "0";
 
-      console.log("botSessionId", ctx.botSessionId);
-      console.log("channelSessionId", ctx.channelSessionId);
+      // console.log("botSessionId", ctx.botSessionId);
+      // console.log("channelSessionId", ctx.channelSessionId);
 
       // check if the user has joined the Private Mellins Channel
       if (userTelegramId !== -1) {

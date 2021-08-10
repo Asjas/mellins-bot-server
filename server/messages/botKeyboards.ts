@@ -5,7 +5,7 @@ import MyContext from "../types/telegram";
 export function fullBotKeyboard(ctx: MyContext) {
   let buttons: string[] = [];
 
-  if (["member", "creator", "admin"].includes(ctx.joinedMellinsChannel)) {
+  if (["member", "creator", "administrator"].includes(ctx.joinedMellinsChannel)) {
     buttons = [
       "Balance",
       "Statements",
