@@ -9,7 +9,7 @@ export default async function BranchRegisterCallback(bot: TelegrafPKG.Telegraf<T
   branches.forEach((branch: any) => {
     bot.hears(branch.name, async (ctx: MyContext) => {
       try {
-        await botReply(ctx, `Here is the Map pin for: ${branch.name}`, keyboards.fullBotKeyboard(ctx));
+        await botReply(ctx, `Here is the Map pin for ${branch.name}`, keyboards.fullBotKeyboard(ctx));
         await botReplyWithLocation(ctx, { latitude: branch.latitude, longitude: branch.longitude });
       } catch (err) {
         console.error(err);
