@@ -14,7 +14,9 @@ export default function JoinMellinsChannelCommand(bot: TelegrafPKG.Telegraf<Tele
 
       await ctx.reply("Inviting you to the Mellins Telegram channel...");
 
-      const forwardedMessage = await bot.telegram.forwardMessage(1425866959, telegramId, ctx.message.message_id);
+      const forwardedMessage = await bot.telegram.forwardMessage(1425866959, telegramId, ctx.message.message_id, {
+        disable_notification: true,
+      });
 
       await inviteUserToChannel(telegramId, forwardedMessage.message_id);
 
