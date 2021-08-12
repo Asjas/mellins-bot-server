@@ -11,6 +11,8 @@ export default function BalanceCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.Con
     try {
       const customerId = ctx?.customerId;
 
+      await botReply(ctx, `Fetching your balances...`);
+
       const customer = await getCustomerBalance(customerId);
 
       await botReply(
