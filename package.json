@@ -67,7 +67,7 @@
   "devDependencies": {
     "@types/dotenv": "8.2.0",
     "@types/ioredis": "4.26.7",
-    "@types/jest": "27.0.0",
+    "@types/jest": "27.0.1",
     "@types/node": "16.4.13",
     "eslint-config-asjas": "0.0.25",
     "jest": "27.0.6",
