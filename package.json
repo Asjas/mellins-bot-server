@@ -62,7 +62,7 @@
     "telegraf": "4.4.1",
     "telegram": "1.8.7",
     "under-pressure": "5.7.0",
-    "undici": "4.4.4"
+    "undici": "4.4.5"
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
