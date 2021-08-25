@@ -23,6 +23,10 @@ export default function StatementsCommand(bot: TelegrafPKG.Telegraf<TelegrafPKG.
 
       console.log("statements: customer", customer);
 
+      if (!customer) {
+        throw new Error("No customer returned from Atlas");
+      }
+
       await botReply(ctx, "Please see your current statements:");
 
       Object.values(customer).forEach(async (branch) => {
