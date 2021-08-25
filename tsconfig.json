@@ -1,16 +1,21 @@
 {
-  "include": ["server/**/*", "ui"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "incremental": true,
-    "target": "ES2021",
-    "module": "ESNext",
-    "lib": ["ESNEXT"],
-    "noEmit": true,
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
+    "target": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "rootDir": "./src",
+    "outDir": "./dist",
     "skipLibCheck": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["./node_modules/@types"]
-  }
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "noEmit": false,
+    "isolatedModules": true,
+    "allowJs": false
+  },
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "src/**/*"]
 }

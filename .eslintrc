@@ -8,10 +8,11 @@
     "node/no-unpublished-import": [
       "error",
       {
-        "allowModules": ["tap", "./generated/client-atlas"]
+        "allowModules": ["tap"]
       }
     ],
     "node/no-extraneous-import": ["error", { "allowModules": ["env-schema"] }],
-    "@typescript-eslint/no-floating-promises": 0
+    "@typescript-eslint/no-floating-promises": 0,
+    "@typescript-eslint/no-unnecessary-type-assertion": 0
   }
 }
