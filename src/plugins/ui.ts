@@ -1,4 +1,5 @@
 import Etag from "fastify-etag";
+import FastifyFormbody from "fastify-formbody";
 import FastifyHelmet from "fastify-helmet";
 import FastifyNext from "fastify-nextjs";
 import FastifyStatic from "fastify-static";
@@ -29,7 +30,9 @@ export default async function UIPlugin(fastify: FastifyInstance, opts: Config) {
     },
   });
 
-  fastify.register(FastifyStatic, {
+  await fastify.register(FastifyFormbody);
+
+  await fastify.register(FastifyStatic, {
     root: join(__dirname, "../static"),
   });
 
