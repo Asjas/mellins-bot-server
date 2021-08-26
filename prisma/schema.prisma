@@ -7,6 +7,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String @unique
+  password  String
+}
+
 model TelegramUser {
   telegramId           Int               @id
   firstName            String?
