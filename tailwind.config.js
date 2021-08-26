@@ -12,15 +12,7 @@ module.exports = {
         display: "'MerriWeather', serif",
         body: "'PT Sans', sans-serif",
       },
-      fontSize: {
-        tiny: "1.4rem",
-        sm: "1.5rem",
-        base: "1.6rem",
-        lg: "1.8rem",
-        "2xl": "2.25rem",
-        "3xl": "3rem",
-      },
     },
   },
-  plugins: [require("@tailwindcss/ui")],
+  plugins: [require("@tailwindcss/ui"), require("@tailwindcss/forms")],
 };

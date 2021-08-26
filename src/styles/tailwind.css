@@ -1,0 +1,9 @@
+@tailwind base;
+
+::selection {
+  @apply text-white bg-primary;
+}
+
+@tailwind components;
+
+@tailwind utilities;
