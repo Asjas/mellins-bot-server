@@ -1,7 +1,12 @@
+import Layout from "../components/Layout";
 import CreateAccount from "../components/CreateAccount";
 
 function CreateAccountPage() {
-  return <CreateAccount />;
+  return (
+    <Layout>
+      <CreateAccount />
+    </Layout>
+  );
 }
 
 export default CreateAccountPage;

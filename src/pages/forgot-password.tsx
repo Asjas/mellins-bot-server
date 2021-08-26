@@ -1,7 +1,12 @@
+import Layout from "../components/Layout";
 import ForgotPassword from "../components/ForgotPassword";
 
 function ForgotPasswordPage() {
-  return <ForgotPassword />;
+  return (
+    <Layout>
+      <ForgotPassword />
+    </Layout>
+  );
 }
 
 export default ForgotPasswordPage;

@@ -6,7 +6,7 @@ import mellinsLogo from "../static/public/Mellins_Logo.png";
 
 export default function SignIn() {
   return (
-    <div className="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
+    <div className="flex flex-col justify-center min-h-full py-16 bg-gray-50 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex-shrink-0 h-auto m-auto w-72">
           <Image src={mellinsLogo} alt="Mellins i-Style" />
