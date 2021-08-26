@@ -45,8 +45,6 @@ async function Authorization(fastify: FastifyInstance, opts: Config) {
       reply.send(err);
     }
   });
-
-  fastify.decorateRequest("user", null);
 }
 
 export default FastifyPlugin(Authorization);

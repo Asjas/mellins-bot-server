@@ -8,9 +8,9 @@ import type MyContext from "../types/telegram";
 
 export const telegramDb = new PrismaClient();
 
-if (config.NODE_ENV !== "production") {
-  prismaDevMiddleware();
-}
+// if (config.NODE_ENV !== "production") {
+//   prismaDevMiddleware();
+// }
 
 const hyperInstance = hyperid();
 

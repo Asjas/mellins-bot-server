@@ -1,7 +1,6 @@
 import { performance } from "perf_hooks";
 
 import { telegramDb } from "../db/telegram";
-import config from "../config";
 
 export function prismaDevMiddleware() {
   // this is used to measure the performance of the database requests during development

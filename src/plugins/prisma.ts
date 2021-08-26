@@ -16,8 +16,8 @@ async function PrismaPlugin(fastify: FastifyInstance, opts: Config) {
 
   fastify.decorate("prisma", prisma);
 
-  fastify.addHook("onClose", async (server: FastifyInstance) => {
-    await server.prisma.$disconnect();
+  fastify.addHook("onClose", async () => {
+    await prisma.$disconnect();
   });
 }
 
