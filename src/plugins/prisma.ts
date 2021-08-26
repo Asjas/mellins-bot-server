@@ -3,8 +3,9 @@ import FastifyPlugin from "fastify-plugin";
 import { PrismaClient } from "@prisma/client";
 
 import { prismaDevMiddleware } from "../middleware/prismaMiddleware";
+import { Config } from "../config";
 
-async function PrismaPlugin(fastify: FastifyInstance, opts) {
+async function PrismaPlugin(fastify: FastifyInstance, opts: Config) {
   const prisma = new PrismaClient();
 
   await prisma.$connect();

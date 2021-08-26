@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import type { FastifyInstance } from "fastify";
 
 import telegramBot from "../bot/telegram";
+import { Config } from "../config";
 
 function telegram(fastify: FastifyInstance, options, next) {
   const bot = options.bot;
@@ -12,7 +13,7 @@ function telegram(fastify: FastifyInstance, options, next) {
   next();
 }
 
-async function TelegramPlugin(fastify: FastifyInstance, opts) {
+async function TelegramPlugin(fastify: FastifyInstance, opts: Config) {
   const bot = await telegramBot(opts.TELEGRAM_BOT_TOKEN);
   const SECRET_PATH = `/telegraf/${bot.secretPathComponent()}`;
 

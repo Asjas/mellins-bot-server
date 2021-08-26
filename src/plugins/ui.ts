@@ -5,7 +5,9 @@ import FastifyStatic from "fastify-static";
 import { FastifyInstance } from "fastify";
 import { join } from "path";
 
-export default async function UIPlugin(fastify: FastifyInstance, opts) {
+import { Config } from "../config";
+
+export default async function UIPlugin(fastify: FastifyInstance, opts: Config) {
   await fastify.register(Etag);
 
   await fastify.register(FastifyHelmet, {

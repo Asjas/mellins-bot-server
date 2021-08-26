@@ -8,6 +8,7 @@ const schema = S.object()
   .prop("PRETTY_PRINT", S.boolean())
   .prop("COOKIE_SECRET", S.string())
   .prop("SESSION_SECRET", S.string())
+  .prop("JWT_SECRET", S.string())
   .prop("MELLINS_DB_HOST", S.string().required())
   .prop("MELLINS_DB_USER", S.string().required())
   .prop("MELLINS_DB_PASS", S.string().required())
@@ -35,6 +36,7 @@ export type Config = {
   PRETTY_PRINT: boolean;
   COOKIE_SECRET: string;
   SESSION_SECRET: string;
+  JWT_SECRET: string;
   MELLINS_DB_HOST: string;
   MELLINS_DB_USER: string;
   MELLINS_DB_PASS: string;
