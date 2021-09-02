@@ -254,6 +254,12 @@ export async function userJoinedChannel(ctx: MyContext) {
         joinedMellinsChannel,
         channelSessionId,
         updatedAt: updatedAtDate.toISOString(),
+        UserChannelTime: {
+          create: {
+            sessionId: channelSessionId,
+            joinedAt: updatedAtDate.toISOString(),
+          },
+        },
       },
     });
   } catch (err) {

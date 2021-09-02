@@ -37,7 +37,7 @@ interface IParams {
 }
 
 export default function CustomerRoutes(fastify: FastifyInstance, _opts, done) {
-  fastify.get<{ Params: IParams }>("/customer/:rsaId", { schema }, async (request, reply) => {
+  fastify.get<{ Params: IParams }>("/:rsaId", { schema }, async (request, reply) => {
     const { rsaId } = request.params;
 
     const customer = await getUserFromDb(rsaId);

@@ -1,4 +1,4 @@
-// this service is used to invite a user to the private Mellins channel
+// this service is used to query all the information from the Mellins Channel
 import dotenv from "dotenv";
 import { Api, TelegramClient } from "telegram";
 import { Logger } from "telegram/extensions/index.js";
@@ -11,7 +11,7 @@ const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH } = process.env;
 const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
 
-async function inviteUserToChannel(telegramId: number, messageId: number) {
+async function getFullChannel() {
   const storeSession = new StoreSession(".user_telegram_session");
 
   const client = new TelegramClient(storeSession, apiId, apiHash, {
@@ -22,19 +22,13 @@ async function inviteUserToChannel(telegramId: number, messageId: number) {
 
   await client.connect();
 
-  // We need to resolve and store the user as a session so that we can invite them
-  try {
-    await client.getMessages("ajroos2", { limit: 1, ids: messageId });
+  let result;
 
-    client.session.save();
-  } catch {}
-
-  // Try to invite the user to the channel
+  // Get full channel information
   try {
-    await client.invoke(
-      new Api.channels.InviteToChannel({
+    result = await client.invoke(
+      new Api.channels.GetFullChannel({
         channel: -1001198053895,
-        users: [new Api.PeerUser({ userId: telegramId })],
       }),
     );
   } catch (err) {
@@ -42,6 +36,8 @@ async function inviteUserToChannel(telegramId: number, messageId: number) {
   }
 
   await client.disconnect();
+
+  return result;
 }
 
-export default inviteUserToChannel;
+export default getFullChannel;

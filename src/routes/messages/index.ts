@@ -33,7 +33,7 @@ interface IBody {
 }
 
 export default function MessagesRoutes(fastify: FastifyInstance, _opts, done) {
-  fastify.post<{ Params: IParams; Body: IBody }>("/messages/:rsaId", { schema }, async (request, reply) => {
+  fastify.post<{ Params: IParams; Body: IBody }>("/:rsaId", { schema }, async (request, reply) => {
     if (request.body === null) {
       reply.status(404).send({
         response: { error: { code: 404, description: `No message provided.` }, message: null },

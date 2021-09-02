@@ -2,6 +2,7 @@ import AutoLoad from "fastify-autoload";
 import FastifyCors from "fastify-cors";
 import FastifyFavicon from "fastify-favicon";
 import FastifyNodemailer from "fastify-nodemailer";
+import FastifyFormbody from "fastify-formbody";
 import Sensible from "fastify-sensible";
 import Fastify, { FastifyServerOptions } from "fastify";
 import { join } from "path";
@@ -15,6 +16,7 @@ async function createServer(config: Config) {
       level: "debug",
       prettyPrint: config.PRETTY_PRINT,
     },
+    pluginTimeout: 20000,
   };
 
   const server = Fastify(opts);
@@ -26,6 +28,8 @@ async function createServer(config: Config) {
   await server.register(FastifyFavicon);
 
   await server.register(Sensible);
+
+  await server.register(FastifyFormbody);
 
   await server.register(FastifyNodemailer, {
     host: config.MAIL_HOST,

@@ -1,20 +1,16 @@
 import Layout from "../components/Layout";
-import Nav from "../components/Nav";
 
-function ProfilePage() {
+export default function AccountPending() {
   return (
-    <>
-      <Nav />
-      <Layout>
-        <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-gray-200 border-dashed rounded-lg h-96" />
-        </div>
-      </Layout>
-    </>
+    <Layout>
+      <h2>Account Status</h2>
+      <div>
+        <p>Your account has successfully been created.</p>
+        <p>Your account is pending approval.</p>
+      </div>
+    </Layout>
   );
 }
-
-export default ProfilePage;
 
 export function getServerSideProps(context) {
   const { mellinsDashboardJWT } = context.req?.cookies;

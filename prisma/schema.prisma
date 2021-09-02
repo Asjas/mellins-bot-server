@@ -8,11 +8,14 @@ generator client {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String @unique
-  password  String
+  id             Int      @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String   @unique
+  password       String
+  approvedStatus Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
 }
 
 model TelegramUser {

@@ -5,6 +5,12 @@ import { PrismaClient } from "@prisma/client";
 import { prismaDevMiddleware } from "../middleware/prismaMiddleware";
 import { Config } from "../config";
 
+declare module "fastify" {
+  interface FastifyInstance {
+    prisma: PrismaClient;
+  }
+}
+
 async function PrismaPlugin(fastify: FastifyInstance, opts: Config) {
   const prisma = new PrismaClient();
 

@@ -5,6 +5,8 @@
     "project": "tsconfig.json"
   },
   "rules": {
+    "no-shadow": 0,
+    "import/extensions": 0,
     "node/no-unpublished-import": [
       "error",
       {
@@ -12,6 +14,7 @@
       }
     ],
     "node/no-extraneous-import": ["error", { "allowModules": ["env-schema"] }],
+    "node/no-missing-import": 0,
     "@typescript-eslint/no-floating-promises": 0,
     "@typescript-eslint/no-unnecessary-type-assertion": 0
   }

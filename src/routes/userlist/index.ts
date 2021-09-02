@@ -29,7 +29,7 @@ const schema = {
 };
 
 export default function UserListRoutes(fastify: FastifyInstance, _opts, done) {
-  fastify.get("/userlist", { schema }, async (_request, reply) => {
+  fastify.get("/", { schema }, async (_request, reply) => {
     const customers = await getUsers();
 
     if (customers.length === 0) {

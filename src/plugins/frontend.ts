@@ -1,5 +1,4 @@
 import Etag from "fastify-etag";
-import FastifyFormbody from "fastify-formbody";
 import FastifyHelmet from "fastify-helmet";
 import FastifyNext from "fastify-nextjs";
 import FastifyStatic from "fastify-static";
@@ -8,7 +7,7 @@ import { join } from "path";
 
 import { Config } from "../config";
 
-export default async function UIPlugin(fastify: FastifyInstance, opts: Config) {
+export default async function FrontendPlugin(fastify: FastifyInstance, opts: Config) {
   await fastify.register(Etag);
 
   await fastify.register(FastifyHelmet, {
@@ -20,7 +19,7 @@ export default async function UIPlugin(fastify: FastifyInstance, opts: Config) {
         connectSrc: ["'self'", "https:", "http:"],
         fontSrc: ["'self'", "https:", "http:", "data:"],
         frameAncestors: ["'self'", "http://localhost:4000", "http://127.0.0.1:4000"],
-        imgSrc: ["'self'", "data:"],
+        imgSrc: ["'self'", "data:", "https:"],
         objectSrc: ["'self'"],
         frameSrc: ["'self'"],
         styleSrc: ["'self'", "https:", "http:", "'unsafe-inline'"],
@@ -29,8 +28,6 @@ export default async function UIPlugin(fastify: FastifyInstance, opts: Config) {
       },
     },
   });
-
-  await fastify.register(FastifyFormbody);
 
   await fastify.register(FastifyStatic, {
     root: join(__dirname, "../static"),
@@ -41,20 +38,16 @@ export default async function UIPlugin(fastify: FastifyInstance, opts: Config) {
   });
 
   await fastify.register((server: FastifyInstance, _opts, done) => {
-    // @ts-ignore
     server.next("/");
-
-    // @ts-ignore
     server.next("/profile");
-
-    // @ts-ignore
+    server.next("/users");
+    server.next("/channel");
     server.next("/create-account");
-
-    // @ts-ignore
     server.next("/sign-in");
-
-    // @ts-ignore
+    server.next("/sign-out");
     server.next("/forgot-password");
+    server.next("/account-pending");
+    server.next("/404");
 
     done();
   });
