@@ -80,7 +80,7 @@
   "devDependencies": {
     "@tailwindcss/ui": "0.7.2",
     "@types/dotenv": "8.2.0",
-    "@types/ioredis": "4.27.1",
+    "@types/ioredis": "4.27.2",
     "@types/jest": "27.0.1",
     "@types/mjml": "4.7.0",
     "@types/node": "16.7.10",
