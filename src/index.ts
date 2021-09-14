@@ -6,7 +6,7 @@ async function startServer() {
     const PORT = Number(config.PORT) || 3000;
     const app = await createServer(config);
 
-    await app.listen(PORT);
+    await app.listen(PORT, "0.0.0.0");
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(err);
