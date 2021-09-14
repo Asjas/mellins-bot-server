@@ -6,11 +6,11 @@ module.exports = {
     extend: {
       colors: {
         primary: "#445a6a",
-        secondary: "#fcfcfc",
+        secondary: "#b28a4f",
       },
       fontFamily: {
-        display: "'MerriWeather', serif",
-        body: "'PT Sans', sans-serif",
+        display: "'Playfair Display', serif",
+        body: "'Raleway', sans-serif",
       },
     },
   },
