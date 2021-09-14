@@ -1,6 +1,5 @@
 import Layout from "../components/Layout";
 import Nav from "../components/Nav";
-import UserList from "../components/UserList";
 
 function DashboardPage() {
   return (
@@ -8,7 +7,7 @@ function DashboardPage() {
       <Nav />
       <Layout>
         <div className="px-4 py-6 sm:px-0">
-          <UserList />
+          <h2 className="mt-40 text-lg italic text-center text-primary">Nothing here to show yet...</h2>
         </div>
       </Layout>
     </>

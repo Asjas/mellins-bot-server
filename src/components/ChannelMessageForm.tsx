@@ -37,7 +37,7 @@ export default function ChannelMessageForm() {
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md border-primary">
         <div className="px-4 py-8 bg-white shadow-xl sm:rounded-lg sm:px-10">
           <form ref={formRef} onSubmit={handleSubmit}>
             <fieldset className="space-y-6" disabled={isSubmitting} aria-busy={isSubmitting}>

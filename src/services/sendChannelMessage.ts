@@ -23,20 +23,21 @@ async function sendChannelMessage({ message, attachment }: { message: string; at
   try {
     await client.connect();
 
-    console.log("attachment", attachment);
-
-    await client.sendFile(Number(TELEGRAM_PRIVATE_CHANNEL_ID), {
-      file: attachment,
-      workers: 10,
-    });
-
     await client.invoke(
       new Api.messages.SendMessage({
         peer: new Api.PeerChannel({ channelId: Number(TELEGRAM_PRIVATE_CHANNEL_ID) }),
-        message,
+        message: `${message}\n\nMellins i-Style Head Office`,
         silent: false,
       }),
     );
+    console.log("attachment outside", attachment);
+
+    if (attachment) {
+      console.log("attachment inside", attachment);
+      await client.sendFile(Number(TELEGRAM_PRIVATE_CHANNEL_ID), {
+        file: attachment,
+      });
+    }
 
     await client.disconnect();
   } catch (err) {

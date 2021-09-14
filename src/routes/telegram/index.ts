@@ -39,16 +39,15 @@ export default function TelegramRoutes(fastify, _opts, done) {
   });
 
   fastify.post("/channel/message", async (request, reply) => {
-    const attachment = request.body.attachment; // access files
-    const message = request.body.message.value; // other fields
+    const attachment = request?.body?.attachment;
+    const message = request.body.message.value;
 
-    console.log(attachment);
-    console.log(attachment.filename);
-    console.log(attachment.toBuffer());
+    let attachmentBuffer;
 
-    const attachmentBuffer = await attachment.toBuffer();
-
-    attachmentBuffer.name = attachment.filename;
+    if (attachment) {
+      attachmentBuffer = await attachment.toBuffer();
+      attachmentBuffer.name = attachment.filename;
+    }
 
     await sendChannelMessage({ message, attachment: attachmentBuffer });
 
