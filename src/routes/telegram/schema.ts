@@ -9,15 +9,16 @@ export const channelUsersSchema = {
         .prop(
           "data",
           S.object().prop(
-            "channelUsers",
+            "users",
             S.array()
               .items(
                 S.object()
+                  .prop("telegramId", S.number().required())
                   .prop("firstName", S.string().required())
                   .prop("lastName", S.string().required())
                   .prop("rsaId", S.string().required())
-                  .prop("joinedMellinsChannel", S.string().required())
-                  .prop("kickedBot", S.string().required())
+                  .prop("joinedMellinsChannel", S.boolean().required())
+                  .prop("kickedBot", S.boolean().required())
                   .prop(
                     "UserBotTime",
                     S.array().items(

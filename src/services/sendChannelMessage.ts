@@ -11,7 +11,7 @@ const { TELEGRAM_APP_ID, TELEGRAM_APP_HASH, TELEGRAM_PRIVATE_CHANNEL_ID } = proc
 const apiId = Number(TELEGRAM_APP_ID);
 const apiHash = TELEGRAM_APP_HASH;
 
-async function sendChannelMessage({ message }: { message: string }) {
+async function sendChannelMessage({ message, attachment }: { message: string; attachment: any }) {
   const storeSession = new StoreSession(".bot_telegram_session");
 
   const client = new TelegramClient(storeSession, apiId, apiHash, {
@@ -22,6 +22,13 @@ async function sendChannelMessage({ message }: { message: string }) {
 
   try {
     await client.connect();
+
+    console.log("attachment", attachment);
+
+    await client.sendFile(Number(TELEGRAM_PRIVATE_CHANNEL_ID), {
+      file: attachment,
+      workers: 10,
+    });
 
     await client.invoke(
       new Api.messages.SendMessage({

@@ -4,15 +4,9 @@ import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { UserIcon } from "@heroicons/react/solid";
 
 import mellinsLogo from "../static/public/Mellins_Logo.png";
-
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 
 const navigation = [
   { name: "Dashboard", href: "/" },
@@ -20,10 +14,7 @@ const navigation = [
   { name: "Post a message", href: "/channel" },
 ];
 
-const userNavigation = [
-  { name: "Your Profile", href: "/profile" },
-  { name: "Sign out", href: "/sign-out" },
-];
+const userNavigation = [{ name: "Sign out", href: "/sign-out" }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -51,7 +42,7 @@ export default function Nav() {
                             router.pathname === item.href
                               ? "bg-gray-900 text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium",
+                            "px-3 py-2 rounded-md text-sm font-semibold",
                           )}
                         >
                           {item.name}
@@ -63,20 +54,12 @@ export default function Nav() {
               </div>
               <div className="hidden md:block">
                 <div className="flex items-center ml-4 md:ml-6">
-                  <button
-                    type="button"
-                    className="p-1 text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="w-6 h-6" aria-hidden="true" />
-                  </button>
-
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
                       <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                         <span className="sr-only">Open user menu</span>
-                        <img className="w-8 h-8 rounded-full" src={user.imageUrl} alt="" />
+                        <UserIcon className="w-8 h-8 text-white rounded-full" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -96,7 +79,7 @@ export default function Nav() {
                                 href={item.href}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700",
+                                  "block px-4 font-semibold py-2 text-sm text-gray-700",
                                 )}
                               >
                                 {item.name}
@@ -133,7 +116,7 @@ export default function Nav() {
                     router.pathname === item.href
                       ? "bg-gray-900 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium",
+                    "block px-3 py-2 rounded-md text-base font-semibold",
                   )}
                   aria-current={router.pathname === item.href}
                 >
@@ -144,11 +127,7 @@ export default function Nav() {
             <div className="pt-4 pb-3 border-t border-gray-700">
               <div className="flex items-center px-5">
                 <div className="flex-shrink-0">
-                  <img className="w-10 h-10 rounded-full" src={user.imageUrl} alt="" />
-                </div>
-                <div className="ml-3">
-                  <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                  <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                  <UserIcon className="w-10 h-10 text-white rounded-full" />
                 </div>
                 <button
                   type="button"
@@ -163,7 +142,7 @@ export default function Nav() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700"
+                    className="block px-3 py-2 text-base font-semibold text-gray-400 rounded-md hover:text-white hover:bg-gray-700"
                   >
                     {item.name}
                   </a>

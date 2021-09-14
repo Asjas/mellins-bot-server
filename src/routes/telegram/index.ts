@@ -5,7 +5,7 @@ import { IchannelMessageBody } from "./types";
 
 import sendChannelMessage from "../../services/sendChannelMessage";
 
-export default function TelegramRoutes(fastify: FastifyInstance, _opts, done) {
+export default function TelegramRoutes(fastify, _opts, done) {
   fastify.get("/users", { schema: channelUsersSchema }, async (_request, reply) => {
     const users = await fastify.prisma.telegramUser.findMany({
       include: { UserBotTime: true, UserChannelTime: true },
@@ -38,22 +38,27 @@ export default function TelegramRoutes(fastify: FastifyInstance, _opts, done) {
     });
   });
 
-  fastify.post<{ Body: IchannelMessageBody }>(
-    "/channel/message",
-    { schema: channelMessageSchema },
-    async (request, reply) => {
-      const { message } = request.body;
+  fastify.post("/channel/message", async (request, reply) => {
+    const attachment = request.body.attachment; // access files
+    const message = request.body.message.value; // other fields
 
-      await sendChannelMessage({ message });
+    console.log(attachment);
+    console.log(attachment.filename);
+    console.log(attachment.toBuffer());
 
-      reply.status(200).send({
-        response: {
-          error: { code: null, description: null },
-          message: `Message received and sent to Mellins Channel.`,
-        },
-      });
-    },
-  );
+    const attachmentBuffer = await attachment.toBuffer();
+
+    attachmentBuffer.name = attachment.filename;
+
+    await sendChannelMessage({ message, attachment: attachmentBuffer });
+
+    reply.status(200).send({
+      response: {
+        error: { code: null, description: null },
+        message: `Message received and sent to Mellins Channel.`,
+      },
+    });
+  });
 
   done();
 }
