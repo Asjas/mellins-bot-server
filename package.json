@@ -43,7 +43,7 @@
     "argon2": "0.28.2",
     "date-fns": "^2.23.0",
     "dotenv": "10.0.0",
-    "fastify": "3.21.0",
+    "fastify": "3.21.1",
     "fastify-autoload": "3.8.1",
     "fastify-cookie": "5.3.1",
     "fastify-cors": "6.0.2",
