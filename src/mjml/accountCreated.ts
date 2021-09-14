@@ -1,6 +1,6 @@
 import mjml2html from "mjml";
 
-export const passwordReset = ({ firstName }: { firstName: string }) =>
+export const passwordReset = ({ firstName, lastName }: { firstName: string; lastName: string }) =>
   mjml2html(`<mjml>
   <mj-head>
     <mj-title>Telegram Mellins Dashboard Password Reset</mj-title>
@@ -14,8 +14,8 @@ export const passwordReset = ({ firstName }: { firstName: string }) =>
         <mj-divider border-color="#445a6a"></mj-divider>
         <mj-text padding-top="30px" padding-bottom="30px" font-size="18px" font-family="Roboto">This is a notification that there is a refund requested on a Shopify contact lens order.</mj-text>
         <mj-text font-size="18px" padding-bottom="5px" font-family="Raleway">Customer: ${firstName} ${lastName}</mj-text>
-        <mj-text font-size="18px" padding-bottom="5px" font-family="Raleway">Order: ${orderNumber}</mj-text>
-        <mj-button padding-top="40px" href="https://shopify2.mellins-backend.co.za/contact-lens/${orderId}" align="left" font-family="Raleway" font-size="18px" background-color="#445a6a" color="white">
+        <mj-text font-size="18px" padding-bottom="5px" font-family="Raleway"></mj-text>
+        <mj-button padding-top="40px" href="" align="left" font-family="Raleway" font-size="18px" background-color="#445a6a" color="white">
           Link to order
         </mj-button>
       </mj-column>
