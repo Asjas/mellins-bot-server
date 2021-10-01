@@ -9,7 +9,7 @@ function UsersPage({ users }) {
       <Nav />
       <Layout>
         <div className="px-4 py-6 sm:px-0">
-          <section className="flex flex-wrap">
+          <section className="flex flex-wrap gap-4">
             {users
               ? users.map((user) => (
                   <div key={user.telegramId} className="max-w-lg border rounded-md shadow-md border-primary">
