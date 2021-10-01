@@ -1,7 +1,7 @@
 import AutoLoad from "fastify-autoload";
-import FastifyCors from "fastify-cors";
 import FastifyFavicon from "fastify-favicon";
 import FastifyNodemailer from "fastify-nodemailer";
+import FastifyFormBody from "fastify-formbody";
 import FastifyMultipart from "fastify-multipart";
 import Sensible from "fastify-sensible";
 import Fastify, { FastifyServerOptions } from "fastify";
@@ -21,11 +21,9 @@ async function createServer(config: Config) {
 
   const server = Fastify(opts);
 
-  await server.register(FastifyMultipart, { attachFieldsToBody: true });
+  await server.register(FastifyFormBody);
 
-  await server.register(FastifyCors, {
-    origin: "*",
-  });
+  await server.register(FastifyMultipart, { attachFieldsToBody: true });
 
   await server.register(FastifyFavicon);
 
