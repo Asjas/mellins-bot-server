@@ -82,7 +82,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const response = await fetch("http://localhost:3000/telegram/users");
+  const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/telegram/users`);
 
   const {
     response: {
