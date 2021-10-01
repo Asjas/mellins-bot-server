@@ -1,11 +1,27 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
 type MessageInputs = {
-  message: string;
+  message?: string;
   image?: File;
 };
 
-type Inputs = MessageInputs;
+type LoginInputs = {
+  email?: string;
+  password?: string;
+};
+
+type CreateInputs = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+};
+
+type ResetInputs = {
+  email?: string;
+};
+
+type Inputs = MessageInputs & LoginInputs & CreateInputs & ResetInputs;
 
 type InputTypes = {
   name: string;
@@ -29,9 +45,7 @@ function useForm(initial: Inputs) {
     }
 
     if (type === "file") {
-      console.log(event.target.files);
       value = event.target.files[0];
-      console.log(value);
     }
 
     setInputs({
@@ -45,7 +59,7 @@ function useForm(initial: Inputs) {
   }
 
   function clearForm() {
-    const blankState = Object.fromEntries(Object.entries(inputs).map(([key, value]) => [key, ""])) as unknown;
+    const blankState = Object.fromEntries(Object.entries(inputs).map(([key]) => [key, ""])) as unknown;
 
     setInputs(blankState as Inputs);
   }
