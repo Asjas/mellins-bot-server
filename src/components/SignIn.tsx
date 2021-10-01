@@ -1,8 +1,9 @@
-import { useState, useRef, SyntheticEvent } from "react";
+import { useRef, useState, SyntheticEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MailIcon, KeyIcon, ExclamationIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
+import useForm from "../hooks/useForm";
 
 import mellinsLogo from "../static/public/Mellins_Logo.png";
 
@@ -10,6 +11,7 @@ export default function SignIn() {
   const router = useRouter();
   const formRef = useRef(null);
   const [error, setError] = useState("");
+  const { inputs, handleChange, clearForm } = useForm({ email: "", password: "" });
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,6 +73,8 @@ export default function SignIn() {
                   type="email"
                   autoComplete="email"
                   placeholder="email@pienaarpartners.co.za"
+                  value={inputs.email}
+                  onChange={handleChange}
                   required
                   className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                 />
@@ -90,6 +94,8 @@ export default function SignIn() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
+                  value={inputs.password}
+                  onChange={handleChange}
                   required
                   placeholder="****************"
                   className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
