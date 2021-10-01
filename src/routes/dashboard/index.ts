@@ -32,6 +32,10 @@ interface ISignInBody {
   password: string;
 }
 
+interface IForgotPasswordBody {
+  email: string;
+}
+
 export default function dashboardRoutes(fastify: FastifyInstance, opts, done) {
   fastify.route<{ Body: ICreateAccountBody }>({
     method: "POST",
@@ -80,13 +84,12 @@ export default function dashboardRoutes(fastify: FastifyInstance, opts, done) {
       });
 
       if (!user) {
-        return reply.status(401).send({ message: "Authentication failed" });
+        return reply.unauthorized("Authentication failed");
       }
-
       const confirmPassword = await argon2.verify(user.password, password);
 
       if (!confirmPassword) {
-        return reply.status(401).send({ message: "Authentication failed" });
+        return reply.unauthorized("Authentication failed");
       }
 
       const token = await reply.jwtSign({ email });
@@ -106,9 +109,7 @@ export default function dashboardRoutes(fastify: FastifyInstance, opts, done) {
   fastify.route({
     method: "POST",
     url: "/sign-out",
-    handler: async (request, reply) => {
-      console.log(request.cookies);
-
+    handler: async (_request, reply) => {
       reply.clearCookie("mellinsDashboardJWT").send({ message: "Signed out" });
     },
   });
@@ -124,11 +125,19 @@ export default function dashboardRoutes(fastify: FastifyInstance, opts, done) {
     },
   });
 
-  fastify.route({
+  fastify.route<{ Body: IForgotPasswordBody }>({
     method: "POST",
     url: "/forgot-password",
     handler: async (request, reply) => {
-      console.log(request.body);
+      const { email } = request.body;
+
+      const user = await fastify.prisma.user.findUnique({ where: { email } });
+
+      if (!user) {
+        return reply.unauthorized();
+      }
+
+      console.log(user);
     },
   });
 
