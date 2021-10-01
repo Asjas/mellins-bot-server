@@ -1,17 +1,14 @@
-import { useState, useRef, SyntheticEvent } from "react";
+import { useState, SyntheticEvent } from "react";
 import { DocumentIcon } from "@heroicons/react/outline";
 import useForm from "../hooks/useForm";
 
 export default function ChannelMessageForm() {
-  const formRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { inputs, handleChange, clearForm } = useForm({ message: "" });
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData();
-
-    // console.log(inputs);
 
     Object.entries(inputs).forEach(([name, value]) => {
       formData.set(name, value);
@@ -39,7 +36,7 @@ export default function ChannelMessageForm() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md border-primary">
         <div className="px-4 py-8 bg-white shadow-xl sm:rounded-lg sm:px-10">
-          <form ref={formRef} onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <fieldset className="space-y-6" disabled={isSubmitting} aria-busy={isSubmitting}>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700">
@@ -60,7 +57,7 @@ export default function ChannelMessageForm() {
 
               <div>
                 <label htmlFor="attachment" className="block text-sm font-medium text-gray-700">
-                  Attachment (img, video)
+                  Attachment (.jpg, .mp4, .pdf, etc.)
                 </label>
                 <div className="relative mt-1">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

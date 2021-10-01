@@ -1,10 +1,35 @@
+import { useRef, SyntheticEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { MailIcon } from "@heroicons/react/solid";
 
 import mellinsLogo from "../static/public/Mellins_Logo.png";
 
 export default function ForgotPassword() {
+  const router = useRouter();
+  const formRef = useRef(null);
+
+  async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(formRef.current);
+    const bodyParams = new URLSearchParams();
+
+    for await (const [name, value] of formData.entries()) {
+      bodyParams.set(name, value.toString());
+    }
+
+    const response = await fetch("/dashboard/forgot-password", {
+      method: "POST",
+      body: bodyParams,
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+  }
+
   return (
     <div className="flex flex-col justify-center min-h-full py-16 bg-gray-50 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -16,7 +41,7 @@ export default function ForgotPassword() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" ref={formRef} onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address
