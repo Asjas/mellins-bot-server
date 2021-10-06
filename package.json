@@ -20,6 +20,7 @@
     "coverage": "npm test -- --coverage-report=lcov",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
     "docker:dev:up": "docker-compose -f docker-compose-dev.yml up -d",
     "docker:dev:down": "docker-compose -f docker-compose-dev.yml down -d",
