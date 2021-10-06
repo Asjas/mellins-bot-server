@@ -15,7 +15,7 @@ function UsersPage({ users }) {
                   <div key={user.telegramId} className="max-w-lg border rounded-md shadow-md border-primary">
                     <div className="px-4 py-2 bg-primary">
                       <UserCircleIcon className="inline-block w-6 h-auto mr-2 text-white" />
-                      <h2 className="inline-block text-lg font-semibold text-white align-middle ">
+                      <h2 className="inline-block text-lg font-semibold text-white align-middle">
                         {user.firstName} {user.lastName}
                       </h2>
                     </div>
