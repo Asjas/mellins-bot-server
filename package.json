@@ -54,7 +54,7 @@
     "fastify-favicon": "3.1.0",
     "fastify-formbody": "5.1.0",
     "fastify-helmet": "5.3.2",
-    "fastify-jwt": "3.2.0",
+    "fastify-jwt": "3.2.1",
     "fastify-multipart": "5.0.2",
     "fastify-nextjs": "6.0.0",
     "fastify-nodemailer": "5.0.0",
