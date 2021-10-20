@@ -77,7 +77,7 @@
     "telegraf": "4.4.2",
     "telegram": "1.9.6",
     "under-pressure": "5.8.0",
-    "undici": "4.8.0"
+    "undici": "4.8.1"
   },
   "devDependencies": {
     "@tailwindcss/ui": "0.7.2",
