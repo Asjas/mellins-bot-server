@@ -39,7 +39,7 @@
   "dependencies": {
     "@headlessui/react": "1.4.2",
     "@heroicons/react": "1.0.5",
-    "@prisma/client": "3.4.1",
+    "@prisma/client": "3.4.2",
     "@tailwindcss/forms": "0.3.4",
     "argon2": "0.28.2",
     "date-fns": "2.25.0",
