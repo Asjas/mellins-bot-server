@@ -12,7 +12,7 @@ services:
     restart: always
   db:
     container_name: db
-    image: postgres:14.0-alpine
+    image: postgres:14.1-alpine
     ports:
       - ${FASTIFY_PORT}:5432
     volumes:
