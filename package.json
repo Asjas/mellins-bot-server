@@ -41,7 +41,7 @@
     "@heroicons/react": "1.0.5",
     "@prisma/client": "3.5.0",
     "@tailwindcss/forms": "0.3.4",
-    "argon2": "0.28.2",
+    "argon2": "0.28.3",
     "date-fns": "2.26.0",
     "dotenv": "10.0.0",
     "fastify": "3.24.0",
