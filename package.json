@@ -7,7 +7,6 @@
     "npm": ">=7"
   },
   "scripts": {
-    "postinstall": "npm run prisma:generate",
     "start": "node dist/index.js",
     "build": "concurrently \"npm run tsc\" \"npm run build:next\"",
     "build:next": "next build",

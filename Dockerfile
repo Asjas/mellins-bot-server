@@ -1,18 +1,15 @@
-FROM node:16.10.0-alpine
+FROM node:16.10.0
 
-EXPOSE 3000
+EXPOSE 6500
 
-ENV NODE_ENV production
-
-RUN mkdir /app && chown -R node:node /app
+RUN mkdir /app
 WORKDIR /app
 
-COPY --chown=node:node package.json package-lock.json ./
-RUN npm ci --production && npm cache clear --force
-COPY --chown=node:node . .
+COPY . .
+RUN npm i
 
 RUN npm run prisma:generate
 
-RUN npm run build:docker
+RUN npm run build
 
-CMD ["node", "dist/index.mjs"]
+CMD ["node", "dist/index.js"]
