@@ -74,7 +74,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "telegraf": "4.4.2",
-    "telegram": "1.9.6",
+    "telegram": "1.11.1",
     "under-pressure": "5.8.0",
     "undici": "4.7.1"
   },
