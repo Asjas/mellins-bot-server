@@ -19,12 +19,13 @@ export default function ShareContactCommand(bot: TelegrafPKG.Telegraf<TelegrafPK
         const { first_name: firstName = "", last_name: lastName = "", phone_number: contactNo } = contact;
         const ticket = await createFreshdeskTicket({ firstName, lastName, contactNo });
 
+        console.log("freshdesk ticket", ticket);
         // If it fails to create a freshdesk ticket, send a message so that the user tries again.
-        if (!ticket) {
+        if (!ticket?.id) {
           await botReply(
             ctx,
             `An error occurred while creating a support ticket. Please try sharing your contact details again.`,
-            keyboards.fullBotKeyboard(ctx),
+            keyboards.shareContactNumber(),
           );
         }
 
