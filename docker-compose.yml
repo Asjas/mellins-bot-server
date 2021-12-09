@@ -11,7 +11,7 @@ services:
       - redis
       - db
     networks:
-      - mellins
+      - mellins-bot
   redis:
     container_name: redis
     image: redis:6.2.6-alpine
@@ -22,7 +22,7 @@ services:
       - redis-data:/data
     restart: always
     networks:
-      - mellins
+      - mellins-bot
   db:
     container_name: db
     image: postgres:14.1-alpine
@@ -32,7 +32,7 @@ services:
       - db-data:/var/lib/postgresql
     restart: always
     networks:
-      - mellins
+      - mellins-bot
     environment:
       POSTGRES_USER: ${FASTIFY_DB_USER}
       POSTGRES_PASSWORD: ${FASTIFY_DB_PASS}
@@ -45,4 +45,4 @@ volumes:
     external: false
 
 networks:
-  mellins:
+  mellins-bot:
