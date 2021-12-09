@@ -10,7 +10,7 @@ services:
     depends_on:
       - redis
       - db
-    network_mode: "hosts"
+    network_mode: host
   redis:
     container_name: redis
     image: redis:6.2.6-alpine
@@ -20,7 +20,7 @@ services:
     volumes:
       - redis-data:/data
     restart: always
-    network_mode: "hosts"
+    network_mode: host
   db:
     container_name: db
     image: postgres:14.1-alpine
@@ -29,7 +29,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql
     restart: always
-    network_mode: "hosts"
+    network_mode: host
     environment:
       POSTGRES_USER: ${FASTIFY_DB_USER}
       POSTGRES_PASSWORD: ${FASTIFY_DB_PASS}
