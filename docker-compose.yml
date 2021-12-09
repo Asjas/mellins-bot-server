@@ -3,29 +3,14 @@ version: "2.4"
 services:
   mellins-bot:
     container_name: mellins-bot
-    image: asjas/mellins-bot:latest
+    image: asjas/mellins-bot-server:latest
     restart: always
-    ports:
-      - 8080:6500
     depends_on:
-      - redis
       - db
-    network_mode: host
-  redis:
-    container_name: redis
-    image: redis:6.2.6-alpine
-    command: redis-server --requirepass ${REDIS_AUTH}
-    ports:
-      - ${REDIS_PORT}:6379
-    volumes:
-      - redis-data:/data
-    restart: always
     network_mode: host
   db:
     container_name: db
     image: postgres:14.1-alpine
-    ports:
-      - ${FASTIFY_PORT}:5432
     volumes:
       - db-data:/var/lib/postgresql
     restart: always
@@ -36,7 +21,5 @@ services:
       POSTGRES_DB: ${FASTIFY_DB}
 
 volumes:
-  redis-data:
-    external: false
   db-data:
     external: false
