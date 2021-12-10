@@ -4,6 +4,8 @@ import useForm from "../hooks/useForm";
 
 export default function ChannelMessageForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const { inputs, handleChange, clearForm } = useForm({ message: "" });
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
@@ -21,7 +23,8 @@ export default function ChannelMessageForm() {
 
     const data = await response.json();
 
-    console.log(data);
+    setMessage(data.response.message);
+    setError(data.response.error.description);
   }
 
   return (
@@ -71,6 +74,11 @@ export default function ChannelMessageForm() {
                     className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                   />
                 </div>
+              </div>
+
+              <div className="flex w-full px-2 py-4">
+                {message ? <div className="text-sm text-green-600">{message}</div> : null}
+                {error ? <div className="text-sm text-red-600">Error: {error}</div> : null}
               </div>
 
               <div>
