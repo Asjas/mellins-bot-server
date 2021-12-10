@@ -7,7 +7,7 @@ function SignOutPage() {
 
   useEffect(() => {
     async function signOut() {
-      const response = await fetch("http://localhost:3000/dashboard/sign-out", {
+      const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/dashboard/sign-out`, {
         method: "POST",
         credentials: "include",
       });

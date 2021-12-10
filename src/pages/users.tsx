@@ -90,8 +90,6 @@ export async function getServerSideProps(context) {
     },
   } = await response.json();
 
-  console.log(users);
-
   return {
     props: {
       authenticated: true,
