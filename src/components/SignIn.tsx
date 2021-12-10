@@ -131,14 +131,6 @@ export default function SignIn() {
                 Sign in
               </button>
             </div>
-
-            <div className="flex items-center justify-between">
-              <div className="text-sm">
-                <Link href="/create-account">
-                  <a className="font-medium text-primary hover:text-black">Create Account</a>
-                </Link>
-              </div>
-            </div>
           </form>
         </div>
       </div>

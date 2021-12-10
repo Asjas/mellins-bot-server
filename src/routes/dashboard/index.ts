@@ -2,30 +2,12 @@ import S from "fluent-json-schema";
 import { FastifyInstance } from "fastify";
 import argon2 from "argon2";
 
-const CreateAccountSchema = {
-  body: S.object()
-    .prop("firstName", S.string().required())
-    .prop("lastName", S.string().required())
-    .prop("email", S.string().required())
-    .prop("password", S.string().required()),
-  response: {
-    200: S.object().prop("message", S.string().required()),
-  },
-};
-
 const SignInSchema = {
   body: S.object().prop("email", S.string().required()).prop("password", S.string().required()),
   response: {
     200: S.object().prop("message", S.string().required()),
   },
 };
-
-interface ICreateAccountBody {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
 
 interface ISignInBody {
   email: string;
@@ -37,39 +19,6 @@ interface IForgotPasswordBody {
 }
 
 export default function dashboardRoutes(fastify: FastifyInstance, opts, done) {
-  fastify.route<{ Body: ICreateAccountBody }>({
-    method: "POST",
-    url: "/create-account",
-    schema: CreateAccountSchema,
-    handler: async (request, reply) => {
-      const { firstName, lastName, email, password } = request.body;
-
-      const hashedPassword = await argon2.hash(password);
-
-      await fastify.prisma.user.create({
-        data: {
-          firstName,
-          lastName,
-          email,
-          password: hashedPassword,
-        },
-      });
-
-      const token = await reply.jwtSign({ email });
-
-      reply
-        .setCookie("mellinsDashboardJWT", token, {
-          path: "/",
-          httpOnly: true,
-          maxAge: 1_800_000,
-          sameSite: "lax",
-          secure: opts.NODE_ENV === "production",
-        })
-        .status(201)
-        .send({ message: "Created" });
-    },
-  });
-
   fastify.route<{ Body: ISignInBody }>({
     method: "POST",
     url: "/sign-in",
